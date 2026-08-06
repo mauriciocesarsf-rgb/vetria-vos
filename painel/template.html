@@ -9,27 +9,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy-0: #05070d;
-    --navy-1: #0b0f19;
-    --navy-2: #121729;
-    --navy-3: #1a2036;
-    --line: #232a42;
-    --gold: #d4a76a;
-    --gold-soft: #e6dcc2;
-    --blue: #4b5bff;
-    --blue-soft: #2d8cff;
-    --client-accent: {{COR_DESTAQUE}}; /* cor de marca do cliente. padrão: var(--gold) */
-    --text-hi: #f2f4f7;
-    --text-dim: #a9afc0;
-    --text-faint: #5b637c;
-    --wood: #6b4a34;
-    --wood-dark: #4d3423;
+    --cream-0: #faf6f0;
+    --cream-1: #f3ece1;
+    --cream-2: #eae0cf;
+    --cream-3: #ded0b6;
+    --line: #e2d6c1;
+    --line-strong: #d3c3a4;
+    --terracotta: #c17a52;
+    --terracotta-soft: #e3b592;
+    --sage: #7c8a6e;
+    --vetria-blue: #4b5bff;
+    --vetria-navy: #0b0f19;
+    --vetria-gold: #d4a76a;
+    --client-accent: {{COR_DESTAQUE}}; /* cor de marca do cliente. padrão: var(--terracotta) */
+    --ink-hi: #2c2419;
+    --ink-dim: #6f6656;
+    --ink-faint: #a99d86;
+    --wood: #b9885b;
+    --wood-dark: #8a6440;
+    --brass: #af8c56;
     --skin: #e3b28a;
     --hair: #2a2032;
-    --pants: #262c44;
-    --plant-1: #3a6b3f;
-    --plant-2: #4f8a54;
-    --pot: #7a4a30;
+    --pants: #3a3530;
+    --plant-1: #5c7a4f;
+    --plant-2: #7a9968;
+    --pot: #a86f45;
+    --rug: color-mix(in srgb, var(--client-accent) 22%, var(--cream-2));
     --font-display: "Poppins", ui-sans-serif, system-ui;
     --font-body: "Inter", ui-sans-serif, system-ui;
     --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -39,21 +44,30 @@
   body {
     font-family: var(--font-body);
     background:
-      radial-gradient(circle at 12% 8%, rgba(75,91,255,0.14), transparent 40%),
-      radial-gradient(circle at 88% 76%, rgba(212,167,106,0.12), transparent 45%),
-      var(--navy-0);
-    color: var(--text-hi);
+      radial-gradient(circle at 12% 8%, rgba(193,122,82,0.08), transparent 42%),
+      radial-gradient(circle at 88% 78%, rgba(124,138,110,0.08), transparent 46%),
+      var(--cream-0);
+    color: var(--ink-hi);
     min-height: 100vh;
-    padding: 40px 24px 60px;
+    padding: 0 24px 60px;
     -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 1120px; margin: 0 auto; }
+
+  .faixa-header {
+    background: var(--vetria-navy);
+    margin: 0 -24px 0;
+  }
+  .faixa-header-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 24px 26px;
+  }
 
   header {
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 8px;
   }
   header img { width: 40px; height: 40px; border-radius: 50%; }
   .brand-name {
@@ -61,12 +75,13 @@
     font-size: 20px;
     font-weight: 400;
     letter-spacing: 0.08em;
+    color: #fff;
   }
   .brand-tagline {
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--vetria-gold);
   }
 
   .empresa {
@@ -78,25 +93,25 @@
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--ink-dim);
     margin-bottom: 10px;
   }
   .empresa-nome {
     font-family: var(--font-display);
     font-weight: 500;
     font-size: clamp(30px, 4.5vw, 44px);
-    color: var(--text-hi);
+    color: var(--ink-hi);
     letter-spacing: -0.01em;
   }
   .empresa-meta {
     margin-top: 10px;
-    color: var(--text-dim);
+    color: var(--ink-dim);
     font-size: 14px;
   }
   .empresa-meta span:not(:last-child)::after {
     content: "·";
     margin: 0 10px;
-    color: var(--line);
+    color: var(--line-strong);
   }
 
   /* ---------- SALA DOS ESPECIALISTAS ---------- */
@@ -108,31 +123,30 @@
     border: 1px solid var(--line);
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: inset 0 0 80px rgba(0,0,0,0.5);
+    background: var(--cream-1);
+    box-shadow: 0 24px 60px rgba(90, 62, 30, 0.10), inset 0 1px 0 rgba(255,255,255,0.6);
   }
 
   .zona-estoque {
     position: relative;
     display: flex;
-    height: 168px;
+    height: 200px;
     background:
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 18px),
-      var(--navy-2);
+      repeating-linear-gradient(90deg, rgba(120,90,50,0.03) 0px, rgba(120,90,50,0.03) 1px, transparent 1px, transparent 18px),
+      var(--cream-2);
   }
   .zona-loja {
     position: relative;
     display: flex;
-    height: 340px;
+    height: 400px;
     background:
-      repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 26px),
-      repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 26px),
-      var(--navy-1);
+      linear-gradient(180deg, var(--cream-1) 0%, var(--cream-1) 62%, var(--cream-2) 62%, var(--cream-2) 100%);
   }
 
   .zona-divisoria {
     position: relative;
     height: 22px;
-    background: var(--navy-0);
+    background: var(--cream-0);
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     display: flex;
@@ -146,7 +160,7 @@
     top: 50%;
     width: 34%;
     height: 1px;
-    background: var(--line);
+    background: var(--line-strong);
   }
   .zona-divisoria::before { left: 0; }
   .zona-divisoria::after { right: 0; }
@@ -154,8 +168,8 @@
     font-family: var(--font-mono);
     font-size: 9px;
     letter-spacing: 0.16em;
-    color: var(--text-faint);
-    background: var(--navy-0);
+    color: var(--ink-faint);
+    background: var(--cream-0);
     padding: 0 10px;
     z-index: 1;
   }
@@ -168,7 +182,7 @@
     font-size: 9px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--text-faint);
+    color: var(--ink-faint);
     z-index: 2;
   }
 
@@ -179,24 +193,64 @@
     height: 100%;
     border-right: 1px solid var(--line);
     padding: 20px;
+    overflow: hidden;
   }
   .estacao:last-child { border-right: none; }
 
+  /* arco (nicho) de fundo, estilo boutique */
+  .arco {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 168px;
+    height: 250px;
+    background: linear-gradient(180deg, var(--cream-0), var(--cream-2));
+    border: 1px solid var(--line);
+    border-radius: 84px 84px 0 0;
+    box-shadow: inset 0 0 34px rgba(120, 90, 50, 0.06);
+  }
+  .zona-estoque .arco { width: 150px; height: 150px; border-radius: 75px 75px 0 0; }
+
+  /* pendente (luminária suspensa) */
+  .pendente {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 44px;
+    background: var(--brass);
+    z-index: 3;
+  }
+  .pendente::after {
+    content: "";
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 16px;
+    background: radial-gradient(circle at 50% 30%, #fff6e4, var(--brass));
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: 0 16px 28px rgba(230, 180, 110, 0.4);
+  }
+
   .estacao-estoque-decor {
     position: absolute;
-    bottom: 44px;
+    bottom: 54px;
     display: flex;
     align-items: flex-end;
     gap: 3px;
   }
 
   /* estação dentro da zona de estoque é mais baixa: reposiciona tudo */
-  .zona-estoque .estacao-piso { height: 26px; }
-  .zona-estoque .etiqueta { top: 20%; }
-  .zona-estoque .personagem { top: 40%; }
-  .zona-estoque .movel-mesa { bottom: 26px; }
-  .zona-estoque .movel-tela { bottom: 44px; }
-  .zona-estoque .estacao-estoque-decor { bottom: 26px; }
+  .zona-estoque .estacao-piso { height: 30px; }
+  .zona-estoque .etiqueta { top: 16%; }
+  .zona-estoque .personagem { top: 38%; }
+  .zona-estoque .movel-mesa { bottom: 30px; }
+  .zona-estoque .movel-tela { bottom: 50px; }
+  .zona-estoque .estacao-estoque-decor { bottom: 30px; }
+  .zona-estoque .rug { bottom: 6px; }
 
   .estacao-quadro {
     position: absolute;
@@ -204,18 +258,31 @@
     left: 20px;
     display: flex;
     gap: 4px;
+    z-index: 3;
   }
   .estacao-quadro span {
     width: 10px; height: 10px; border-radius: 2px;
   }
 
+  .rug {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 34px;
+    background: var(--rug);
+    border-radius: 50%;
+    opacity: .55;
+  }
+
   .etiqueta {
     position: absolute;
-    top: 46%;
+    top: 42%;
     left: 50%;
     transform: translate(-50%, -14px);
-    background: var(--navy-2);
-    border: 1px solid var(--line);
+    background: var(--cream-0);
+    border: 1px solid var(--line-strong);
     border-radius: 6px;
     padding: 4px 10px;
     font-size: 11px;
@@ -223,26 +290,28 @@
     display: flex;
     align-items: baseline;
     gap: 6px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    box-shadow: 0 6px 16px rgba(90, 62, 30, 0.10);
+    z-index: 4;
   }
   .etiqueta b {
     font-family: var(--font-display);
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: var(--text-hi);
+    color: var(--ink-hi);
   }
   .etiqueta i {
     font-style: normal;
-    color: var(--text-faint);
+    color: var(--ink-faint);
   }
 
   .personagem {
     position: absolute;
-    top: 56%;
+    top: 52%;
     left: 50%;
     transform: translateX(-50%);
     width: 40px;
     height: 64px;
+    z-index: 4;
     animation: bob 2.8s ease-in-out infinite;
   }
   .estacao:nth-child(2) .personagem { animation-delay: .3s; }
@@ -256,11 +325,12 @@
 
   .movel-mesa {
     position: absolute;
-    bottom: 44px;
+    bottom: 50px;
     width: 92px; height: 34px;
     background: var(--wood);
     border: 1px solid var(--wood-dark);
     border-radius: 4px;
+    z-index: 2;
   }
   .movel-mesa::after {
     content: "";
@@ -273,14 +343,15 @@
   .movel-tela {
     position: absolute;
     width: 30px; height: 20px;
-    background: var(--navy-3);
-    border: 1px solid var(--line);
+    background: var(--ink-hi);
+    border: 1px solid var(--wood-dark);
     border-radius: 3px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 2px;
     padding: 3px;
+    z-index: 3;
   }
   .movel-tela span { border-radius: 1px; }
 
@@ -288,6 +359,7 @@
     position: absolute;
     bottom: 12px;
     width: 30px; height: 34px;
+    z-index: 3;
   }
   .planta-vaso {
     position: absolute; bottom: 0; left: 6px;
@@ -308,24 +380,10 @@
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 44px;
-    background: linear-gradient(to top, rgba(0,0,0,0.35), transparent);
+    background: linear-gradient(to top, rgba(120, 90, 50, 0.10), transparent);
   }
 
   /* elementos de loja */
-  .registradora {
-    position: absolute; bottom: 78px;
-    width: 20px; height: 14px;
-    background: var(--navy-3);
-    border: 1px solid var(--line);
-    border-radius: 2px;
-  }
-  .registradora::before {
-    content: "";
-    position: absolute; top: 2px; left: 2px; right: 2px; height: 5px;
-    background: var(--blue-soft);
-    border-radius: 1px;
-    opacity: .8;
-  }
   .caixa-sapato {
     position: absolute;
     width: 16px; height: 11px;
@@ -341,41 +399,50 @@
 
   .vitrine {
     position: absolute;
-    bottom: 44px;
+    bottom: 50px;
     width: 76px; height: 130px;
-    border: 2px solid var(--text-faint);
-    border-radius: 6px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015) 60%);
+    z-index: 2;
   }
   .manequim {
     position: absolute;
     bottom: 14px; left: 50%;
     transform: translateX(-50%);
     width: 26px; height: 62px;
+    z-index: 2;
+  }
+  .espelho {
+    position: absolute;
+    width: 34px; height: 92px;
+    border-radius: 50% / 26px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(255,255,255,0.18) 55%, rgba(120,90,50,0.10));
+    border: 3px solid var(--brass);
+    box-shadow: 0 8px 18px rgba(90,62,30,0.14);
+    z-index: 1;
   }
   .manequim .cabeca {
     position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     width: 10px; height: 10px;
-    background: var(--navy-3);
+    background: var(--ink-hi);
     border-radius: 50%;
+    opacity: .82;
   }
   .manequim .haste {
     position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
     width: 2px; height: 8px;
-    background: var(--text-faint);
+    background: var(--ink-faint);
   }
   .manequim .corpo {
     position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
     width: 22px; height: 30px;
     background: var(--client-accent);
     border-radius: 5px 5px 8px 8px;
-    opacity: .9;
+    opacity: .92;
   }
   .manequim .base {
     position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 26px; height: 5px;
-    background: var(--navy-3);
-    border: 1px solid var(--line);
+    width: 30px; height: 5px;
+    background: var(--wood);
+    border: 1px solid var(--wood-dark);
     border-radius: 2px;
   }
   .post {
@@ -389,6 +456,7 @@
     width: 66px; height: 3px;
     background: var(--wood-dark);
     border-radius: 1px;
+    z-index: 2;
   }
   .sapato {
     position: absolute;
@@ -396,6 +464,7 @@
     background: var(--client-accent);
     border-radius: 2px 6px 6px 2px;
     opacity: .85;
+    z-index: 2;
   }
   .sapato::after {
     content: "";
@@ -411,6 +480,7 @@
     background: var(--cor-bolsa, var(--client-accent));
     border-radius: 3px 3px 8px 8px;
     opacity: .88;
+    z-index: 2;
   }
   .bolsa::before {
     content: "";
@@ -422,26 +492,85 @@
     border-radius: 8px 8px 0 0;
   }
 
-  /* estação 1: Gerente IA */
-  .est-1 .movel-mesa { left: 16px; }
-  .est-1 .movel-tela { left: 30px; bottom: 62px; }
-  .est-1 .movel-tela span:nth-child(1) { background: var(--blue-soft); }
-  .est-1 .movel-tela span:nth-child(2) { background: var(--gold); }
-  .est-1 .movel-tela span:nth-child(3) { background: var(--blue); }
-  .est-1 .movel-tela span:nth-child(4) { background: var(--gold-soft); }
-  .est-1 .movel-tela span:nth-child(5) { background: var(--blue-soft); }
-  .est-1 .movel-tela span:nth-child(6) { background: var(--blue); }
-  .est-1 .planta { right: 14px; bottom: 12px; }
+  /* estação única do escritório: Vetria Marketing (planejamento, calendário editorial) */
+  .est-mkt .movel-mesa { left: 50%; transform: translateX(-50%); width: 84px; }
+  .est-mkt .movel-tela { left: 50%; transform: translateX(-50%); margin-left: -15px; bottom: 68px; }
+  .est-mkt .movel-tela span:nth-child(odd) { background: var(--terracotta); }
+  .est-mkt .movel-tela span:nth-child(even) { background: var(--terracotta-soft); }
 
-  /* estação 2: Vetria Marketing */
-  .est-2 .movel-mesa { right: 16px; }
-  .est-2 .movel-tela { right: 30px; bottom: 62px; }
-  .est-2 .movel-tela span:nth-child(odd) { background: var(--gold); }
-  .est-2 .movel-tela span:nth-child(even) { background: var(--gold-soft); }
-  .est-2 .planta { left: 14px; bottom: 12px; }
+  .parede-calendario {
+    position: absolute;
+    top: 26px;
+    left: 34px;
+    z-index: 3;
+  }
+  .parede-quadros {
+    position: absolute;
+    top: 26px;
+    right: 34px;
+    display: flex;
+    gap: 8px;
+    z-index: 3;
+  }
+  .calendario {
+    width: 30px; height: 30px;
+    background: var(--cream-0);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 7px repeat(2, 1fr);
+    gap: 1.5px;
+    padding: 2px;
+    box-shadow: 0 4px 10px rgba(90,62,30,.08);
+  }
+  .calendario span:nth-child(-n+4) { background: var(--terracotta); border-radius: 1px 1px 0 0; }
+  .calendario span:not(:nth-child(-n+4)) { background: var(--cream-2); border-radius: 1px; }
+  .quadro-func {
+    position: relative;
+    width: 22px; height: 28px;
+    background: var(--cream-0);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    box-shadow: 0 4px 10px rgba(90,62,30,.08);
+    overflow: hidden;
+  }
+  .quadro-func::before {
+    content: "";
+    position: absolute;
+    top: 4px; left: 4px; right: 4px;
+    height: 14px;
+    background: var(--cor-quadro);
+    border-radius: 2px;
+    opacity: .85;
+  }
 
-  /* estação 3: Vetria Stylist. mostruário de calçados e bolsas (sem cabideiro de roupa) */
-  .est-3 .planta { left: 128px; bottom: 12px; }
+  /* estação da loja: Gerente IA no caixa (indicadores em tempo real) */
+  .est-ger .movel-mesa { left: 50%; transform: translateX(-50%); width: 96px; }
+  .est-ger .movel-tela { left: 50%; transform: translateX(-50%); margin-left: -15px; bottom: 88px; }
+  .est-ger .movel-tela span:nth-child(odd) { background: var(--sage); }
+  .est-ger .movel-tela span:nth-child(even) { background: var(--terracotta-soft); }
+  .est-ger .planta { left: 14px; bottom: 12px; }
+  .registradora {
+    position: absolute;
+    bottom: 84px;
+    left: calc(50% + 26px);
+    width: 18px; height: 13px;
+    background: var(--ink-hi);
+    border: 1px solid var(--wood-dark);
+    border-radius: 2px;
+    z-index: 3;
+  }
+  .registradora::before {
+    content: "";
+    position: absolute; top: 2px; left: 2px; right: 2px; height: 4px;
+    background: var(--terracotta-soft);
+    border-radius: 1px;
+    opacity: .8;
+  }
+
+  /* estação da loja: Vetria Stylist. mostruário de calçados e bolsas */
+  .est-sty .planta { left: 132px; bottom: 12px; }
 
   .estacao-status {
     position: absolute;
@@ -451,13 +580,14 @@
     align-items: center;
     gap: 6px;
     font-size: 10px;
-    color: var(--text-dim);
+    color: var(--ink-dim);
     letter-spacing: 0.04em;
+    z-index: 4;
   }
   .estacao-status .dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cor-especialista, var(--gold));
-    box-shadow: 0 0 8px var(--cor-especialista, var(--gold));
+    background: var(--cor-especialista, var(--terracotta));
+    box-shadow: 0 0 8px var(--cor-especialista, var(--terracotta));
     animation: pulse 2.2s ease-in-out infinite;
   }
   @keyframes pulse {
@@ -474,7 +604,7 @@
     gap: 16px;
   }
   .bloco {
-    background: var(--navy-1);
+    background: var(--cream-1);
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 18px 20px;
@@ -486,7 +616,7 @@
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--ink-dim);
     margin-bottom: 14px;
   }
   .bloco-titulo::before {
@@ -496,7 +626,7 @@
   }
   .bloco-vazio {
     font-size: 12.5px;
-    color: var(--text-faint);
+    color: var(--ink-faint);
     font-style: italic;
     line-height: 1.6;
   }
@@ -515,7 +645,7 @@
   }
   .agente-linha .status {
     font-size: 11px;
-    color: var(--text-faint);
+    color: var(--ink-faint);
     font-family: var(--font-mono);
   }
   .status-group {
@@ -527,31 +657,31 @@
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 999px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-strong);
     white-space: nowrap;
   }
   .badge-whatsapp.ok {
     color: var(--client-accent);
     border-color: var(--client-accent);
   }
-  .badge-whatsapp.pendente {
-    color: var(--text-faint);
+  .badge-whatsapp.aguardando {
+    color: var(--ink-faint);
   }
   .progresso-numero {
     font-family: var(--font-mono);
     font-size: 28px;
-    color: var(--text-hi);
+    color: var(--ink-hi);
   }
   .progresso-label {
     font-size: 12px;
-    color: var(--text-dim);
+    color: var(--ink-dim);
     margin-top: 4px;
   }
   .progresso-barra {
     margin-top: 12px;
     height: 6px;
     border-radius: 999px;
-    background: var(--navy-3);
+    background: var(--cream-2);
     overflow: hidden;
   }
   .progresso-barra span {
@@ -559,6 +689,32 @@
     height: 100%;
     background: var(--client-accent);
     border-radius: 999px;
+  }
+
+  /* corridas vigentes */
+  .corrida-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 7px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--line);
+  }
+  .corrida-item:last-child { border-bottom: none; }
+  .corrida-item .nome { color: var(--ink-hi); font-weight: 600; }
+  .corrida-item .prazo {
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+
+  /* sugestão do dia */
+  .sugestao-texto {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-dim);
   }
 
   footer {
@@ -570,28 +726,31 @@
     flex-wrap: wrap;
     gap: 10px;
     font-size: 11px;
-    color: var(--text-dim);
+    color: var(--ink-dim);
     letter-spacing: 0.03em;
   }
 
   @media (max-width: 760px) {
     .zona-loja { flex-direction: column; height: auto; }
-    .zona-loja .estacao { height: 260px; border-right: none; border-bottom: 1px solid var(--line); }
+    .zona-loja .estacao { height: 300px; border-right: none; border-bottom: 1px solid var(--line); }
     .zona-loja .estacao:last-child { border-bottom: none; }
     .painel-inferior { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
+  <div class="faixa-header">
+    <div class="faixa-header-inner">
+      <header>
+        <img src="../../painel/assets/vetria-mark.png" alt="Vetria">
+        <div>
+          <div class="brand-name">VETRIA</div>
+          <div class="brand-tagline">Inteligência para Moda e Varejo</div>
+        </div>
+      </header>
+    </div>
+  </div>
   <div class="wrap">
-    <header>
-      <img src="../../painel/assets/vetria-mark.png" alt="Vetria">
-      <div>
-        <div class="brand-name">VETRIA</div>
-        <div class="brand-tagline">Inteligência para Moda e Varejo</div>
-      </div>
-    </header>
-
     <section class="empresa">
       <div class="empresa-eyebrow">Sala dos especialistas</div>
       <div class="empresa-nome">{{NOME_EMPRESA}}</div>
@@ -603,20 +762,25 @@
 
     <section class="sala">
       <div class="zona-estoque">
-        <div class="zona-tag">Estoque · Escritório</div>
-        <div class="estacao est-1" style="--cor-especialista: var(--blue-soft);">
+        <div class="zona-tag">Escritório · Planejamento</div>
+        <div class="estacao est-mkt" style="--cor-especialista: var(--terracotta);">
+          <div class="arco"></div>
+          <div class="pendente"></div>
           <div class="estacao-status"><span class="dot"></span>pronta</div>
-          <div class="movel-mesa" style="width: 78px;"></div>
-          <div class="movel-tela"><span style="background: var(--blue-soft);"></span><span style="background: var(--gold);"></span><span style="background: var(--blue);"></span><span style="background: var(--gold-soft);"></span><span style="background: var(--blue-soft);"></span><span style="background: var(--blue);"></span></div>
-          <div class="estacao-estoque-decor" style="right: 18px;">
-            <div class="caixa-sapato" style="position: static;"></div>
-            <div class="caixa-sapato" style="position: static;"></div>
-            <div class="caixa-sapato" style="position: static;"></div>
+          <div class="parede-calendario">
+            <div class="calendario"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
           </div>
-          <div class="etiqueta"><b>GERENTE IA</b><i>gestão</i></div>
+          <div class="parede-quadros">
+            <div class="quadro-func" style="--cor-quadro: var(--sage);"></div>
+            <div class="quadro-func" style="--cor-quadro: var(--terracotta);"></div>
+            <div class="quadro-func" style="--cor-quadro: var(--client-accent);"></div>
+          </div>
+          <div class="movel-mesa"></div>
+          <div class="movel-tela"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div class="etiqueta"><b>MARKETING</b><i>comunicação</i></div>
           <div class="personagem">
             <svg viewBox="0 0 40 64">
-              <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(0,0,0,.35)"/>
+              <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(90,62,30,.14)"/>
               <rect x="10" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
               <rect x="22" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
               <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
@@ -633,68 +797,76 @@
       <div class="zona-divisoria"><span>LOJA</span></div>
 
       <div class="zona-loja">
-      <div class="estacao est-2" style="--cor-especialista: var(--gold);">
+      <div class="estacao est-ger" style="--cor-especialista: var(--sage);">
+        <div class="arco"></div>
+        <div class="pendente"></div>
         <div class="estacao-quadro">
-          <span style="background: var(--gold);"></span>
-          <span style="background: var(--gold-soft);"></span>
+          <span style="background: var(--sage);"></span>
+          <span style="background: var(--terracotta-soft);"></span>
           <span style="background: var(--client-accent);"></span>
         </div>
         <div class="estacao-status"><span class="dot"></span>pronta</div>
-        <div class="vitrine" style="left: 50%; transform: translateX(-50%);">
-          <div class="manequim">
-            <div class="cabeca"></div>
-            <div class="haste"></div>
-            <div class="corpo"></div>
-            <div class="base"></div>
-          </div>
-        </div>
-        <div class="post" style="top: 56px; left: 18px; background: var(--gold);"></div>
-        <div class="post" style="top: 76px; left: 18px; background: var(--client-accent);"></div>
+        <div class="movel-mesa"></div>
+        <div class="movel-tela"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="registradora"></div>
+        <div class="rug"></div>
         <div class="planta"><div class="planta-folha a"></div><div class="planta-folha b"></div><div class="planta-folha c"></div><div class="planta-vaso"></div></div>
-        <div class="etiqueta"><b>MARKETING</b><i>comunicação</i></div>
+        <div class="etiqueta"><b>GERENTE IA</b><i>gestão · caixa</i></div>
         <div class="personagem">
           <svg viewBox="0 0 40 64">
-            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(0,0,0,.35)"/>
-            <rect x="10" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
-            <rect x="22" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(90,62,30,.14)"/>
+            <path d="M13 38 H27 L33 58 Q20 63 7 58 Z" fill="var(--cor-especialista)"/>
             <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
             <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-            <rect x="7" y="16" width="26" height="26" rx="13" fill="var(--cor-especialista)"/>
+            <rect x="7" y="16" width="26" height="24" rx="13" fill="var(--cor-especialista)"/>
             <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
+            <rect x="5" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
+            <rect x="29" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
             <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
           </svg>
         </div>
         <div class="estacao-piso"></div>
       </div>
 
-      <div class="estacao est-3" style="--cor-especialista: var(--client-accent);">
+      <div class="estacao est-sty" style="--cor-especialista: var(--client-accent);">
+        <div class="arco"></div>
+        <div class="pendente"></div>
         <div class="estacao-quadro">
           <span style="background: var(--client-accent);"></span>
-          <span style="background: var(--gold-soft);"></span>
-          <span style="background: var(--blue-soft);"></span>
+          <span style="background: var(--terracotta-soft);"></span>
+          <span style="background: var(--sage);"></span>
         </div>
         <div class="estacao-status"><span class="dot"></span>pronta</div>
-        <div class="prateleira" style="left: 20px; bottom: 100px;"></div>
-        <div class="sapato" style="left: 22px; bottom: 103px;"></div>
-        <div class="sapato" style="left: 42px; bottom: 103px; opacity: .65;"></div>
-        <div class="sapato" style="left: 62px; bottom: 103px; opacity: .45;"></div>
-        <div class="prateleira" style="left: 20px; bottom: 76px;"></div>
-        <div class="sapato" style="left: 22px; bottom: 79px; opacity: .75;"></div>
-        <div class="sapato" style="left: 42px; bottom: 79px; opacity: .55;"></div>
-        <div class="sapato" style="left: 62px; bottom: 79px; opacity: .35;"></div>
-        <div class="bolsa" style="right: 30px; bottom: 90px; --cor-bolsa: var(--client-accent);"></div>
-        <div class="bolsa" style="right: 58px; bottom: 78px; --cor-bolsa: var(--gold-soft);"></div>
+        <div class="prateleira" style="left: 20px; bottom: 118px;"></div>
+        <div class="sapato" style="left: 22px; bottom: 121px;"></div>
+        <div class="sapato" style="left: 42px; bottom: 121px; opacity: .65;"></div>
+        <div class="sapato" style="left: 62px; bottom: 121px; opacity: .45;"></div>
+        <div class="prateleira" style="left: 20px; bottom: 94px;"></div>
+        <div class="sapato" style="left: 22px; bottom: 97px; opacity: .75;"></div>
+        <div class="sapato" style="left: 42px; bottom: 97px; opacity: .55;"></div>
+        <div class="sapato" style="left: 62px; bottom: 97px; opacity: .35;"></div>
+        <div class="bolsa" style="left: 24px; bottom: 70px; --cor-bolsa: var(--client-accent);"></div>
+        <div class="bolsa" style="left: 50px; bottom: 66px; --cor-bolsa: var(--terracotta-soft);"></div>
+        <div class="espelho" style="right: 24px; bottom: 50px;"></div>
+        <div class="manequim" style="right: 30px; left: auto; bottom: 64px; transform: none;">
+          <div class="cabeca"></div>
+          <div class="haste"></div>
+          <div class="corpo"></div>
+          <div class="base"></div>
+        </div>
+        <div class="rug"></div>
         <div class="planta"><div class="planta-folha a"></div><div class="planta-folha b"></div><div class="planta-folha c"></div><div class="planta-vaso"></div></div>
         <div class="etiqueta"><b>STYLIST</b><i>moda</i></div>
         <div class="personagem">
           <svg viewBox="0 0 40 64">
-            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(0,0,0,.35)"/>
-            <rect x="10" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
-            <rect x="22" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(90,62,30,.14)"/>
+            <path d="M13 38 H27 L33 58 Q20 63 7 58 Z" fill="var(--cor-especialista)"/>
             <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
             <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-            <rect x="7" y="16" width="26" height="26" rx="13" fill="var(--cor-especialista)"/>
+            <rect x="7" y="16" width="26" height="24" rx="13" fill="var(--cor-especialista)"/>
             <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
+            <rect x="5" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
+            <rect x="29" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
             <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
           </svg>
         </div>
@@ -705,17 +877,25 @@
 
     <section class="painel-inferior">
       <div class="bloco">
-        <div class="bloco-titulo">Atividade</div>
-        <div class="bloco-vazio">Nenhuma atividade registrada nesta sessão ainda. Assim que um especialista for acionado, o histórico aparece aqui.</div>
+        <div class="bloco-titulo">Indicadores do mês</div>
+        {{INDICADORES_BLOCO}}
+      </div>
+      <div class="bloco">
+        <div class="bloco-titulo">Corridas e prêmios vigentes</div>
+        {{CORRIDAS_BLOCO}}
+      </div>
+      <div class="bloco">
+        <div class="bloco-titulo">Sugestão de hoje · Marketing</div>
+        {{SUGESTAO_BLOCO}}
       </div>
       <div class="bloco">
         <div class="bloco-titulo">Agentes</div>
         <div class="agente-linha">
-          <span class="nome"><span class="dot" style="background: var(--blue-soft);"></span>Gerente IA</span>
+          <span class="nome"><span class="dot" style="background: var(--sage);"></span>Gerente IA</span>
           <span class="status-group"><span class="status">pronta</span>{{WHATSAPP_BADGE}}</span>
         </div>
         <div class="agente-linha">
-          <span class="nome"><span class="dot" style="background: var(--gold);"></span>Vetria Marketing</span>
+          <span class="nome"><span class="dot" style="background: var(--terracotta);"></span>Vetria Marketing</span>
           <span class="status">pronta</span>
         </div>
         <div class="agente-linha">
@@ -724,7 +904,7 @@
         </div>
       </div>
       <div class="bloco">
-        <div class="bloco-titulo">Progresso</div>
+        <div class="bloco-titulo">Progresso do DNA</div>
         <div class="progresso-numero">{{PROGRESSO_DNA}}</div>
         <div class="progresso-label">campos do Workbook DNA preenchidos</div>
         <div class="progresso-barra"><span style="width: {{PROGRESSO_PCT}}%;"></span></div>

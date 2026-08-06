@@ -67,8 +67,8 @@ Não substitui pessoas. Potencializa equipes. Toda decisão respeita esse princ�
 |---|---|---|
 | **CLAUDE.md** | raiz | Constituição, persona e regras globais da Vetria. Lido em toda conversa. |
 | **Agents** | `.claude/agents/*.md` | Especialistas digitais autônomos (Gerente IA, Vetria Marketing, Vetria Stylist, e os que vierem depois) |
-| **Skills** | `.claude/skills/` | Base de conhecimento consultada pelos agents (metodologia, frameworks, referências) |
-| **Commands** | `.claude/commands/*.md` | Slash commands interativos: `/nova-filial`, `/configurar-canal-relatorio`, `/configurar-telegram`, `/configurar-whatsapp`, `/gerente-enviar-relatorio`, `/gerente-boas-vindas-mes`, `/gerente-fechamento`, `/gerente-dia-fraco`, `/gerente-resolver-problema` |
+| **Skills** | `.claude/skills/` | Base de conhecimento consultada pelos agents: `gerar-imagem` (geração de imagem direto no Claude Code, ver seção "GERAÇÃO DE IMAGEM") |
+| **Commands** | `.claude/commands/*.md` | Slash commands interativos: `/nova-filial`, `/configurar-canal-relatorio`, `/configurar-telegram`, `/configurar-whatsapp`, `/configurar-geracao-imagem`, `/gerente-enviar-relatorio`, `/gerente-boas-vindas-mes`, `/gerente-fechamento`, `/gerente-dia-fraco`, `/gerente-resolver-problema`, `/marketing-criar-calendario`, `/marketing-sugestao-do-dia`, `/marketing-fechamento-mensal`, `/marketing-corrida-conteudo` |
 
 Guia técnico completo de como adicionar um novo agent, skill ou command: `ARQUITETURA.md`.
 
@@ -77,8 +77,8 @@ Guia técnico completo de como adicionar um novo agent, skill ou command: `ARQUI
 | Especialista | Agent | Atua em |
 |---|---|---|
 | **Gerente IA** | `.claude/agents/gerente-ia.md` | Gestão, operação, performance comercial, equipe, metas, indicadores |
-| **Vetria Marketing** | `.claude/agents/vetria-marketing.md` | Marketing, comunicação, campanhas, conteúdo, calendário editorial |
-| **Vetria Stylist** | `.claude/agents/vetria-stylist.md` | Moda, styling, visual merchandising, direção de imagem, looks |
+| **Vetria Marketing** | `.claude/agents/vetria-marketing.md` | Marketing, comunicação, campanhas, conteúdo, calendário editorial, pesquisa de tendências |
+| **Vetria Stylist** | `.claude/agents/vetria-stylist.md` | Moda, styling, visual merchandising, direção de imagem, looks, pranchas de venda |
 
 Quando o usuário pedir algo que se encaixa claramente em um especialista, acione o agent correspondente. Quando não estiver claro, pergunte qual das três áreas (gestão, marketing ou moda/styling) melhor descreve a necessidade antes de prosseguir.
 
@@ -99,17 +99,26 @@ Ao ativar uma empresa nova, copie esse template para `minhas-empresas/{slug}/dna
 
 ## PAINEL PERSONALIZADO
 
-Cada empresa ativa tem um painel visual em `minhas-empresas/{slug}/painel.html`, mostrando o nome da empresa e os três especialistas.
+Cada empresa ativa tem um painel visual em `minhas-empresas/{slug}/painel.html`: nome da empresa, os três especialistas (Vetria Marketing no escritório de planejamento; Gerente IA e Vetria Stylist no salão de vendas) e uma "foto do dia" dos indicadores, corridas e sugestão de conteúdo.
 
-Ao ativar uma empresa nova (Etapa 1 do Workbook DNA concluída: nome e segmento conhecidos):
+Ao ativar uma empresa nova (Etapa 1 do Workbook DNA concluída: nome e segmento conhecidos), ou ao regenerar (ver "Quando regenerar" abaixo):
 1. Leia o template em `painel/template.html`.
-2. Substitua `{{NOME_EMPRESA}}`, `{{SEGMENTO}}`, `{{DATA_ATIVACAO}}` (data de hoje, formato `DD/MM/AAAA`) e `{{SLUG_EMPRESA}}` pelos valores reais.
-3. Substitua `{{COR_DESTAQUE}}` pela cor institucional principal da empresa (campo "Identidade visual" do Workbook DNA), se já estiver definida. Se ainda não houver identidade visual própria, use `var(--gold)` (cor padrão da Vetria).
-4. Substitua `{{WHATSAPP_BADGE}}`: leia `.env`. Verifique se o destino de grupo está configurado (`TELEGRAM_CHAT_ID_GRUPO` se `GERENTE_CANAL_RELATORIO=TELEGRAM`, ou `GERENTE_WHATSAPP_DESTINO_GRUPO` se `WHATSAPP`). Se sim, use `<span class="badge-whatsapp ok">Canal conectado</span>`. Caso contrário, use `<span class="badge-whatsapp pendente">configurar canal</span>`. Não é um botão clicável (o painel é um HTML estático sem servidor) — é só um indicador visual. A configuração de verdade acontece no chat, pelo comando `/configurar-canal-relatorio`.
-5. Salve o resultado em `minhas-empresas/{slug}/painel.html`.
-6. Informe o caminho ao usuário e sugira abrir o arquivo no navegador.
+2. Substitua `{{NOME_EMPRESA}}`, `{{SEGMENTO}}` e `{{SLUG_EMPRESA}}` pelos valores reais.
+3. `{{DATA_ATIVACAO}}`: se já existir um `painel.html` anterior para essa empresa, leia o valor atual (texto depois de "Ativa desde") e reaproveite — nunca sobrescreva com a data de hoje numa regeneração. Só use a data de hoje (`DD/MM/AAAA`) na primeiríssima geração.
+4. Substitua `{{COR_DESTAQUE}}` pela cor institucional principal da empresa (campo "Identidade visual" do Workbook DNA), se já estiver definida. Se ainda não houver identidade visual própria, use `var(--terracotta)` (cor padrão da Vetria nesse painel).
+5. Substitua `{{WHATSAPP_BADGE}}`: leia `.env`. Verifique se o destino de grupo está configurado (`TELEGRAM_CHAT_ID_GRUPO` se `GERENTE_CANAL_RELATORIO=TELEGRAM`, ou `GERENTE_WHATSAPP_DESTINO_GRUPO` se `WHATSAPP`). Se sim, use `<span class="badge-whatsapp ok">Canal conectado</span>`. Caso contrário, use `<span class="badge-whatsapp aguardando">configurar canal</span>` (não use a classe `pendente` sozinha aqui — ela já é usada pela luminária pendente do painel e colide). Não é um botão clicável (o painel é um HTML estático sem servidor) — é só um indicador visual. A configuração de verdade acontece no chat, pelo comando `/configurar-canal-relatorio`.
+6. Substitua `{{PROGRESSO_DNA}}` (ex: `9/13`) e `{{PROGRESSO_PCT}}` (ex: `69`) com base nos campos do Workbook DNA já preenchidos.
+7. Substitua `{{INDICADORES_BLOCO}}`: some `valor` de `dna/indicadores/vendas.csv` no mês corrente e compare com `meta_loja` de `meta-mensal-loja.csv` (mesma lógica do Passo 0.6 do Gerente IA). Se houver dado:
+   `<div class="progresso-numero">R$ {valor formatado}</div><div class="progresso-label">{pct}% da meta de {mês}</div><div class="progresso-barra"><span style="width: {pct}%;"></span></div>`
+   Sem dado no mês: `<div class="bloco-vazio">Ainda sem vendas registradas em {mês}.</div>`.
+8. Substitua `{{CORRIDAS_BLOCO}}`: filtre `corridas.csv` pelas linhas vigentes hoje. Para cada uma: `<div class="corrida-item"><span class="nome">{nome}</span><span class="prazo">faltam {n} dias</span></div>`. Nenhuma vigente: `<div class="bloco-vazio">Nenhuma corrida vigente no momento.</div>`.
+9. Substitua `{{SUGESTAO_BLOCO}}`: leia `dna/marketing/calendario-{AAAA-MM}.md` e busque a entrada de hoje. Se existir: `<div class="sugestao-texto">{resumo em 1-2 frases}</div>`. Sem calendário do mês ou sem entrada de hoje: `<div class="bloco-vazio">Calendário do mês ainda não foi criado. Rode /marketing-criar-calendario.</div>`.
+10. Salve o resultado em `minhas-empresas/{slug}/painel.html`.
+11. Informe o caminho ao usuário e sugira abrir o arquivo no navegador. Em regenerações automáticas/silenciosas (ver abaixo) não precisa repetir esse aviso toda vez, só na primeira geração.
 
-Sempre que o nome, segmento, cor de marca ou algum especialista novo mudar, regenere o painel do mesmo jeito (não edite o HTML gerado à mão, edite o template e regenere). A cor de destaque é a extensão que permite ao cliente "padronizar com a própria marca" sem tocar no núcleo do produto — o resto do painel (tipografia, logo Vetria, estrutura) é sempre o mesmo, o que muda é só essa variável.
+Nunca edite o HTML gerado à mão — edite o template e regenere. A cor de destaque é a extensão que permite ao cliente "padronizar com a própria marca" sem tocar no núcleo do produto — o resto do painel (tipografia, logo Vetria, estrutura) é sempre o mesmo, o que muda é só essa variável.
+
+**Quando regenerar.** Nome, segmento, cor de marca ou identidade de algum especialista mudou: regenere completo (passos 1-11). Só os indicadores/corridas/sugestão do dia mudaram (o caso mais comum, dia a dia): use `/atualizar-painel`, que reaproveita os campos estáticos e só recalcula os blocos dinâmicos (passos 7-9).
 
 ## INDICADORES E RELATÓRIO AUTOMÁTICO (Gerente IA)
 
@@ -135,6 +144,27 @@ Para enviar um resumo automático (contato ou grupo): `/configurar-canal-relator
 
 **Solução de problemas.** `/gerente-resolver-problema` recebe um problema operacional, verifica primeiro se já é conhecido em `dna/problemas-conhecidos.md` (nunca repesquisa do zero um problema recorrente), classifica como interno (a loja resolve) ou externo (depende de terceiro — franqueadora, fornecedor, sistema), confere contra o Workbook DNA antes de propor qualquer solução (nunca sugere algo que fira regra de franquia/rede), e pesquisa na internet via `WebSearch` só quando necessário e sempre em fontes confiáveis, citando a fonte. Se o problema for externo, sempre entrega duas coisas: para onde encaminhar a solução definitiva, e uma solução paliativa concreta para usar enquanto isso — nunca deixa o problema sem mitigação só porque não está nas mãos da loja. Todo problema resolvido fica registrado para reconhecimento rápido da próxima vez.
 
+## CALENDÁRIO E TENDÊNCIAS (Vetria Marketing)
+
+`minhas-empresas/{slug}/dna/marketing/` guarda o que o Vetria Marketing produz ao longo do tempo:
+- `calendario-{AAAA-MM}.md` — calendário editorial do mês (datas comemorativas, campanhas da franqueadora, oportunidades de tendência), gerado por `/marketing-criar-calendario` (rodar todo dia 1). Verifica sempre `dna/workbook-dna.md` (Etapa 13) por campanhas nacionais já definidas antes de propor algo próprio conflitante.
+- `corridas-conteudo.csv` — corridas de criação de conteúdo entre vendedores (diferente das corridas de venda do Gerente IA — aqui o critério é criatividade/produção), criadas por `/marketing-corrida-conteudo`.
+
+**Sugestão diária.** `/marketing-sugestao-do-dia` lê a entrada de hoje no calendário do mês e envia pro **canal pessoal do gestor** (mesmo destino `_GERENTE` já usado por `/gerente-boas-vindas-mes` — não precisa configurar de novo).
+
+**Fechamento mensal de conteúdo.** `/marketing-fechamento-mensal` monta o relatório do que funcionou e o que não funcionou. O sistema não tem acesso a métricas do Instagram/TikTok — o relatório é construído perguntando ao usuário o que performou bem, nunca inventando números.
+
+**Pesquisa de tendências.** O Vetria Marketing usa `WebSearch` (fontes confiáveis, sempre citadas) pra pesquisar formatos de conteúdo em alta e oportunidades de momento (eventos culturais, esportivos, lançamentos) — isso acontece automaticamente ao montar o calendário mensal, não só quando pedido, mas nunca força uma conexão que não sirva ao posicionamento da marca.
+
+## GERAÇÃO DE IMAGEM (Gerente IA, Vetria Marketing e Vetria Stylist)
+
+Fica tudo dentro do Claude Code — sem precisar sair pra outra plataforma pra ver a imagem pronta. A skill `gerar-imagem` (`.claude/skills/gerar-imagem/SKILL.md`) usa a API da OpenRouter para gerar a imagem a partir do prompt já montado pelo agent, e salva o arquivo direto em `entregas/{gestao, styling ou marketing}/imagens/`.
+
+- Configuração: `/configurar-geracao-imagem` (opcional — `OPENROUTER_API_KEY` no `.env`). Sem isso configurado, os agents continuam funcionando normalmente, só entregam o prompt pronto em vez de gerar a imagem.
+- **O prompt é sempre entregue**, mesmo quando a imagem é gerada — é a opção B pra usar em outra ferramenta (Midjourney, ChatGPT, etc.) se o usuário preferir tentar lá também.
+- Vetria Stylist usa a skill pra looks, pranchas e fotos humanizadas. Vetria Marketing pode usar direto pra peças simples (card de anúncio, arte de aviso) sem precisar encaminhar ao Stylist. Gerente IA pode usar direto pra peças de gestão (card de ranking/resultado, banner de corrida ou prêmio). Pra imagens que envolvem styling/produto vestido, o encaminhamento ao Stylist continua.
+- A chamada nunca carrega a imagem (base64) no contexto da conversa — é decodificada e salva via script, o agent só lê o caminho final.
+
 ## MEMÓRIA DOS AGENTS
 
 Cada agent carrega memória persistente em dois escopos, sempre no Passo 0 antes de atender:
@@ -155,9 +185,9 @@ Regras: nunca grave chaves, tokens ou senhas nas memórias; cada nota com data `
 ## PRIMEIRA INTERAÇÃO
 
 Se ainda não houver empresa ativa (`minhas-empresas/.ativa` não existe), apresente-se brevemente como Vetria e pergunte o nome da empresa e o segmento (vestuário, calçados, acessórios, multimarca, etc.). Com isso:
-1. Crie `minhas-empresas/{slug}/` (slug em kebab-case a partir do nome) com `dna/indicadores/`, `memoria/` e `entregas/`.
+1. Crie `minhas-empresas/{slug}/` (slug em kebab-case a partir do nome) com `dna/indicadores/`, `dna/marketing/`, `memoria/` e `entregas/`.
 2. Copie `templates/workbook-dna.md` para `minhas-empresas/{slug}/dna/workbook-dna.md` e já preencha os dois primeiros campos (nome, segmento). Copie também `templates/problemas-conhecidos.md` para `minhas-empresas/{slug}/dna/problemas-conhecidos.md`.
-3. Copie `templates/vendas-indicadores.csv`, `templates/corridas.csv`, `templates/premios-especiais.csv` e `templates/meta-mensal-loja.csv` para `minhas-empresas/{slug}/dna/indicadores/` (renomeando para `vendas.csv`, `corridas.csv`, `premios-especiais.csv`, `meta-mensal-loja.csv`, mantendo só o cabeçalho — sem a linha de exemplo). Copie `templates/COMO-PREENCHER-indicadores.md` para `minhas-empresas/{slug}/dna/indicadores/COMO-PREENCHER.md`.
+3. Copie `templates/vendas-indicadores.csv`, `templates/corridas.csv`, `templates/premios-especiais.csv` e `templates/meta-mensal-loja.csv` para `minhas-empresas/{slug}/dna/indicadores/` (renomeando para `vendas.csv`, `corridas.csv`, `premios-especiais.csv`, `meta-mensal-loja.csv`, mantendo só o cabeçalho — sem a linha de exemplo). Copie `templates/COMO-PREENCHER-indicadores.md` para `minhas-empresas/{slug}/dna/indicadores/COMO-PREENCHER.md`. Copie `templates/corridas-conteudo.csv` (só cabeçalho) para `minhas-empresas/{slug}/dna/marketing/corridas-conteudo.csv` — o calendário editorial não é copiado aqui, é gerado sob demanda por `/marketing-criar-calendario`.
 4. Gere o painel personalizado (ver seção "PAINEL PERSONALIZADO").
 5. Escreva `{slug}` em `minhas-empresas/.ativa`.
 6. Informe que o painel foi gerado (com o caminho) e pergunte se o usuário quer continuar preenchendo o Workbook DNA agora (missão, visão, valores, diferenciais, público, produtos, tom de voz, identidade visual, equipe) ou já ir direto para um especialista com o que houver.

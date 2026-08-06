@@ -14,7 +14,8 @@
       "Bash(rm /tmp/*)",
       "Read(.env)",
       "Edit(.env)",
-      "Bash(git pull*)"
+      "Bash(git pull*)",
+      "Bash(node *)"
     ]
   },
   "hooks": {
