@@ -1,0 +1,124 @@
+---
+name: vetria:configurar-telegram
+description: Guia para criar um bot no Telegram via BotFather e obter os Chat IDs de destino — o grupo da loja (relatório de faturamento/ranking) e o gerente (mensagens individuais por vendedor).
+allowed-tools: Read, Edit, Bash, WebSearch
+model: sonnet
+---
+
+# Configurar Telegram
+
+Guia interativo para criar o bot e conectar os dois destinos usados pelo Gerente IA. Canal recomendado: gratuito, sem risco de bloqueio, sem limite de mensagens.
+
+## O que isso faz?
+
+O Gerente IA usa dois destinos diferentes, que podem ser o mesmo chat ou não:
+- **Grupo da loja** — recebe o relatório de faturamento/ranking (`/gerente-enviar-relatorio`), pensado pra equipe inteira ver.
+- **Gerente** — recebe as análises individuais do início do mês (`/gerente-boas-vindas-mes`), uma por vendedor, pra ele revisar e encaminhar. Nunca vai direto pro vendedor nem pro grupo.
+
+Você cria o bot em 2 minutos, sem programar nada.
+
+**Custo:** zero, sempre.
+
+## Passo 0. Verificar o que já está configurado
+
+Leia `.env`. Verifique `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID_GRUPO` e `TELEGRAM_CHAT_ID_GERENTE`.
+
+- **Sem token:** siga para o Passo 1 (configuração completa, os dois destinos).
+- **Com token, faltando um ou os dois Chat IDs:** pule para o Passo 3, só para o(s) destino(s) que faltam.
+- **Tudo preenchido:** teste o envio (Passo 4) nos dois. Se passar, informe que já está tudo pronto e encerre.
+
+## Passo 1. Criar o bot no BotFather
+
+```
+Você já tem um bot do Telegram criado?
+
+1. Sim, já tenho o token do bot
+2. Não tenho ainda
+```
+
+**Se não tiver:** instrua:
+```
+Vamos criar seu bot (leva 2 minutos):
+
+1. Abra o Telegram
+2. Busque por @BotFather
+3. Envie o comando: /newbot
+4. Escolha um nome (ex: Vetria Gerente)
+5. Escolha um username terminado em "bot" (ex: vetria_santalolla_bot)
+6. O BotFather responde com o token, no formato:
+   123456789:AAFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Copie esse token e cole aqui.
+```
+
+**Se já tiver:** peça o token.
+
+## Passo 2. Testar o token
+
+```bash
+curl -s "https://api.telegram.org/bot{TOKEN_INFORMADO}/getMe" | head -c 300
+```
+
+- `{"ok":true,...}`: continua.
+- `{"ok":false,...}` ou 401: token inválido, peça para colar de novo.
+
+## Passo 3. Obter os Chat IDs
+
+Faça isso para cada destino que ainda falta (grupo e/ou gerente).
+
+**Destino: grupo da loja**
+```
+1. Adicione o bot ao grupo da loja.
+2. Envie qualquer mensagem no grupo (pode ser só "oi").
+3. Me avise quando fizer isso.
+```
+
+**Destino: gerente**
+```
+1. Abra o Telegram e busque o bot pelo username que você criou.
+2. Clique em "Iniciar" (ou envie qualquer mensagem, se já tiver iniciado antes) — na conversa pessoal do próprio gerente, não num grupo.
+3. Me avise quando fizer isso.
+```
+
+Depois de cada confirmação, rode:
+```bash
+curl -s "https://api.telegram.org/bot{TOKEN}/getUpdates"
+```
+
+No JSON, localize o `chat.id` da conversa/grupo mais recente (grupo costuma vir com `id` negativo). Esse é o Chat ID daquele destino.
+
+Se `result` vier vazio: peça para repetir o passo (iniciar conversa ou mandar mensagem no grupo) e rode de novo.
+
+## Passo 4. Testar o envio
+
+Para cada destino configurado:
+```bash
+curl -s -X POST "https://api.telegram.org/bot{TOKEN}/sendMessage" -H "Content-Type: application/json" -d "{\"chat_id\":\"{CHAT_ID}\",\"text\":\"Vetria conectada. Este canal vai receber mensagens do Gerente IA.\"}"
+```
+
+- `{"ok":true,...}`: peça para o usuário confirmar que recebeu, no destino certo (grupo ou conversa pessoal do gerente).
+- 401: token inválido, repita o Passo 2.
+- `"chat not found"`: Chat ID errado, repita o Passo 3 para esse destino.
+
+## Passo 5. Salvar no `.env`
+
+Leia `.env`. Atualize ou adicione `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID_GRUPO` e/ou `TELEGRAM_CHAT_ID_GERENTE` (só os que foram configurados agora). Adicione também `GERENTE_CANAL_RELATORIO=TELEGRAM` se ainda não existir.
+
+Confirme:
+```
+Telegram configurado e testado com sucesso.
+Grupo da loja: {configurado/não configurado}
+Gerente: {configurado/não configurado}
+
+Use /gerente-enviar-relatorio (grupo) ou /gerente-boas-vindas-mes (gerente) quando quiser enviar.
+```
+
+## Perguntas frequentes
+
+**Os dois destinos podem ser o mesmo chat?** Sim, se preferir receber tudo no mesmo lugar, use o mesmo Chat ID nas duas variáveis.
+**O bot vê outras conversas minhas?** Não, só o que é enviado direto pra ele.
+**Perdi o token?** No Telegram, fale com @BotFather, envie `/mybots`, selecione o bot, "API Token". Rode este comando de novo para atualizar.
+
+## Se alguma tela ou opção não bater com o guia
+
+Faça WebSearch em `site:core.telegram.org BotFather criar bot token`, adapte as instruções, e informe o link oficial https://core.telegram.org/bots se ainda assim não resolver.

@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Write(minhas-empresas/**)",
+      "Read(minhas-empresas/**)",
+      "Read(.claude/agents/**)",
+      "Read(.claude/skills/**)",
+      "Read(.claude/commands/**)",
+      "Write(.claude/agents-memory/**)",
+      "Read(.claude/agents-memory/**)",
+      "Bash(ls *)",
+      "Bash(curl *)",
+      "Bash(mktemp)",
+      "Bash(rm /tmp/*)",
+      "Read(.env)",
+      "Edit(.env)",
+      "Bash(git pull*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "git pull --ff-only --quiet 2>/dev/null || true",
+            "timeout": 15,
+            "statusMessage": "Verificando atualizações da matriz Vetria..."
+          }
+        ]
+      }
+    ]
+  }
+}

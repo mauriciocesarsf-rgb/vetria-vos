@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vetria · {{NOME_EMPRESA}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-0: #05070d;
+    --navy-1: #0b0f19;
+    --navy-2: #121729;
+    --navy-3: #1a2036;
+    --line: #232a42;
+    --gold: #d4a76a;
+    --gold-soft: #e6dcc2;
+    --blue: #4b5bff;
+    --blue-soft: #2d8cff;
+    --client-accent: {{COR_DESTAQUE}}; /* cor de marca do cliente. padrão: var(--gold) */
+    --text-hi: #f2f4f7;
+    --text-dim: #a9afc0;
+    --text-faint: #5b637c;
+    --wood: #6b4a34;
+    --wood-dark: #4d3423;
+    --skin: #e3b28a;
+    --hair: #2a2032;
+    --pants: #262c44;
+    --plant-1: #3a6b3f;
+    --plant-2: #4f8a54;
+    --pot: #7a4a30;
+    --font-display: "Poppins", ui-sans-serif, system-ui;
+    --font-body: "Inter", ui-sans-serif, system-ui;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font-body);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(75,91,255,0.14), transparent 40%),
+      radial-gradient(circle at 88% 76%, rgba(212,167,106,0.12), transparent 45%),
+      var(--navy-0);
+    color: var(--text-hi);
+    min-height: 100vh;
+    padding: 40px 24px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  header img { width: 40px; height: 40px; border-radius: 50%; }
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+  }
+  .brand-tagline {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .empresa {
+    margin: 36px 0 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .empresa-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .empresa-nome {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(30px, 4.5vw, 44px);
+    color: var(--text-hi);
+    letter-spacing: -0.01em;
+  }
+  .empresa-meta {
+    margin-top: 10px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .empresa-meta span:not(:last-child)::after {
+    content: "·";
+    margin: 0 10px;
+    color: var(--line);
+  }
+
+  /* ---------- SALA DOS ESPECIALISTAS ---------- */
+
+  .sala {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: inset 0 0 80px rgba(0,0,0,0.5);
+  }
+
+  .zona-estoque {
+    position: relative;
+    display: flex;
+    height: 168px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 18px),
+      var(--navy-2);
+  }
+  .zona-loja {
+    position: relative;
+    display: flex;
+    height: 340px;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 26px),
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 26px),
+      var(--navy-1);
+  }
+
+  .zona-divisoria {
+    position: relative;
+    height: 22px;
+    background: var(--navy-0);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .zona-divisoria::before,
+  .zona-divisoria::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 34%;
+    height: 1px;
+    background: var(--line);
+  }
+  .zona-divisoria::before { left: 0; }
+  .zona-divisoria::after { right: 0; }
+  .zona-divisoria span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--text-faint);
+    background: var(--navy-0);
+    padding: 0 10px;
+    z-index: 1;
+  }
+
+  .zona-tag {
+    position: absolute;
+    top: 10px;
+    left: 16px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    z-index: 2;
+  }
+
+  .estacao {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 220px;
+    height: 100%;
+    border-right: 1px solid var(--line);
+    padding: 20px;
+  }
+  .estacao:last-child { border-right: none; }
+
+  .estacao-estoque-decor {
+    position: absolute;
+    bottom: 44px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  /* estação dentro da zona de estoque é mais baixa: reposiciona tudo */
+  .zona-estoque .estacao-piso { height: 26px; }
+  .zona-estoque .etiqueta { top: 20%; }
+  .zona-estoque .personagem { top: 40%; }
+  .zona-estoque .movel-mesa { bottom: 26px; }
+  .zona-estoque .movel-tela { bottom: 44px; }
+  .zona-estoque .estacao-estoque-decor { bottom: 26px; }
+
+  .estacao-quadro {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    display: flex;
+    gap: 4px;
+  }
+  .estacao-quadro span {
+    width: 10px; height: 10px; border-radius: 2px;
+  }
+
+  .etiqueta {
+    position: absolute;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -14px);
+    background: var(--navy-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  }
+  .etiqueta b {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-hi);
+  }
+  .etiqueta i {
+    font-style: normal;
+    color: var(--text-faint);
+  }
+
+  .personagem {
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 64px;
+    animation: bob 2.8s ease-in-out infinite;
+  }
+  .estacao:nth-child(2) .personagem { animation-delay: .3s; }
+  .estacao:nth-child(3) .personagem { animation-delay: .6s; }
+  @keyframes bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-3px); }
+  }
+  .personagem svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .personagem .p-cabelo { fill: var(--hair); }
+
+  .movel-mesa {
+    position: absolute;
+    bottom: 44px;
+    width: 92px; height: 34px;
+    background: var(--wood);
+    border: 1px solid var(--wood-dark);
+    border-radius: 4px;
+  }
+  .movel-mesa::after {
+    content: "";
+    position: absolute;
+    left: 6px; right: 6px; top: 6px; bottom: -3px;
+    background: var(--wood-dark);
+    border-radius: 3px;
+    z-index: -1;
+  }
+  .movel-tela {
+    position: absolute;
+    width: 30px; height: 20px;
+    background: var(--navy-3);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2px;
+    padding: 3px;
+  }
+  .movel-tela span { border-radius: 1px; }
+
+  .planta {
+    position: absolute;
+    bottom: 12px;
+    width: 30px; height: 34px;
+  }
+  .planta-vaso {
+    position: absolute; bottom: 0; left: 6px;
+    width: 18px; height: 12px;
+    background: var(--pot);
+    border-radius: 2px 2px 5px 5px;
+  }
+  .planta-folha {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--plant-2);
+  }
+  .planta-folha.a { width: 20px; height: 20px; bottom: 10px; left: 5px; background: var(--plant-1); }
+  .planta-folha.b { width: 14px; height: 14px; bottom: 16px; left: 1px; }
+  .planta-folha.c { width: 14px; height: 14px; bottom: 16px; right: 1px; }
+
+  .estacao-piso {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 44px;
+    background: linear-gradient(to top, rgba(0,0,0,0.35), transparent);
+  }
+
+  /* elementos de loja */
+  .registradora {
+    position: absolute; bottom: 78px;
+    width: 20px; height: 14px;
+    background: var(--navy-3);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+  .registradora::before {
+    content: "";
+    position: absolute; top: 2px; left: 2px; right: 2px; height: 5px;
+    background: var(--blue-soft);
+    border-radius: 1px;
+    opacity: .8;
+  }
+  .caixa-sapato {
+    position: absolute;
+    width: 16px; height: 11px;
+    background: var(--wood);
+    border: 1px solid var(--wood-dark);
+    border-radius: 1px;
+  }
+  .caixa-sapato::before {
+    content: "";
+    position: absolute; left: 0; right: 0; top: 3px; height: 1px;
+    background: var(--wood-dark);
+  }
+
+  .vitrine {
+    position: absolute;
+    bottom: 44px;
+    width: 76px; height: 130px;
+    border: 2px solid var(--text-faint);
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015) 60%);
+  }
+  .manequim {
+    position: absolute;
+    bottom: 14px; left: 50%;
+    transform: translateX(-50%);
+    width: 26px; height: 62px;
+  }
+  .manequim .cabeca {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 10px; height: 10px;
+    background: var(--navy-3);
+    border-radius: 50%;
+  }
+  .manequim .haste {
+    position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
+    width: 2px; height: 8px;
+    background: var(--text-faint);
+  }
+  .manequim .corpo {
+    position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+    width: 22px; height: 30px;
+    background: var(--client-accent);
+    border-radius: 5px 5px 8px 8px;
+    opacity: .9;
+  }
+  .manequim .base {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 26px; height: 5px;
+    background: var(--navy-3);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+  .post {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-radius: 3px;
+  }
+
+  .prateleira {
+    position: absolute;
+    width: 66px; height: 3px;
+    background: var(--wood-dark);
+    border-radius: 1px;
+  }
+  .sapato {
+    position: absolute;
+    width: 15px; height: 7px;
+    background: var(--client-accent);
+    border-radius: 2px 6px 6px 2px;
+    opacity: .85;
+  }
+  .sapato::after {
+    content: "";
+    position: absolute; right: -2px; top: -3px;
+    width: 6px; height: 6px;
+    background: inherit;
+    border-radius: 2px 6px 2px 2px;
+  }
+
+  .bolsa {
+    position: absolute;
+    width: 20px; height: 17px;
+    background: var(--cor-bolsa, var(--client-accent));
+    border-radius: 3px 3px 8px 8px;
+    opacity: .88;
+  }
+  .bolsa::before {
+    content: "";
+    position: absolute;
+    top: -8px; left: 4px;
+    width: 12px; height: 9px;
+    border: 2px solid var(--cor-bolsa, var(--client-accent));
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+  }
+
+  /* estação 1: Gerente IA */
+  .est-1 .movel-mesa { left: 16px; }
+  .est-1 .movel-tela { left: 30px; bottom: 62px; }
+  .est-1 .movel-tela span:nth-child(1) { background: var(--blue-soft); }
+  .est-1 .movel-tela span:nth-child(2) { background: var(--gold); }
+  .est-1 .movel-tela span:nth-child(3) { background: var(--blue); }
+  .est-1 .movel-tela span:nth-child(4) { background: var(--gold-soft); }
+  .est-1 .movel-tela span:nth-child(5) { background: var(--blue-soft); }
+  .est-1 .movel-tela span:nth-child(6) { background: var(--blue); }
+  .est-1 .planta { right: 14px; bottom: 12px; }
+
+  /* estação 2: Vetria Marketing */
+  .est-2 .movel-mesa { right: 16px; }
+  .est-2 .movel-tela { right: 30px; bottom: 62px; }
+  .est-2 .movel-tela span:nth-child(odd) { background: var(--gold); }
+  .est-2 .movel-tela span:nth-child(even) { background: var(--gold-soft); }
+  .est-2 .planta { left: 14px; bottom: 12px; }
+
+  /* estação 3: Vetria Stylist. mostruário de calçados e bolsas (sem cabideiro de roupa) */
+  .est-3 .planta { left: 128px; bottom: 12px; }
+
+  .estacao-status {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  .estacao-status .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cor-especialista, var(--gold));
+    box-shadow: 0 0 8px var(--cor-especialista, var(--gold));
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+
+  /* ---------- BARRA INFERIOR ---------- */
+
+  .painel-inferior {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .bloco {
+    background: var(--navy-1);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .bloco-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+  .bloco-titulo::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--client-accent);
+  }
+  .bloco-vazio {
+    font-size: 12.5px;
+    color: var(--text-faint);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .agente-linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--line);
+  }
+  .agente-linha:last-child { border-bottom: none; }
+  .agente-linha .nome { display: flex; align-items: center; gap: 8px; }
+  .agente-linha .nome .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .agente-linha .status {
+    font-size: 11px;
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+  }
+  .status-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .badge-whatsapp {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .badge-whatsapp.ok {
+    color: var(--client-accent);
+    border-color: var(--client-accent);
+  }
+  .badge-whatsapp.pendente {
+    color: var(--text-faint);
+  }
+  .progresso-numero {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    color: var(--text-hi);
+  }
+  .progresso-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+  .progresso-barra {
+    margin-top: 12px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--navy-3);
+    overflow: hidden;
+  }
+  .progresso-barra span {
+    display: block;
+    height: 100%;
+    background: var(--client-accent);
+    border-radius: 999px;
+  }
+
+  footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 760px) {
+    .zona-loja { flex-direction: column; height: auto; }
+    .zona-loja .estacao { height: 260px; border-right: none; border-bottom: 1px solid var(--line); }
+    .zona-loja .estacao:last-child { border-bottom: none; }
+    .painel-inferior { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <img src="../../painel/assets/vetria-mark.png" alt="Vetria">
+      <div>
+        <div class="brand-name">VETRIA</div>
+        <div class="brand-tagline">Inteligência para Moda e Varejo</div>
+      </div>
+    </header>
+
+    <section class="empresa">
+      <div class="empresa-eyebrow">Sala dos especialistas</div>
+      <div class="empresa-nome">{{NOME_EMPRESA}}</div>
+      <div class="empresa-meta">
+        <span>{{SEGMENTO}}</span>
+        <span>Ativa desde {{DATA_ATIVACAO}}</span>
+      </div>
+    </section>
+
+    <section class="sala">
+      <div class="zona-estoque">
+        <div class="zona-tag">Estoque · Escritório</div>
+        <div class="estacao est-1" style="--cor-especialista: var(--blue-soft);">
+          <div class="estacao-status"><span class="dot"></span>pronta</div>
+          <div class="movel-mesa" style="width: 78px;"></div>
+          <div class="movel-tela"><span style="background: var(--blue-soft);"></span><span style="background: var(--gold);"></span><span style="background: var(--blue);"></span><span style="background: var(--gold-soft);"></span><span style="background: var(--blue-soft);"></span><span style="background: var(--blue);"></span></div>
+          <div class="estacao-estoque-decor" style="right: 18px;">
+            <div class="caixa-sapato" style="position: static;"></div>
+            <div class="caixa-sapato" style="position: static;"></div>
+            <div class="caixa-sapato" style="position: static;"></div>
+          </div>
+          <div class="etiqueta"><b>GERENTE IA</b><i>gestão</i></div>
+          <div class="personagem">
+            <svg viewBox="0 0 40 64">
+              <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(0,0,0,.35)"/>
+              <rect x="10" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+              <rect x="22" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+              <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
+              <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
+              <rect x="7" y="16" width="26" height="26" rx="13" fill="var(--cor-especialista)"/>
+              <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
+              <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
+            </svg>
+          </div>
+          <div class="estacao-piso"></div>
+        </div>
+      </div>
+
+      <div class="zona-divisoria"><span>LOJA</span></div>
+
+      <div class="zona-loja">
+      <div class="estacao est-2" style="--cor-especialista: var(--gold);">
+        <div class="estacao-quadro">
+          <span style="background: var(--gold);"></span>
+          <span style="background: var(--gold-soft);"></span>
+          <span style="background: var(--client-accent);"></span>
+        </div>
+        <div class="estacao-status"><span class="dot"></span>pronta</div>
+        <div class="vitrine" style="left: 50%; transform: translateX(-50%);">
+          <div class="manequim">
+            <div class="cabeca"></div>
+            <div class="haste"></div>
+            <div class="corpo"></div>
+            <div class="base"></div>
+          </div>
+        </div>
+        <div class="post" style="top: 56px; left: 18px; background: var(--gold);"></div>
+        <div class="post" style="top: 76px; left: 18px; background: var(--client-accent);"></div>
+        <div class="planta"><div class="planta-folha a"></div><div class="planta-folha b"></div><div class="planta-folha c"></div><div class="planta-vaso"></div></div>
+        <div class="etiqueta"><b>MARKETING</b><i>comunicação</i></div>
+        <div class="personagem">
+          <svg viewBox="0 0 40 64">
+            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(0,0,0,.35)"/>
+            <rect x="10" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+            <rect x="22" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+            <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
+            <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
+            <rect x="7" y="16" width="26" height="26" rx="13" fill="var(--cor-especialista)"/>
+            <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
+            <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
+          </svg>
+        </div>
+        <div class="estacao-piso"></div>
+      </div>
+
+      <div class="estacao est-3" style="--cor-especialista: var(--client-accent);">
+        <div class="estacao-quadro">
+          <span style="background: var(--client-accent);"></span>
+          <span style="background: var(--gold-soft);"></span>
+          <span style="background: var(--blue-soft);"></span>
+        </div>
+        <div class="estacao-status"><span class="dot"></span>pronta</div>
+        <div class="prateleira" style="left: 20px; bottom: 100px;"></div>
+        <div class="sapato" style="left: 22px; bottom: 103px;"></div>
+        <div class="sapato" style="left: 42px; bottom: 103px; opacity: .65;"></div>
+        <div class="sapato" style="left: 62px; bottom: 103px; opacity: .45;"></div>
+        <div class="prateleira" style="left: 20px; bottom: 76px;"></div>
+        <div class="sapato" style="left: 22px; bottom: 79px; opacity: .75;"></div>
+        <div class="sapato" style="left: 42px; bottom: 79px; opacity: .55;"></div>
+        <div class="sapato" style="left: 62px; bottom: 79px; opacity: .35;"></div>
+        <div class="bolsa" style="right: 30px; bottom: 90px; --cor-bolsa: var(--client-accent);"></div>
+        <div class="bolsa" style="right: 58px; bottom: 78px; --cor-bolsa: var(--gold-soft);"></div>
+        <div class="planta"><div class="planta-folha a"></div><div class="planta-folha b"></div><div class="planta-folha c"></div><div class="planta-vaso"></div></div>
+        <div class="etiqueta"><b>STYLIST</b><i>moda</i></div>
+        <div class="personagem">
+          <svg viewBox="0 0 40 64">
+            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(0,0,0,.35)"/>
+            <rect x="10" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+            <rect x="22" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
+            <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
+            <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
+            <rect x="7" y="16" width="26" height="26" rx="13" fill="var(--cor-especialista)"/>
+            <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
+            <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
+          </svg>
+        </div>
+        <div class="estacao-piso"></div>
+      </div>
+      </div>
+    </section>
+
+    <section class="painel-inferior">
+      <div class="bloco">
+        <div class="bloco-titulo">Atividade</div>
+        <div class="bloco-vazio">Nenhuma atividade registrada nesta sessão ainda. Assim que um especialista for acionado, o histórico aparece aqui.</div>
+      </div>
+      <div class="bloco">
+        <div class="bloco-titulo">Agentes</div>
+        <div class="agente-linha">
+          <span class="nome"><span class="dot" style="background: var(--blue-soft);"></span>Gerente IA</span>
+          <span class="status-group"><span class="status">pronta</span>{{WHATSAPP_BADGE}}</span>
+        </div>
+        <div class="agente-linha">
+          <span class="nome"><span class="dot" style="background: var(--gold);"></span>Vetria Marketing</span>
+          <span class="status">pronta</span>
+        </div>
+        <div class="agente-linha">
+          <span class="nome"><span class="dot" style="background: var(--client-accent);"></span>Vetria Stylist</span>
+          <span class="status">pronta</span>
+        </div>
+      </div>
+      <div class="bloco">
+        <div class="bloco-titulo">Progresso</div>
+        <div class="progresso-numero">{{PROGRESSO_DNA}}</div>
+        <div class="progresso-label">campos do Workbook DNA preenchidos</div>
+        <div class="progresso-barra"><span style="width: {{PROGRESSO_PCT}}%;"></span></div>
+      </div>
+    </section>
+
+    <footer>
+      <span>VOS · Vetria Operating System</span>
+      <span>Pasta DNA: minhas-empresas/{{SLUG_EMPRESA}}/dna/</span>
+    </footer>
+  </div>
+</body>
+</html>
