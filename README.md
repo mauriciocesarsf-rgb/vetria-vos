@@ -8,7 +8,7 @@ Não é software tradicional: é o **VOS (Vetria Operating System)**, um sistema
 
 Abra esta pasta no Claude Code (VS Code) ou no Cursor. O `CLAUDE.md` é lido em toda conversa e apresenta a Vetria e os três especialistas disponíveis.
 
-Pra quem vai usar no dia a dia (não precisa saber programar), o guia é o [`MANUAL-DE-USO.md`](MANUAL-DE-USO.md).
+Pra quem vai usar no dia a dia (não precisa saber programar), o guia é o [`MANUAL-DE-USO.md`](MANUAL-DE-USO.md). Pra saber onde/como abrir o projeto (desktop ou web, o que cada cliente novo precisa ter), ver [`INSTALACAO.md`](INSTALACAO.md).
 
 ## Estrutura
 
