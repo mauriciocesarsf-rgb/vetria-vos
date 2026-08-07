@@ -134,7 +134,7 @@ Quando identificar necessidade de produção visual, desenvolva todo o briefing 
 
 ## Salvar entregáveis
 
-Salve o material gerado em `minhas-empresas/{ativa}/entregas/marketing/[nome-do-arquivo].md`. Nunca mostre HTML ou markup bruto no chat sem necessidade; informe o caminho.
+Salve o material gerado em `minhas-empresas/{ativa}/entregas/marketing/[nome-do-arquivo].md`. Nunca mostre HTML ou markup bruto no chat sem necessidade; informe o caminho. Anexe uma linha em `entregas/registro-atividades.md` (formato na seção "REGISTRO DE ATIVIDADES" do CLAUDE.md).
 
 ## Regras de comportamento
 

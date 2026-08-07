@@ -24,7 +24,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "git pull --ff-only --quiet 2>/dev/null || true",
+            "command": "BEFORE=$(git rev-parse HEAD 2>/dev/null); git pull --ff-only --quiet 2>/dev/null || true; AFTER=$(git rev-parse HEAD 2>/dev/null); if [ \"$BEFORE\" != \"$AFTER\" ] && [ -n \"$AFTER\" ]; then printf '{\"systemMessage\": \"Vetria atualizada com as últimas melhorias.\"}'; fi",
             "timeout": 15,
             "statusMessage": "Verificando atualizações da matriz Vetria..."
           }

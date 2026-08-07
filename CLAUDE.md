@@ -111,14 +111,21 @@ Ao ativar uma empresa nova (Etapa 1 do Workbook DNA concluída: nome e segmento 
 7. Substitua `{{INDICADORES_BLOCO}}`: some `valor` de `dna/indicadores/vendas.csv` no mês corrente e compare com `meta_loja` de `meta-mensal-loja.csv` (mesma lógica do Passo 0.6 do Gerente IA). Se houver dado:
    `<div class="progresso-numero">R$ {valor formatado}</div><div class="progresso-label">{pct}% da meta de {mês}</div><div class="progresso-barra"><span style="width: {pct}%;"></span></div>`
    Sem dado no mês: `<div class="bloco-vazio">Ainda sem vendas registradas em {mês}.</div>`.
+
+   Depois, tente o comparativo (`vendas.csv` é um arquivo único e contínuo — nunca reiniciado por mês, então isso não depende de nenhum arquivo extra): se houver linhas do mesmo mês do ano anterior, some-as até o mesmo dia do mês (comparação "mês a mês, mesmo trecho") e adicione `<div class="comparativo-linha">vs. {mês}/{ano anterior}: <b>{+/-pct}%</b></div>`. Sem dado do ano anterior mas com dado do mês imediatamente anterior completo, use-o no lugar (mesmo formato, trocando o rótulo pra "vs. {mês anterior}"). Sem histórico nenhum ainda, não mostre essa linha — não force uma comparação vazia.
 8. Substitua `{{CORRIDAS_BLOCO}}`: filtre `corridas.csv` pelas linhas vigentes hoje. Para cada uma: `<div class="corrida-item"><span class="nome">{nome}</span><span class="prazo">faltam {n} dias</span></div>`. Nenhuma vigente: `<div class="bloco-vazio">Nenhuma corrida vigente no momento.</div>`.
 9. Substitua `{{SUGESTAO_BLOCO}}`: leia `dna/marketing/calendario-{AAAA-MM}.md` e busque a entrada de hoje. Se existir: `<div class="sugestao-texto">{resumo em 1-2 frases}</div>`. Sem calendário do mês ou sem entrada de hoje: `<div class="bloco-vazio">Calendário do mês ainda não foi criado. Rode /marketing-criar-calendario.</div>`.
-10. Salve o resultado em `minhas-empresas/{slug}/painel.html`.
-11. Informe o caminho ao usuário e sugira abrir o arquivo no navegador. Em regenerações automáticas/silenciosas (ver abaixo) não precisa repetir esse aviso toda vez, só na primeira geração.
+10. Substitua `{{ATIVIDADE_BLOCO}}`: leia `dna/../entregas/registro-atividades.md` (ver seção "REGISTRO DE ATIVIDADES"). Pegue as últimas 3-4 entradas (mais recentes primeiro). Para cada uma:
+    `<div class="atividade-item"><div class="titulo">{título}</div><div class="meta"><span>{DD/MM} · {especialista}</span><span class="status-pill status-{classe}">{texto do status}</span></div></div>`
+    Mapeie o status do log pra classe: "pendente validação" → `status-aguardando`; "validado" → `status-validado`; "não funcionou" → `status-nao-funcionou`. Sem log ou vazio: `<div class="bloco-vazio">Nenhuma atividade registrada ainda.</div>`.
+11. Salve o resultado em `minhas-empresas/{slug}/painel.html`.
+12. Informe o caminho ao usuário e sugira abrir o arquivo no navegador. Em regenerações automáticas/silenciosas (ver abaixo) não precisa repetir esse aviso toda vez, só na primeira geração.
 
 Nunca edite o HTML gerado à mão — edite o template e regenere. A cor de destaque é a extensão que permite ao cliente "padronizar com a própria marca" sem tocar no núcleo do produto — o resto do painel (tipografia, logo Vetria, estrutura) é sempre o mesmo, o que muda é só essa variável.
 
-**Quando regenerar.** Nome, segmento, cor de marca ou identidade de algum especialista mudou: regenere completo (passos 1-11). Só os indicadores/corridas/sugestão do dia mudaram (o caso mais comum, dia a dia): use `/atualizar-painel`, que reaproveita os campos estáticos e só recalcula os blocos dinâmicos (passos 7-9).
+**Quando regenerar.** Nome, segmento, cor de marca ou identidade de algum especialista mudou: regenere completo (passos 1-12). Só os indicadores/corridas/sugestão do dia/atividade mudaram (o caso mais comum, dia a dia): use `/atualizar-painel`, que reaproveita os campos estáticos e só recalcula os blocos dinâmicos (passos 7-10).
+
+**Tela sempre atualizada.** O painel recarrega sozinho a cada 5 minutos (script no próprio HTML) — útil pra deixar aberto numa tela da loja. Isso só é útil de verdade se o conteúdo por trás também for renovado: se o usuário quiser um painel realmente "vivo" numa tela fixa, sugira agendar `/atualizar-painel` com a skill `schedule` (ex: a cada 30-60 min em horário comercial) — sem isso, o painel recarrega mas mostra sempre os mesmos dados até alguém rodar `/atualizar-painel` manualmente.
 
 ## INDICADORES E RELATÓRIO AUTOMÁTICO (Gerente IA)
 
@@ -164,6 +171,22 @@ Fica tudo dentro do Claude Code — sem precisar sair pra outra plataforma pra v
 - **O prompt é sempre entregue**, mesmo quando a imagem é gerada — é a opção B pra usar em outra ferramenta (Midjourney, ChatGPT, etc.) se o usuário preferir tentar lá também.
 - Vetria Stylist usa a skill pra looks, pranchas e fotos humanizadas. Vetria Marketing pode usar direto pra peças simples (card de anúncio, arte de aviso) sem precisar encaminhar ao Stylist. Gerente IA pode usar direto pra peças de gestão (card de ranking/resultado, banner de corrida ou prêmio). Pra imagens que envolvem styling/produto vestido, o encaminhamento ao Stylist continua.
 - A chamada nunca carrega a imagem (base64) no contexto da conversa — é decodificada e salva via script, o agent só lê o caminho final.
+
+## REGISTRO DE ATIVIDADES
+
+Cada empresa ativa tem um log único e compartilhado pelos três especialistas: `minhas-empresas/{ativa}/entregas/registro-atividades.md`. É o "o que foi feito e ainda não sei se deu certo" — existe pra alguém que voltar depois de um tempo conseguir ver o que os especialistas entregaram e dizer se funcionou ou não, sem precisar procurar arquivo por arquivo.
+
+**Ao entregar qualquer coisa** (relatório, calendário, plano, prancha, corrida, etc.), depois de salvar o arquivo em `entregas/{área}/`, anexe uma linha nesse log (crie o arquivo se não existir):
+
+```
+- **{DD/MM/AAAA}** · {Gerente IA|Vetria Marketing|Vetria Stylist} · {título curto do que foi entregue} · [ver arquivo]({caminho relativo a partir de minhas-empresas/{ativa}/}) · status: pendente validação
+```
+
+Sempre no final do arquivo (log em ordem cronológica, mais recente por último).
+
+**Quando o usuário comentar se algo funcionou** ("isso deu certo", "não funcionou", "a corrida foi um sucesso"), atualize o `status` da entrada correspondente mais recente daquele tipo (`validado` ou `não funcionou` — pode incluir um comentário curto do porquê, se a pessoa disser). Nunca crie uma entrada nova só pra registrar essa atualização, edite a existente.
+
+O painel (`painel/template.html`, bloco "Atividade recente") mostra as últimas entradas — regenere/atualize o painel (`/atualizar-painel`) depois de registrar algo novo, se quiser que isso já apareça lá.
 
 ## MEMÓRIA DOS AGENTS
 

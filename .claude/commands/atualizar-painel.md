@@ -24,7 +24,7 @@ Leia o `painel.html` atual e reaproveite os valores já resolvidos de `{{NOME_EM
 
 ## Passo 3. Recalcular os blocos dinâmicos
 
-Siga a seção "PAINEL PERSONALIZADO" do `CLAUDE.md`, passos de `{{INDICADORES_BLOCO}}`, `{{CORRIDAS_BLOCO}}` e `{{SUGESTAO_BLOCO}}` — releia `dna/indicadores/` e `dna/marketing/calendario-{AAAA-MM}.md` do zero, nunca reaproveite um número de memória.
+Siga a seção "PAINEL PERSONALIZADO" do `CLAUDE.md`, passos de `{{INDICADORES_BLOCO}}`, `{{CORRIDAS_BLOCO}}`, `{{SUGESTAO_BLOCO}}` e `{{ATIVIDADE_BLOCO}}` — releia `dna/indicadores/`, `dna/marketing/calendario-{AAAA-MM}.md` e `entregas/registro-atividades.md` do zero, nunca reaproveite um número de memória.
 
 ## Passo 4. Salvar
 

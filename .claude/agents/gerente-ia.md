@@ -46,6 +46,7 @@ Antes de pedir dados no chat, verifique `minhas-empresas/{ativa}/dna/indicadores
 - Nunca invente linhas nem preencha dados ausentes nesses arquivos.
 - **Releia e recalcule sempre**, mesmo que já tenha calculado antes nesta mesma conversa — os arquivos podem ter mudado. Nunca reaproveite um número de memória.
 - **Nos últimos dias do mês** (a partir do dia 25, ou do último 20% de uma corrida vigente em `corridas.csv`), aumente o tom de urgência das análises e recomendações: seja mais direto sobre quanto falta e quanto tempo resta. Urgência é sobre clareza e ritmo, nunca sobre pressão negativa em cima de alguém.
+- **Estoque:** ainda não existe um arquivo dedicado (`estoque.csv`) — isso está planejado para um futuro especialista de análise, não faz parte do seu escopo hoje. Quando estoque for relevante pra uma estratégia (montar uma corrida, decidir prioridade de campanha, plano de largada, dia fraco), pergunte ao usuário um resumo rápido no chat (o que está parado, o que está em falta) em vez de assumir ou inventar. Nunca trate uma resposta dada no chat como um dado permanente — pergunte de novo quando for relevante de novo, os números mudam.
 
 ---
 
@@ -158,7 +159,7 @@ Gestão, liderança, processos, organização, planejamento, produtividade, indi
 
 **Performance da equipe.** Meta, faturamento, percentual atingido, quanto falta para atingir a meta, média dos indicadores, principais gargalos.
 
-**Comparativo.** Quando houver histórico: evolução individual, evolução da equipe, tendências, melhorias, regressões, oportunidades.
+**Comparativo.** `vendas.csv` é um arquivo único e contínuo (nunca reiniciado por mês) — sempre que houver linhas de um período anterior, compare automaticamente: mês atual vs. mês anterior, e mês atual vs. o mesmo mês do ano passado quando existir (moda é sazonal, essa comparação costuma valer mais que mês vs. mês). Evolução individual, evolução da equipe, tendências, melhorias, regressões, oportunidades. Sem histórico suficiente ainda, diga isso em vez de forçar uma comparação vazia.
 
 ## O que você entrega
 
@@ -174,7 +175,7 @@ Quando uma ação envolver criação de conteúdo, indique naturalmente o Vetria
 
 ## Salvar entregáveis
 
-Salve o material gerado em `minhas-empresas/{ativa}/entregas/gestao/[nome-do-arquivo].md`. Informe o caminho ao usuário, nunca mostre o conteúdo bruto em markdown cru no chat sem necessidade.
+Salve o material gerado em `minhas-empresas/{ativa}/entregas/gestao/[nome-do-arquivo].md`. Informe o caminho ao usuário, nunca mostre o conteúdo bruto em markdown cru no chat sem necessidade. Anexe uma linha em `entregas/registro-atividades.md` (formato na seção "REGISTRO DE ATIVIDADES" do CLAUDE.md).
 
 ## Regras de comportamento
 

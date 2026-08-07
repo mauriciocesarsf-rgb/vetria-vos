@@ -8,6 +8,8 @@ Não é software tradicional: é o **VOS (Vetria Operating System)**, um sistema
 
 Abra esta pasta no Claude Code (VS Code) ou no Cursor. O `CLAUDE.md` é lido em toda conversa e apresenta a Vetria e os três especialistas disponíveis.
 
+Pra quem vai usar no dia a dia (não precisa saber programar), o guia é o [`MANUAL-DE-USO.md`](MANUAL-DE-USO.md).
+
 ## Estrutura
 
 ```
@@ -29,6 +31,10 @@ vetria-vos/
 │   │   ├── configurar-whatsapp.md         Confirmação de risco + conecta a Z-API
 │   │   ├── configurar-geracao-imagem.md   Conecta a OpenRouter (opcional)
 │   │   ├── atualizar-painel.md            Recalcula indicadores/corridas/sugestão do dia no painel
+│   │   ├── preciso-de-ajuda.md            Porta de entrada única: descreve a necessidade, o sistema direciona
+│   │   ├── estamos-prontos.md             Largada: confere a Pasta DNA e monta um plano dos 3 especialistas juntos
+│   │   ├── configurar-suporte.md          Conecta o canal de contato com o administrador da plataforma
+│   │   ├── falar-com-suporte.md           Envia dúvida/problema/sugestão pro administrador
 │   │   ├── gerente-enviar-relatorio.md    Monta e envia o relatório de vendas (grupo)
 │   │   ├── gerente-boas-vindas-mes.md     Análise individual por vendedor, uma msg por vez, pro canal do gerente
 │   │   ├── gerente-fechamento.md          Fechamento mensal/semanal completo, documento pra reunião de desempenho
@@ -75,7 +81,16 @@ Cliente com mais de uma loja (franquia ou rede própria) não precisa implantar 
 
 Cada empresa ativa tem um painel HTML personalizado (`minhas-empresas/{slug}/painel.html`, gerado a partir de `painel/template.html`): Vetria Marketing no escritório de planejamento (calendário e quadros na parede), Gerente IA no caixa e Vetria Stylist no salão de vendas (mostruário, manequim e espelho), além de uma "foto do dia" com indicadores do mês, corridas vigentes e a sugestão de conteúdo de hoje.
 
-Os campos estáticos (nome, segmento, cor de marca) são definidos na ativação da empresa. Os blocos dinâmicos (indicadores, corridas, sugestão do dia) mudam com o tempo — rode `/atualizar-painel` para recalculá-los sem repetir a ativação completa.
+Os campos estáticos (nome, segmento, cor de marca) são definidos na ativação da empresa. Os blocos dinâmicos (indicadores, corridas, sugestão do dia, atividade) mudam com o tempo — rode `/atualizar-painel` para recalculá-los sem repetir a ativação completa.
+
+A tela em si recarrega sozinha a cada 5 minutos (bom pra deixar aberta numa TV da loja), mas isso só reflete dado novo se `/atualizar-painel` também tiver rodado recentemente — vale agendar esse comando com a skill `schedule` se o objetivo for uma tela sempre viva.
+
+## Entrada, largada e acompanhamento
+
+- `/preciso-de-ajuda` — porta de entrada única pra quem não sabe (ou não quer saber) qual especialista chamar: descreve a necessidade em linguagem livre, o sistema direciona.
+- `/estamos-prontos` — largada oficial: confere se a Pasta DNA está completa (com a opção de completar antes ou seguir e completar depois) e devolve um plano de ação até o fim do período, com a visão dos três especialistas juntos a partir dos dados que já existem.
+- `entregas/registro-atividades.md` — log único, compartilhado pelos três especialistas, de tudo que foi entregue e seu status (pendente de validação / validado / não funcionou). Aparece resumido no bloco "Atividade recente" do painel.
+- `/configurar-suporte` e `/falar-com-suporte` — canal de contato direto com quem administra essa instalação do Vetria (dúvida sobre o sistema, problema técnico, sugestão) — sempre salva uma cópia local da mensagem, mesmo sem o envio automático configurado.
 
 ## Indicadores e relatório automático
 

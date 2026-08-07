@@ -21,6 +21,8 @@ Só 4 números por linha. Nada de calcular PA, ticket médio ou venda média na 
 
 Uma linha por vendedor por dia. Dia de folga: pode pular a linha desse dia para essa pessoa, ou lançar tudo zerado — o Gerente IA ignora dias sem atendimento no cálculo de médias.
 
+**É um arquivo só, pra sempre — nunca crie um novo a cada mês nem apague linhas antigas.** É exatamente por manter o histórico completo, com a data de cada linha, que o Gerente IA consegue comparar meses (mês atual vs. mês anterior, ou o mesmo mês do ano passado, útil pra moda por causa da sazonalidade) sem precisar de nenhuma planilha extra. Se o arquivo crescer muito com o tempo, avise o sistema — ele orienta como arquivar sem perder a comparação.
+
 ## `corridas.csv` — uma linha por meta ou campanha do mês
 
 Cada linha é uma competição com início, fim, indicador e prêmio. Pode ter várias correndo ao mesmo tempo (ex: meta de faturamento da quinzena + corrida de P.A. do início do mês).

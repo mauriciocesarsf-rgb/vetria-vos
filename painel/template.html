@@ -690,6 +690,16 @@
     background: var(--client-accent);
     border-radius: 999px;
   }
+  .comparativo-linha {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    color: var(--ink-faint);
+    margin-top: 8px;
+  }
+  .comparativo-linha b {
+    color: var(--ink-dim);
+    font-weight: 600;
+  }
 
   /* corridas vigentes */
   .corrida-item {
@@ -709,6 +719,40 @@
     font-family: var(--font-mono);
     white-space: nowrap;
   }
+
+  /* atividade recente */
+  .atividade-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .atividade-item:last-child { border-bottom: none; }
+  .atividade-item .titulo {
+    font-size: 12.5px;
+    color: var(--ink-hi);
+  }
+  .atividade-item .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 10.5px;
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+  }
+  .status-pill {
+    font-size: 9.5px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    white-space: nowrap;
+    text-transform: none;
+  }
+  .status-pill.status-aguardando { color: var(--ink-faint); }
+  .status-pill.status-validado { color: var(--sage); border-color: var(--sage); }
+  .status-pill.status-nao-funcionou { color: var(--terracotta); border-color: var(--terracotta); }
 
   /* sugestão do dia */
   .sugestao-texto {
@@ -909,12 +953,24 @@
         <div class="progresso-label">campos do Workbook DNA preenchidos</div>
         <div class="progresso-barra"><span style="width: {{PROGRESSO_PCT}}%;"></span></div>
       </div>
+      <div class="bloco">
+        <div class="bloco-titulo">Atividade recente</div>
+        {{ATIVIDADE_BLOCO}}
+      </div>
     </section>
 
     <footer>
       <span>VOS · Vetria Operating System</span>
+      <span>Tela carregada às <span id="horaCarregamento">--:--</span> · atualiza sozinha a cada 5 min</span>
       <span>Pasta DNA: minhas-empresas/{{SLUG_EMPRESA}}/dna/</span>
     </footer>
   </div>
+  <script>
+    (function () {
+      var el = document.getElementById('horaCarregamento');
+      if (el) el.textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      setTimeout(function () { location.reload(); }, 5 * 60 * 1000);
+    })();
+  </script>
 </body>
 </html>
