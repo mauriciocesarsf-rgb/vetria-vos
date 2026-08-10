@@ -23,11 +23,17 @@ Leia `minhas-empresas/.ativa`. Leia `minhas-empresas/{ativa}/dna/indicadores/cor
 
 Se não existir ou só tiver o cabeçalho: informe que não há nenhuma meta ou corrida cadastrada, oriente a preencher `dna/indicadores/COMO-PREENCHER.md` (seção `corridas.csv`). Encerre.
 
-Filtre as linhas cujo intervalo (`periodo_inicio` a `periodo_fim`) inclui a data de hoje. Se houver mais de uma vigente, liste todas:
+Filtre as linhas cujo intervalo (`periodo_inicio` a `periodo_fim`) inclui a data de hoje.
+
+- **Nenhuma vigente:** mostre as mais recentes (vigentes ou não) e pergunte qual usar, ou se quer informar um período manualmente.
+- **Uma vigente:** confirme rapidamente em vez de fazer o usuário escolher: "Vou montar o relatório de {nome} ({periodo}). Confirma?"
+- **Mais de uma vigente, sendo exatamente uma com `metrica = valor`** (acompanhamento de meta) **e uma ou mais com `metrica = pa`, `tm` ou `pm`** (ranking): monte um **relatório combinado** por padrão — a de `valor` é a principal, seguida de uma seção de ranking para cada corrida de ranking vigente. Não peça pra escolher; confirme rapidamente: "Vou montar o relatório combinado: meta de {nome da corrida valor} + ranking de {nome(s) das corridas de ranking}. Confirma?" (ver formato combinado no Passo 4).
+- **Mais de uma vigente, em qualquer outra combinação** (ex: duas de `valor`, ou duas+ de ranking sem nenhuma `valor`): liste todas e pergunte, incluindo a opção de combinar:
 
 ```
 Qual relatório você quer enviar?
 
+0. Combinar todas em uma mensagem só
 1. {nome da corrida 1} ({metrica}, {periodo_inicio} a {periodo_fim})
 2. {nome da corrida 2} ({metrica}, {periodo_inicio} a {periodo_fim})
 ...
@@ -35,22 +41,18 @@ Qual relatório você quer enviar?
 Digite o número:
 ```
 
-Se só houver uma vigente, confirme rapidamente em vez de fazer o usuário escolher: "Vou montar o relatório de {nome} ({periodo}). Confirma?"
-
-Se nenhuma corrida cobrir a data de hoje, mostre as mais recentes (vigentes ou não) e pergunte qual usar, ou se quer informar um período manualmente.
-
 ## Passo 3. Ler os indicadores do período
 
 Leia `minhas-empresas/{ativa}/dna/indicadores/vendas.csv`.
 
 Se não existir ou só tiver o cabeçalho: informe que não há dados de vendas registrados, oriente a preencher `dna/indicadores/COMO-PREENCHER.md`. Encerre.
 
-Filtre as linhas de `vendas.csv` dentro do período da corrida escolhida. Para cada vendedor, some `valor`, `tickets`, `pecas_liquidas`, `clientes_atendidos` de todas as linhas dele no período. A partir dessas somas, calcule:
+Filtre as linhas de `vendas.csv` dentro do período da corrida escolhida (no relatório combinado, repita esse filtro para o período de cada corrida incluída — normalmente é o mesmo período, mas trate cada uma independente). Para cada vendedor, some `valor`, `tickets`, `pecas_liquidas`, `clientes_atendidos` de todas as linhas dele no período. A partir dessas somas, calcule:
 - PA = `pecas_liquidas / tickets`
 - TM (ticket médio) = `valor / tickets`
 - PM (venda média por atendimento) = `valor / clientes_atendidos`
 
-Ignore vendedores sem nenhum ticket no período (evita divisão por zero). Nunca invente números que não estejam nos arquivos — se não houver nenhuma linha de vendas no período da corrida, informe isso em vez de montar um relatório vazio.
+Ignore vendedores sem nenhum ticket no período (evita divisão por zero). Nunca invente números que não estejam nos arquivos — se não houver nenhuma linha de vendas no período de alguma corrida, informe isso em vez de montar uma seção vazia (no combinado, informe isso só na seção daquela corrida específica, e monte normalmente as demais).
 
 ## Passo 4. Montar a mensagem
 
@@ -101,7 +103,27 @@ Nota: se algum vendedor já bateu a meta (vendido ≥ meta), troque a linha "Fal
 {linha motivacional pros demais, sem tom negativo — foco em "ainda dá tempo", nunca em cobrança}
 ```
 
-Em ambos os formatos: nunca inclua julgamento negativo sobre ninguém. Adapte o tom (mais formal ou mais descontraído) ao que o Workbook DNA da empresa define em "Tom de comunicação", ou ao que o usuário pedir na hora.
+**Relatório combinado** (quando há uma corrida de `valor` + uma ou mais de ranking vigentes ao mesmo tempo, ou o usuário escolheu "combinar"): uma única mensagem, com o bloco de "Acompanhamento da Meta" primeiro, depois cada bloco de "Ranking de {métrica}" — sem o cabeçalho `📊` repetido nem linha motivacional em cada bloco (fica só uma vez no fim). Separe os blocos assim:
+
+```
+📊 Acompanhamento da Meta - {nome da corrida de valor}
+
+{resto do bloco de meta, igual ao formato acima, sem a linha motivacional final}
+
+➖➖➖➖➖➖➖➖
+
+🏆 Ranking de {métrica} - {nome da corrida de ranking}
+
+{resto do bloco de ranking, igual ao formato acima, sem a linha motivacional final}
+
+(repita o separador + bloco de ranking pra cada corrida de ranking incluída)
+
+🔥 {uma única linha motivacional pro conjunto todo}
+
+Bora pra cima, equipe! 💪🚀
+```
+
+Em todos os formatos: nunca inclua julgamento negativo sobre ninguém. Adapte o tom (mais formal ou mais descontraído) ao que o Workbook DNA da empresa define em "Tom de comunicação", ou ao que o usuário pedir na hora.
 
 ## Passo 5. Confirmar envio
 
