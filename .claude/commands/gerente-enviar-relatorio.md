@@ -58,6 +58,8 @@ Ignore vendedores sem nenhum ticket no período (evita divisão por zero). Nunca
 
 O formato depende da `metrica` da corrida escolhida.
 
+**Ícone de cada vendedor**: em vez de um marcador genérico, use um bonequinho de acordo com o gênero do primeiro nome — 👩 para nomes femininos, 👨 para nomes masculinos, 🧑 só se o nome for realmente ambíguo/unissex e não der pra inferir com confiança. Use esse ícone em todos os formatos abaixo, sempre imediatamente antes do nome do vendedor.
+
 **Se `metrica = valor`** (acompanhamento de meta de faturamento). Siga este formato (baseado no modelo real da loja — não altere a estrutura):
 
 ```
@@ -69,7 +71,7 @@ O formato depende da `metrica` da corrida escolhida.
 
 Feito até o momento:
 
-✅ {vendedor}
+{ícone de gênero} {vendedor}
 💰 Vendido: R$ {soma valor}
 📈 Faltam R$ {meta - vendido, nunca negativo — ver nota} para atingir a meta.
 
@@ -91,11 +93,11 @@ Nota: se algum vendedor já bateu a meta (vendido ≥ meta), troque a linha "Fal
 
 {se meta_por_vendedor estiver preenchida: 🎯 Meta: {valor}}
 
-{ordene do maior para o menor indicador, use medalha nos 3 primeiros}
-🥇 {vendedor 1}: {indicador} {"✅" se meta_por_vendedor preenchida e ele bateu}
-🥈 {vendedor 2}: {indicador}
-🥉 {vendedor 3}: {indicador}
-{vendedor 4 em diante, sem medalha, numerado}
+{ordene do maior para o menor indicador, use medalha nos 3 primeiros — o ícone de gênero vem junto com o nome, não substitui a medalha}
+🥇 {ícone de gênero} {vendedor 1}: {indicador} {"✅" se meta_por_vendedor preenchida e ele bateu}
+🥈 {ícone de gênero} {vendedor 2}: {indicador}
+🥉 {ícone de gênero} {vendedor 3}: {indicador}
+{vendedor 4 em diante, sem medalha: "{número}. {ícone de gênero} {vendedor}: {indicador}"}
 
 {se houver `premio` na corrida: 🏁 Premiação: {premio}}
 
