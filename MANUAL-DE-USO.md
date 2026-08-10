@@ -80,6 +80,7 @@ Comandos são atalhos pra tarefas específicas — digite `/` no chat pra ver a 
 |---|---|
 | `/configurar-canal-relatorio` | Escolhe Telegram (recomendado) ou WhatsApp pros relatórios automáticos |
 | `/configurar-telegram` | Passo a passo pra criar o bot e pegar os IDs de destino |
+| `/configurar-envio-automatico` | Liga o envio automático de verdade: frequência, horário e quem avisar se falhar — depois disso o relatório sai sozinho, sem precisar abrir o Vetria |
 | `/configurar-whatsapp` | Passo a passo pra conectar via Z-API (tem risco de banimento do número — o sistema avisa antes) |
 | `/configurar-geracao-imagem` | Conecta a geração de imagem (opcional) |
 | `/configurar-suporte` | Conecta o canal de contato com o administrador da plataforma |
@@ -98,7 +99,12 @@ Tudo que os especialistas entregam (relatório, calendário, plano, prancha) fic
 
 ## 9. Enviar mensagens automaticamente (opcional)
 
-Por padrão, nada é enviado sem você mandar. Se quiser que o Gerente IA e o Marketing consigam disparar relatório/sugestão direto pro grupo ou pro seu WhatsApp/Telegram, rode `/configurar-canal-relatorio` uma vez. **Mesmo configurado, todo envio pede confirmação sua na hora** — o sistema nunca manda nada sozinho.
+Existem dois níveis de automação, e vale saber a diferença:
+
+- **Rodando `/gerente-enviar-relatorio` (ou `/marketing-sugestao-do-dia`) você mesmo, no chat**: mesmo com o canal configurado, o sistema sempre mostra a mensagem pronta e pergunta antes de enviar — nada sai sem você confirmar na hora.
+- **Envio automático agendado** (configurado uma vez com `/configurar-envio-automatico`): depois de ligado, o relatório sai sozinho, no horário combinado, **sem pedir confirmação** — é literalmente pra isso que serve, pra loja não depender de alguém lembrar de rodar o comando. Se algo der errado nesse envio automático (token expirado, dado faltando), quem você designou como contato de erro recebe um aviso.
+
+Pra ligar o canal sem o agendamento automático (só pra poder rodar os comandos manualmente com confirmação), use `/configurar-canal-relatorio`.
 
 ## 10. Falar com o suporte
 
@@ -117,3 +123,4 @@ Por padrão, nada é enviado sem você mandar. Se quiser que o Gerente IA e o Ma
 - **Dado sumiu ou número parece errado** — confira o arquivo `.csv` correspondente em `dna/indicadores/`; o sistema sempre relê o arquivo do zero, então um erro de digitação ali se reflete na análise.
 - **Dúvida sobre um comando específico** — digite o nome do comando sem executar (`/gerente-fechamento` sozinho) e leia a descrição que aparece antes de confirmar.
 - **Dúvida sobre o próprio sistema Vetria** — `/falar-com-suporte`.
+- **O envio automático falhou** — se você configurou um contato de erro em `/configurar-envio-automatico`, ele recebe um aviso explicando o motivo. Sem contato de erro configurado, a falha fica só registrada internamente — vale rodar `/configurar-envio-automatico` de novo pra adicionar um.

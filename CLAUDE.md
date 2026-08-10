@@ -216,3 +216,5 @@ Se ainda não houver empresa ativa (`minhas-empresas/.ativa` não existe), apres
 6. Informe que o painel foi gerado (com o caminho) e pergunte se o usuário quer continuar preenchendo o Workbook DNA agora (missão, visão, valores, diferenciais, público, produtos, tom de voz, identidade visual, equipe) ou já ir direto para um especialista com o que houver.
 
 Depois, pergunte qual especialista o usuário precisa: Gerente IA, Vetria Marketing ou Vetria Stylist.
+
+Quando a empresa já tiver alguns dias de vendas lançados em `dna/indicadores/vendas.csv`, sugira rodar `/configurar-envio-automatico` — é o checklist que liga o envio automático de relatório (canal, frequência, horário e quem avisar se falhar), pra loja não depender de alguém lembrar de rodar `/gerente-enviar-relatorio` manualmente.
