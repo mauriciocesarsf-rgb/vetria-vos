@@ -15,18 +15,11 @@ Skill compartilhada para agents que precisam produzir uma imagem de verdade (nã
 
 ## Quando usar
 
-Sempre que um agent for entregar um "prompt de imagem" (looks, pranchas, fotos humanizadas, criativos), ofereça gerar a imagem de verdade em vez de só entregar o texto do prompt:
+Sempre que um agent for entregar um "prompt de imagem" (looks, pranchas, fotos humanizadas, criativos) **e a geração estiver configurada** (ver Passo 1), gere a imagem de verdade direto, sem perguntar antes — nunca pause pra confirmar "quer que eu gere?". A pessoa já decidiu isso ao configurar a chave; perguntar de novo a cada pedido só atrasa. Informe o custo só se ela perguntar, não de forma preventiva toda hora.
 
-```
-Posso gerar essa imagem agora mesmo, ou prefere só o prompt pra usar em outra ferramenta (Midjourney, ChatGPT, etc.)?
+**Sempre entregue o prompt de qualquer forma**, mesmo gerando a imagem — é o plano B pronto se o resultado não agradar ou se quiser tentar em outro lugar.
 
-1. Gerar agora
-2. Só me dá o prompt
-```
-
-**Sempre entregue o prompt de qualquer forma**, mesmo quando gerar a imagem — é o plano B pronto se o resultado não agradar ou se quiser tentar em outro lugar.
-
-**Recapitulando uma prancha/peça antiga que só tem o prompt (sem imagem gerada) — oferece de novo.** Se o usuário pedir pra ver de novo algo já entregue antes (ex: "aquela prancha do mule dourado") e esse entregável não tiver uma imagem gerada (só o prompt em texto), sempre ofereça gerar agora, mesmo que a pessoa não tenha pedido isso explicitamente — é bem provável que na época não estivesse configurado ainda. Não deixe de oferecer só porque o pedido foi "mostra de novo" em vez de "gera a imagem".
+**Recapitulando uma prancha/peça antiga que só tem o prompt (sem imagem gerada)** — se o usuário pedir pra ver de novo algo já entregue antes (ex: "aquela prancha do mule dourado") e esse entregável não tiver uma imagem gerada, gere agora direto (mesma regra acima), mesmo que a pessoa não tenha pedido isso explicitamente — é bem provável que na época não estivesse configurado ainda.
 
 ## Passo 1. Verificar se está configurado
 
@@ -40,6 +33,8 @@ Leia `.env`. Verifique `OPENROUTER_API_KEY`.
 ## Passo 2. Gerar
 
 Nunca carregue o base64 da imagem no contexto da conversa (é enorme e desperdiça espaço) — a chamada e a decodificação acontecem inteiramente via script, você só lê o resultado final (caminho do arquivo + sucesso/erro).
+
+**Releia este arquivo agora, não confie em ter rodado esse script antes na mesma conversa.** Já aconteceu de um agent reusar de memória um nome de modelo antigo (de uma execução anterior, na mesma conversa) em vez do que está escrito aqui embaixo — e esse arquivo pode ter sido atualizado desde a última vez que você o leu, principalmente o nome do modelo, que muda de tempos em tempos conforme a OpenRouter descontinua versões.
 
 Prompt final já revisado (traduzido pro inglês costuma dar resultado mais consistente, mantendo todos os detalhes). Rode via Node (evita depender de `jq`, que não está disponível em todo ambiente):
 
