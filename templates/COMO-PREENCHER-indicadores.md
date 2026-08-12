@@ -23,6 +23,17 @@ Uma linha por vendedor por dia. Dia de folga: pode pular a linha desse dia para 
 
 **É um arquivo só, pra sempre — nunca crie um novo a cada mês nem apague linhas antigas.** É exatamente por manter o histórico completo, com a data de cada linha, que o Gerente IA consegue comparar meses (mês atual vs. mês anterior, ou o mesmo mês do ano passado, útil pra moda por causa da sazonalidade) sem precisar de nenhuma planilha extra. Se o arquivo crescer muito com o tempo, avise o sistema — ele orienta como arquivar sem perder a comparação.
 
+## `escala-folgas.csv` — opcional, só se quiser o ritmo de meta mais preciso
+
+O painel mostra, pra cada vendedor e pra loja, se estão "em ritmo" pra bater a meta até a data de hoje (verde) ou atrás (vermelho) — comparando o que já venderam com o que deveriam ter vendido até agora. Sem esse arquivo, esse cálculo assume que todo mundo trabalha todos os dias do mês (dias corridos). Preenchendo, o cálculo passa a descontar o dia de folga fixo de cada um, ficando mais justo.
+
+| Coluna | O que é | Exemplo |
+|---|---|---|
+| `vendedor` | Nome do vendedor, igual ao usado em `vendas.csv` | `Nome do Vendedor` |
+| `dias_folga` | Dia(s) de folga fixo por semana, abreviado (`seg`, `ter`, `qua`, `qui`, `sex`, `sab`, `dom`). Mais de um dia: separe por `;` | `seg` ou `qua;dom` |
+
+Só é preciso ter uma linha pra quem tem folga fixa semanal — quem não aparece no arquivo é considerado sem folga fixa (trabalha todos os dias) nesse cálculo. Se a escala mudar (folga rotativa, trocou de dia), é só atualizar a linha — não precisa histórico, é sempre o valor atual.
+
 ## `corridas.csv` — uma linha por meta ou campanha do mês
 
 Cada linha é uma competição com início, fim, indicador e prêmio. Pode ter várias correndo ao mesmo tempo (ex: meta de faturamento da quinzena + corrida de P.A. do início do mês).

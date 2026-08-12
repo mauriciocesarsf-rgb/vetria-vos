@@ -6,7 +6,8 @@
 <title>Vetria · {{NOME_EMPRESA}}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 <style>
   :root {
     --cream-0: #faf6f0;
@@ -19,8 +20,10 @@
     --terracotta-soft: #e3b592;
     --sage: #7c8a6e;
     --vetria-blue: #4b5bff;
+    --vetria-blue-soft: #7c89ff;
     --vetria-navy: #0b0f19;
     --vetria-gold: #d4a76a;
+    --vetria-gold-soft: #e6d2ac;
     --client-accent: {{COR_DESTAQUE}}; /* cor de marca do cliente. padrão: var(--terracotta) */
     --ink-hi: #2c2419;
     --ink-dim: #6f6656;
@@ -49,7 +52,7 @@
       var(--cream-0);
     color: var(--ink-hi);
     min-height: 100vh;
-    padding: 0 24px 60px;
+    padding: 0 24px 24px;
     -webkit-font-smoothing: antialiased;
   }
   .wrap { max-width: 1120px; margin: 0 auto; }
@@ -61,7 +64,7 @@
   .faixa-header-inner {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 32px 24px 26px;
+    padding: 16px 24px 12px;
   }
 
   header {
@@ -85,28 +88,28 @@
   }
 
   .empresa {
-    margin: 36px 0 32px;
-    padding-bottom: 24px;
+    margin: 16px 0 14px;
+    padding-bottom: 12px;
     border-bottom: 1px solid var(--line);
   }
   .empresa-eyebrow {
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-dim);
-    margin-bottom: 10px;
+    margin-bottom: 4px;
   }
   .empresa-nome {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(30px, 4.5vw, 44px);
+    font-size: clamp(22px, 3vw, 30px);
     color: var(--ink-hi);
     letter-spacing: -0.01em;
   }
   .empresa-meta {
-    margin-top: 10px;
+    margin-top: 6px;
     color: var(--ink-dim);
-    font-size: 14px;
+    font-size: 12.5px;
   }
   .empresa-meta span:not(:last-child)::after {
     content: "·";
@@ -125,65 +128,15 @@
     overflow: hidden;
     background: var(--cream-1);
     box-shadow: 0 24px 60px rgba(90, 62, 30, 0.10), inset 0 1px 0 rgba(255,255,255,0.6);
+    zoom: 0.95;
   }
 
-  .zona-estoque {
-    position: relative;
-    display: flex;
-    height: 200px;
-    background:
-      repeating-linear-gradient(90deg, rgba(120,90,50,0.03) 0px, rgba(120,90,50,0.03) 1px, transparent 1px, transparent 18px),
-      var(--cream-2);
-  }
   .zona-loja {
     position: relative;
     display: flex;
-    height: 400px;
+    height: 340px;
     background:
       linear-gradient(180deg, var(--cream-1) 0%, var(--cream-1) 62%, var(--cream-2) 62%, var(--cream-2) 100%);
-  }
-
-  .zona-divisoria {
-    position: relative;
-    height: 22px;
-    background: var(--cream-0);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .zona-divisoria::before,
-  .zona-divisoria::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 34%;
-    height: 1px;
-    background: var(--line-strong);
-  }
-  .zona-divisoria::before { left: 0; }
-  .zona-divisoria::after { right: 0; }
-  .zona-divisoria span {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.16em;
-    color: var(--ink-faint);
-    background: var(--cream-0);
-    padding: 0 10px;
-    z-index: 1;
-  }
-
-  .zona-tag {
-    position: absolute;
-    top: 10px;
-    left: 16px;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    z-index: 2;
   }
 
   .estacao {
@@ -210,8 +163,6 @@
     border-radius: 84px 84px 0 0;
     box-shadow: inset 0 0 34px rgba(120, 90, 50, 0.06);
   }
-  .zona-estoque .arco { width: 150px; height: 150px; border-radius: 75px 75px 0 0; }
-
   /* pendente (luminária suspensa) */
   .pendente {
     position: absolute;
@@ -242,15 +193,6 @@
     align-items: flex-end;
     gap: 3px;
   }
-
-  /* estação dentro da zona de estoque é mais baixa: reposiciona tudo */
-  .zona-estoque .estacao-piso { height: 30px; }
-  .zona-estoque .etiqueta { top: 16%; }
-  .zona-estoque .personagem { top: 38%; }
-  .zona-estoque .movel-mesa { bottom: 30px; }
-  .zona-estoque .movel-tela { bottom: 50px; }
-  .zona-estoque .estacao-estoque-decor { bottom: 30px; }
-  .zona-estoque .rug { bottom: 6px; }
 
   .estacao-quadro {
     position: absolute;
@@ -312,14 +254,27 @@
     width: 40px;
     height: 64px;
     z-index: 4;
-    animation: bob 2.8s ease-in-out infinite;
+    animation: andar 11s ease-in-out infinite;
   }
-  .estacao:nth-child(2) .personagem { animation-delay: .3s; }
-  .estacao:nth-child(3) .personagem { animation-delay: .6s; }
-  @keyframes bob {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-3px); }
+  /* durações e atrasos diferentes por estação — sem isso os três
+     especialistas andariam em sincronia perfeita, o que parece robótico
+     em vez de vivo. */
+  .estacao:nth-child(2) .personagem { animation-duration: 13s; animation-delay: -2.5s; }
+  .estacao:nth-child(3) .personagem { animation-duration: 9.5s; animation-delay: -5s; }
+  @keyframes andar {
+    0%   { transform: translateX(-50%) translate(0, 0)     scaleX(1); }
+    10%  { transform: translateX(-50%) translate(-9px, -3px) scaleX(-1); }
+    22%  { transform: translateX(-50%) translate(-18px, 0)  scaleX(-1); }
+    38%  { transform: translateX(-50%) translate(-18px, 0)  scaleX(-1); }
+    48%  { transform: translateX(-50%) translate(-9px, -3px) scaleX(-1); }
+    50%  { transform: translateX(-50%) translate(0, 0)     scaleX(1); }
+    60%  { transform: translateX(-50%) translate(9px, -3px)  scaleX(1); }
+    72%  { transform: translateX(-50%) translate(18px, 0)   scaleX(1); }
+    88%  { transform: translateX(-50%) translate(18px, 0)   scaleX(1); }
+    98%  { transform: translateX(-50%) translate(9px, -3px)  scaleX(1); }
+    100% { transform: translateX(-50%) translate(0, 0)     scaleX(1); }
   }
+  .personagem { transform-origin: 50% 85%; }
   .personagem svg { display: block; width: 100%; height: 100%; overflow: visible; }
   .personagem .p-cabelo { fill: var(--hair); }
 
@@ -495,7 +450,7 @@
   /* estação única do escritório: Vetria Marketing (planejamento, calendário editorial) */
   .est-mkt .movel-mesa { left: 50%; transform: translateX(-50%); width: 84px; }
   .est-mkt .movel-tela { left: 50%; transform: translateX(-50%); margin-left: -15px; bottom: 68px; }
-  .est-mkt .movel-tela span:nth-child(odd) { background: var(--terracotta); }
+  .est-mkt .movel-tela span:nth-child(odd) { background: var(--vetria-gold); }
   .est-mkt .movel-tela span:nth-child(even) { background: var(--terracotta-soft); }
 
   .parede-calendario {
@@ -524,7 +479,7 @@
     padding: 2px;
     box-shadow: 0 4px 10px rgba(90,62,30,.08);
   }
-  .calendario span:nth-child(-n+4) { background: var(--terracotta); border-radius: 1px 1px 0 0; }
+  .calendario span:nth-child(-n+4) { background: var(--vetria-gold); border-radius: 1px 1px 0 0; }
   .calendario span:not(:nth-child(-n+4)) { background: var(--cream-2); border-radius: 1px; }
   .quadro-func {
     position: relative;
@@ -548,7 +503,7 @@
   /* estação da loja: Gerente IA no caixa (indicadores em tempo real) */
   .est-ger .movel-mesa { left: 50%; transform: translateX(-50%); width: 96px; }
   .est-ger .movel-tela { left: 50%; transform: translateX(-50%); margin-left: -15px; bottom: 88px; }
-  .est-ger .movel-tela span:nth-child(odd) { background: var(--sage); }
+  .est-ger .movel-tela span:nth-child(odd) { background: var(--vetria-blue); }
   .est-ger .movel-tela span:nth-child(even) { background: var(--terracotta-soft); }
   .est-ger .planta { left: 14px; bottom: 12px; }
   .registradora {
@@ -586,8 +541,8 @@
   }
   .estacao-status .dot {
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cor-especialista, var(--terracotta));
-    box-shadow: 0 0 8px var(--cor-especialista, var(--terracotta));
+    background: var(--cor-especialista, var(--vetria-gold));
+    box-shadow: 0 0 8px var(--cor-especialista, var(--vetria-gold));
     animation: pulse 2.2s ease-in-out infinite;
   }
   @keyframes pulse {
@@ -595,19 +550,114 @@
     50% { opacity: .4; }
   }
 
+  /* ---------- RODAPÉ DA SALA (convite dos especialistas + chat) ---------- */
+
+  .sala-rodape {
+    background: var(--cream-2);
+    border-top: 1px solid var(--line);
+    padding: 11px 20px 13px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+  .rodape-dica {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    flex: 1 1 320px;
+    min-width: 0;
+    font-size: 12px;
+  }
+  .rodape-dica .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0;
+    align-self: center;
+    transition: background .3s ease;
+  }
+  .rodape-agente {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--ink-hi);
+    white-space: nowrap;
+  }
+  .rodape-role {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .rodape-agente::after, .rodape-role::after {
+    content: "·";
+    margin-left: 7px;
+    color: var(--line-strong);
+  }
+  .rodape-texto {
+    color: var(--ink-dim);
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .rodape-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 1 360px;
+  }
+  .rodape-input {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    font-family: inherit;
+    color: var(--ink-hi);
+    background: var(--cream-0);
+  }
+  .rodape-input:disabled { color: var(--ink-faint); }
+  .rodape-enviar {
+    flex-shrink: 0;
+    background: var(--vetria-gold);
+    color: var(--vetria-navy);
+    border: none;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .rodape-enviar:disabled { opacity: .5; cursor: default; }
+  .rodape-status {
+    flex-basis: 100%;
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-style: italic;
+    min-height: 14px;
+  }
+
+  @media (max-width: 620px) {
+    .rodape-texto { white-space: normal; }
+  }
+
   /* ---------- BARRA INFERIOR ---------- */
 
   .painel-inferior {
-    margin-top: 20px;
+    margin-top: 10px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 10px;
   }
   .bloco {
     background: var(--cream-1);
     border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 18px 20px;
+    border-radius: 12px;
+    padding: 12px 14px;
   }
   .bloco-titulo {
     display: flex;
@@ -617,7 +667,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--ink-dim);
-    margin-bottom: 14px;
+    margin-bottom: 8px;
   }
   .bloco-titulo::before {
     content: "";
@@ -669,17 +719,17 @@
   }
   .progresso-numero {
     font-family: var(--font-mono);
-    font-size: 28px;
+    font-size: 22px;
     color: var(--ink-hi);
   }
   .progresso-label {
-    font-size: 12px;
+    font-size: 11.5px;
     color: var(--ink-dim);
-    margin-top: 4px;
+    margin-top: 2px;
   }
   .progresso-barra {
-    margin-top: 12px;
-    height: 6px;
+    margin-top: 8px;
+    height: 5px;
     border-radius: 999px;
     background: var(--cream-2);
     overflow: hidden;
@@ -701,17 +751,77 @@
     font-weight: 600;
   }
 
+  .vendedores-lista {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .vendedor-linha {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+  }
+  .vendedor-linha .pos {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--ink-faint);
+    width: 18px;
+    flex-shrink: 0;
+  }
+  .vendedor-linha .nome {
+    color: var(--ink-dim);
+    flex: 1;
+  }
+  .vendedor-linha:first-child .nome {
+    color: var(--ink-hi);
+    font-weight: 600;
+  }
+  .vendedor-linha .valor {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .vendedor-linha .meta-parcial, .rank-linha .meta-parcial {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--ink-faint);
+    opacity: .7;
+    white-space: nowrap;
+    margin-left: 4px;
+  }
+
+  /* ritmo de meta — verde quem está em dia, vermelho quem está atrás,
+     comparado ao esperado até a data mais recente com venda lançada */
+  .ritmo-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+  .ritmo-dot.ok { background: var(--sage); box-shadow: 0 0 6px var(--sage); }
+  .ritmo-dot.baixo { background: var(--terracotta); box-shadow: 0 0 6px var(--terracotta); }
+  .vendedor-linha.ritmo-ok .valor { color: var(--sage); }
+  .vendedor-linha.ritmo-baixo .valor { color: var(--terracotta); }
+  .ritmo-loja {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; margin-top: 6px; font-weight: 600;
+  }
+  .ritmo-loja.ok { color: var(--sage); }
+  .ritmo-loja.baixo { color: var(--terracotta); }
+
   /* corridas vigentes */
   .corrida-item {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 8px;
     padding: 7px 0;
     font-size: 13px;
     border-bottom: 1px solid var(--line);
   }
   .corrida-item:last-child { border-bottom: none; }
+  .corrida-item-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
   .corrida-item .nome { color: var(--ink-hi); font-weight: 600; }
   .corrida-item .prazo {
     font-size: 11px;
@@ -719,6 +829,20 @@
     font-family: var(--font-mono);
     white-space: nowrap;
   }
+  .corrida-ranking { margin-top: 6px; }
+  .corrida-ranking .rank-linha {
+    display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 12px;
+  }
+  .corrida-ranking .rank-linha .pos {
+    font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-faint); width: 18px; flex-shrink: 0;
+  }
+  .corrida-ranking .rank-linha .nome { flex: 1; color: var(--ink-dim); }
+  .corrida-ranking .rank-linha:first-child .nome { color: var(--ink-hi); font-weight: 600; }
+  .corrida-ranking .rank-linha .valor {
+    font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); white-space: nowrap;
+  }
+  .corrida-ranking .rank-linha.ritmo-ok .valor { color: var(--sage); }
+  .corrida-ranking .rank-linha.ritmo-baixo .valor { color: var(--terracotta); }
 
   /* atividade recente */
   .atividade-item {
@@ -762,8 +886,8 @@
   }
 
   footer {
-    margin-top: 28px;
-    padding-top: 18px;
+    margin-top: 12px;
+    padding-top: 10px;
     border-top: 1px solid var(--line);
     display: flex;
     justify-content: space-between;
@@ -801,13 +925,13 @@
       <div class="empresa-meta">
         <span>{{SEGMENTO}}</span>
         <span>Ativa desde {{DATA_ATIVACAO}}</span>
+        <span>{{WHATSAPP_BADGE}}</span>
       </div>
     </section>
 
     <section class="sala">
-      <div class="zona-estoque">
-        <div class="zona-tag">Escritório · Planejamento</div>
-        <div class="estacao est-mkt" style="--cor-especialista: var(--terracotta);">
+      <div class="zona-loja">
+        <div class="estacao est-mkt" style="--cor-especialista: var(--vetria-gold);">
           <div class="arco"></div>
           <div class="pendente"></div>
           <div class="estacao-status"><span class="dot"></span>pronta</div>
@@ -815,8 +939,8 @@
             <div class="calendario"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
           </div>
           <div class="parede-quadros">
-            <div class="quadro-func" style="--cor-quadro: var(--sage);"></div>
-            <div class="quadro-func" style="--cor-quadro: var(--terracotta);"></div>
+            <div class="quadro-func" style="--cor-quadro: var(--vetria-blue);"></div>
+            <div class="quadro-func" style="--cor-quadro: var(--vetria-gold);"></div>
             <div class="quadro-func" style="--cor-quadro: var(--client-accent);"></div>
           </div>
           <div class="movel-mesa"></div>
@@ -836,17 +960,13 @@
           </div>
           <div class="estacao-piso"></div>
         </div>
-      </div>
 
-      <div class="zona-divisoria"><span>LOJA</span></div>
-
-      <div class="zona-loja">
-      <div class="estacao est-ger" style="--cor-especialista: var(--sage);">
+      <div class="estacao est-ger" style="--cor-especialista: var(--vetria-blue);">
         <div class="arco"></div>
         <div class="pendente"></div>
         <div class="estacao-quadro">
-          <span style="background: var(--sage);"></span>
-          <span style="background: var(--terracotta-soft);"></span>
+          <span style="background: var(--vetria-blue);"></span>
+          <span style="background: var(--vetria-blue-soft);"></span>
           <span style="background: var(--client-accent);"></span>
         </div>
         <div class="estacao-status"><span class="dot"></span>pronta</div>
@@ -877,8 +997,8 @@
         <div class="pendente"></div>
         <div class="estacao-quadro">
           <span style="background: var(--client-accent);"></span>
-          <span style="background: var(--terracotta-soft);"></span>
-          <span style="background: var(--sage);"></span>
+          <span style="background: var(--vetria-gold);"></span>
+          <span style="background: var(--vetria-blue);"></span>
         </div>
         <div class="estacao-status"><span class="dot"></span>pronta</div>
         <div class="prateleira" style="left: 20px; bottom: 118px;"></div>
@@ -917,41 +1037,30 @@
         <div class="estacao-piso"></div>
       </div>
       </div>
+
+      <div class="sala-rodape">
+        <div class="rodape-dica">
+          <span class="dot" id="rodapeDot"></span>
+          <span class="rodape-agente" id="rodapeAgente"></span>
+          <span class="rodape-role" id="rodapeRole"></span>
+          <span class="rodape-texto" id="rodapeTexto"></span>
+        </div>
+        <div class="rodape-form">
+          <input class="rodape-input" id="rodapeChatInput" type="text" placeholder="Escreva sua pergunta pra Vetria...">
+          <button class="rodape-enviar" id="rodapeChatEnviar" type="button">conversar</button>
+        </div>
+        <div class="rodape-status" id="rodapeChatStatus"></div>
+      </div>
     </section>
 
     <section class="painel-inferior">
       <div class="bloco">
-        <div class="bloco-titulo">Indicadores do mês</div>
+        <div class="bloco-titulo">Ritmo da Meta</div>
         {{INDICADORES_BLOCO}}
       </div>
       <div class="bloco">
         <div class="bloco-titulo">Corridas e prêmios vigentes</div>
         {{CORRIDAS_BLOCO}}
-      </div>
-      <div class="bloco">
-        <div class="bloco-titulo">Sugestão de hoje · Marketing</div>
-        {{SUGESTAO_BLOCO}}
-      </div>
-      <div class="bloco">
-        <div class="bloco-titulo">Agentes</div>
-        <div class="agente-linha">
-          <span class="nome"><span class="dot" style="background: var(--sage);"></span>Gerente IA</span>
-          <span class="status-group"><span class="status">pronta</span>{{WHATSAPP_BADGE}}</span>
-        </div>
-        <div class="agente-linha">
-          <span class="nome"><span class="dot" style="background: var(--terracotta);"></span>Vetria Marketing</span>
-          <span class="status">pronta</span>
-        </div>
-        <div class="agente-linha">
-          <span class="nome"><span class="dot" style="background: var(--client-accent);"></span>Vetria Stylist</span>
-          <span class="status">pronta</span>
-        </div>
-      </div>
-      <div class="bloco">
-        <div class="bloco-titulo">Progresso do DNA</div>
-        <div class="progresso-numero">{{PROGRESSO_DNA}}</div>
-        <div class="progresso-label">campos do Workbook DNA preenchidos</div>
-        <div class="progresso-barra"><span style="width: {{PROGRESSO_PCT}}%;"></span></div>
       </div>
       <div class="bloco">
         <div class="bloco-titulo">Atividade recente</div>
@@ -970,6 +1079,46 @@
       var el = document.getElementById('horaCarregamento');
       if (el) el.textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
       setTimeout(function () { location.reload(); }, 5 * 60 * 1000);
+    })();
+  </script>
+  <script>
+    // Convite rotativo dos especialistas, no rodapé da sala. O envio de
+    // verdade (chatSend) só existe dentro do app Vetria (Electron) — ver
+    // vetria-instalador/electron/main.js, que procura estes mesmos ids
+    // (rodapeChatInput/rodapeChatEnviar/rodapeChatStatus) e assume o envio
+    // real quando o app carrega essa página. Fora do app, o campo fica
+    // desabilitado com uma explicação, em vez de fingir que funciona.
+    (function () {
+      var DICAS = [
+        { nome: 'GERENTE IA', role: 'GESTÃO & INDICADORES', texto: 'Peça o fechamento da semana ou uma ideia pra reverter um dia fraco', cor: 'var(--vetria-blue)' },
+        { nome: 'VETRIA MARKETING', role: 'CONTEÚDO & CAMPANHAS', texto: 'Peça uma ideia de post ou o calendário do mês', cor: 'var(--vetria-gold)' },
+        { nome: 'VETRIA STYLIST', role: 'STYLING & VENDAS', texto: 'Peça uma prancha ou combinação a qualquer momento', cor: 'var(--client-accent)' }
+      ];
+      var dot = document.getElementById('rodapeDot');
+      var nomeEl = document.getElementById('rodapeAgente');
+      var roleEl = document.getElementById('rodapeRole');
+      var textoEl = document.getElementById('rodapeTexto');
+      function aplicar(d) {
+        if (dot) dot.style.background = d.cor;
+        if (nomeEl) nomeEl.textContent = d.nome;
+        if (roleEl) roleEl.textContent = d.role;
+        if (textoEl) textoEl.textContent = d.texto;
+      }
+      if (dot) {
+        var i = 0;
+        aplicar(DICAS[0]);
+        setInterval(function () { i = (i + 1) % DICAS.length; aplicar(DICAS[i]); }, 6000);
+      }
+
+      var input = document.getElementById('rodapeChatInput');
+      var enviar = document.getElementById('rodapeChatEnviar');
+      var status = document.getElementById('rodapeChatStatus');
+      if (input && enviar && !(window.__vetriaAPI && window.__vetriaAPI.chatSend)) {
+        input.disabled = true;
+        enviar.disabled = true;
+        input.placeholder = 'Disponível no aplicativo Vetria';
+        if (status) status.textContent = 'Abra pelo aplicativo Vetria pra conversar com os especialistas.';
+      }
     })();
   </script>
 </body>
