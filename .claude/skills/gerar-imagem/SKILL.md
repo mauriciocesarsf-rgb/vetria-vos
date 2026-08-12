@@ -26,6 +26,8 @@ Posso gerar essa imagem agora mesmo, ou prefere só o prompt pra usar em outra f
 
 **Sempre entregue o prompt de qualquer forma**, mesmo quando gerar a imagem — é o plano B pronto se o resultado não agradar ou se quiser tentar em outro lugar.
 
+**Recapitulando uma prancha/peça antiga que só tem o prompt (sem imagem gerada) — oferece de novo.** Se o usuário pedir pra ver de novo algo já entregue antes (ex: "aquela prancha do mule dourado") e esse entregável não tiver uma imagem gerada (só o prompt em texto), sempre ofereça gerar agora, mesmo que a pessoa não tenha pedido isso explicitamente — é bem provável que na época não estivesse configurado ainda. Não deixe de oferecer só porque o pedido foi "mostra de novo" em vez de "gera a imagem".
+
 ## Passo 1. Verificar se está configurado
 
 Leia `.env`. Verifique `OPENROUTER_API_KEY`.
