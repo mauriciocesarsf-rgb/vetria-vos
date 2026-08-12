@@ -30,6 +30,8 @@ Posso gerar essa imagem agora mesmo, ou prefere só o prompt pra usar em outra f
 
 ## Passo 1. Verificar se está configurado
 
+**Releia o `.env` na hora, sempre — mesmo que já tenha verificado antes na mesma conversa.** A configuração pode ter mudado no meio da conversa (é justamente o caso mais comum: o usuário configura a chave enquanto já está no meio de um assunto e continua de onde parou). Nunca responda "não está configurado" baseado em uma verificação anterior — isso pode já ter mudado.
+
 Leia `.env`. Verifique `OPENROUTER_API_KEY`.
 
 - **Ausente:** informe que a geração de imagem ainda não está configurada, entregue só o prompt, e oriente a rodar `/configurar-geracao-imagem` se quiser habilitar. Não trate isso como erro — é uma opção, não obrigação.
