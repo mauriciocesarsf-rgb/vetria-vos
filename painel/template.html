@@ -633,6 +633,38 @@
     cursor: pointer;
   }
   .rodape-enviar:disabled { opacity: .5; cursor: default; }
+  .rodape-anexo {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px;
+    background: var(--cream-0);
+    color: var(--ink-dim);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .rodape-anexo:hover { color: var(--ink-hi); border-color: var(--ink-faint); }
+  .rodape-anexo:disabled { opacity: .5; cursor: default; }
+  .rodape-anexo-chip {
+    display: flex; align-items: center; gap: 5px;
+    flex-shrink: 0;
+    max-width: 140px;
+    background: var(--cream-0);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 4px 6px 4px 10px;
+    font-size: 11px;
+    color: var(--ink-dim);
+  }
+  .rodape-anexo-chip span {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .rodape-anexo-chip button {
+    flex-shrink: 0;
+    background: none; border: none; cursor: pointer;
+    color: var(--ink-faint); font-size: 13px; line-height: 1; padding: 2px;
+  }
+  .rodape-anexo-chip button:hover { color: var(--terracotta); }
   .rodape-status {
     flex-basis: 100%;
     font-size: 11px;
@@ -1046,6 +1078,8 @@
           <span class="rodape-texto" id="rodapeTexto"></span>
         </div>
         <div class="rodape-form">
+          <button class="rodape-anexo" id="rodapeChatAnexo" type="button" title="Anexar imagem"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+          <span class="rodape-anexo-chip" id="rodapeChatAnexoChip" style="display:none;"></span>
           <input class="rodape-input" id="rodapeChatInput" type="text" placeholder="Escreva sua pergunta pra Vetria...">
           <button class="rodape-enviar" id="rodapeChatEnviar" type="button">conversar</button>
         </div>
@@ -1112,10 +1146,12 @@
 
       var input = document.getElementById('rodapeChatInput');
       var enviar = document.getElementById('rodapeChatEnviar');
+      var anexo = document.getElementById('rodapeChatAnexo');
       var status = document.getElementById('rodapeChatStatus');
       if (input && enviar && !(window.__vetriaAPI && window.__vetriaAPI.chatSend)) {
         input.disabled = true;
         enviar.disabled = true;
+        if (anexo) anexo.disabled = true;
         input.placeholder = 'Disponível no aplicativo Vetria';
         if (status) status.textContent = 'Abra pelo aplicativo Vetria pra conversar com os especialistas.';
       }

@@ -217,6 +217,8 @@ Cada empresa ativa tem um log único e compartilhado pelos três especialistas: 
 
 Sempre no final do arquivo (log em ordem cronológica, mais recente por último).
 
+**Vale pro chat interativo do painel também, não só pra comandos e canais automáticos.** Se, no meio de uma conversa solta, um especialista der algo consistente o bastante pra alguém aplicar depois — um plano, um roteiro de treinamento, uma sugestão de ação, uma prancha, uma ideia de conteúdo pronta pra usar — salve em `entregas/{área}/` e registre no log, do mesmo jeito que faria num comando. Não precisa perguntar antes: registre e, se quiser, avise em uma frase curta que ficou salvo. Não registre troca rápida de pergunta e resposta (ex: "qual foi o total de ontem?", "e a corrida de P.A., quem tá na frente?") — só o que teria valor revisitar depois.
+
 **Quando o usuário comentar se algo funcionou** ("isso deu certo", "não funcionou", "a corrida foi um sucesso"), atualize o `status` da entrada correspondente mais recente daquele tipo (`validado` ou `não funcionou` — pode incluir um comentário curto do porquê, se a pessoa disser). Nunca crie uma entrada nova só pra registrar essa atualização, edite a existente.
 
 O painel (`painel/template.html`, bloco "Atividade recente") mostra as últimas entradas — regenere/atualize o painel (`/atualizar-painel`) depois de registrar algo novo, se quiser que isso já apareça lá.
