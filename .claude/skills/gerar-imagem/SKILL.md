@@ -168,6 +168,16 @@ Substitua `PROMPT_AQUI` pelo prompt real e `{ativa}`/`{gestao, styling ou market
 
 Se o script imprimir `OK {caminho}`, informe o caminho ao usuário. Nunca mostre base64 no chat.
 
+**Se a imagem foi gerada a partir de uma foto real de produto (Passo 2b), ela é sempre um rascunho até o usuário confirmar.** Já aconteceu de sair diferente do produto real mesmo usando a foto como referência — o mecanismo reduz o risco, não elimina. Nunca apresente esse tipo de imagem como "pronta"/"entrega concluída" — deixe explícito que é rascunho e peça pra comparar com o produto real antes de usar em qualquer lugar (venda, rede social, etc.):
+
+```
+Gerei a imagem usando a foto real como referência: {caminho}
+
+⚠️ Antes de usar: compara com a foto original e confirma que bateu — cor, formato e detalhes do produto real. Só considere pronta depois de checar; me avisa se precisar ajustar ou gerar de novo.
+```
+
+Isso não se aplica a imagens sem produto real de referência (cards, banners, conteúdo genérico/conceitual do Passo 2a) — essas seguem normal, sem essa ressalva.
+
 ## Passo 4. Erros comuns
 
 - `401`/`invalid api key`: chave inválida, oriente a rodar `/configurar-geracao-imagem` de novo.
