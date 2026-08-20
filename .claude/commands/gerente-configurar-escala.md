@@ -29,7 +29,7 @@ Que tipo de escala vocês querem?
 3. Outro modelo — descreva com suas palavras
 ```
 
-Se escolher a opção 2, deixe claro nesse momento: a versão atual da sugestão de escala monta um dia fixo de folga por vendedor pro mês (mesma lógica usada no cálculo de ritmo do painel, `escala-folgas.csv`) — rodízio semana a semana ainda não é gerado automaticamente. Pergunte se quer seguir com folga fixa mesmo assim (mais simples de aplicar hoje) ou anotar a preferência por rodízio pra quando isso existir.
+A escala é sempre uma grade de datas específicas por mês (`escala-{AAAA-MM}.csv`), então tanto a opção 1 quanto a 2 são suportadas pela sugestão automática (`/gerente-sugerir-escala`) — a diferença é só a preferência de continuidade: com folga fixa, ela tenta manter cada vendedor sempre no mesmo dia da semana; com rodízio de fim de semana, ela varia o dia propositalmente pra ninguém pegar sempre o mesmo sábado/domingo. Registre a escolha, é usada como preferência pela sugestão, nunca como regra rígida.
 
 ## Passo 3. Dias que nunca podem ter folga
 

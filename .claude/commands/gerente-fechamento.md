@@ -28,6 +28,8 @@ Se não especificado e o comando estiver rodando de forma agendada, infira pelo 
 
 Leia `minhas-empresas/.ativa`. Leia `vendas.csv`, `corridas.csv`, `premios-especiais.csv`, `meta-mensal-loja.csv` em `minhas-empresas/{ativa}/dna/indicadores/`. Leia também o período **anterior ao período anterior** (ex: se o fechamento é de agosto, leia julho também) para ter uma base de comparação.
 
+**Mesmo período, ano anterior (sazonalidade — só entra em jogo com 1 ano+ de histórico).** Filtre `vendas.csv` também pelo mesmo período de 1 ano atrás (ex: fechamento de agosto/2026 → linhas de agosto/2025). **Se não houver nenhuma linha alcançando essa data, ignore este passo inteiro** — a comparação segue só com o período anterior, exatamente como já funciona hoje. Moda é sazonal — essa comparação, quando existir, costuma valer mais que período vs. período imediatamente anterior.
+
 Se não houver linhas de `vendas.csv` no período: informe que não há dados suficientes para o fechamento e encerre.
 
 Nunca invente números. Onde faltar dado para uma comparação (ex: não há período anterior ainda), diga isso explicitamente em vez de omitir ou inventar.
@@ -38,6 +40,7 @@ Calcule, somando todos os vendedores por dia:
 - Faturamento total do período vs. meta do período (proporcional, a partir de `meta-mensal-loja.csv`) — valor e percentual de atingimento.
 - Comparação com o período anterior equivalente (% de variação).
 - PA, TM, PM e taxa de conversão médios do período, comparados ao período anterior.
+- **Quando houver dado de 1 ano atrás (ver Passo 2):** a mesma comparação (faturamento, PA, TM, PM, conversão) também contra o mesmo período do ano anterior, lado a lado com a comparação de período anterior — nunca no lugar dela. Sem esse dado, omita, não invente.
 
 **Melhores e piores dias:** ordene os dias do período por faturamento. Destaque os 3 melhores e os 3 piores (ou todos, se o período for semanal e tiver menos de 6 dias úteis). Para cada um, aponte uma hipótese de causa **baseada apenas em padrões observáveis nos próprios dados** (dia da semana, conversão daquele dia, PA daquele dia, se coincide com alguma corrida vigente). Nunca invente causas externas (feriado, clima, evento) que não estejam registradas em nenhum arquivo — se suspeitar de uma causa externa, diga que é uma hipótese não confirmada e pergunte ao usuário se procede.
 
@@ -63,7 +66,7 @@ Período: {DD/MM} a {DD/MM}
 
 ## Loja
 ### Faturamento e indicadores
-[tabela ou lista: faturamento, PA, TM, PM, conversão — período atual vs anterior]
+[tabela ou lista: faturamento, PA, TM, PM, conversão — período atual vs anterior, mais uma coluna "vs. mesmo período ano anterior" quando esse dado existir (Passo 2) — omitida por inteiro sem esse dado, nunca preenchida com invenção]
 
 ### Melhores dias
 [cada um: data, faturamento, hipótese]

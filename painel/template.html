@@ -10,30 +10,40 @@
 <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 <style>
   :root {
-    --cream-0: #faf6f0;
-    --cream-1: #f3ece1;
-    --cream-2: #eae0cf;
-    --cream-3: #ded0b6;
-    --line: #e2d6c1;
-    --line-strong: #d3c3a4;
+    /* paleta principal agora é a marinho da Vetria — cream-0/1/2/3 seguem
+       usadas em cascata pelo resto do arquivo (bg da página > card da sala >
+       tira do rodapé), só que reapontadas pra tons escuros em vez de creme */
+    --cream-0: #0b0f19;
+    --cream-1: #10141f;
+    --cream-2: #151a29;
+    --cream-3: #1b2133;
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.20);
     --terracotta: #c17a52;
     --terracotta-soft: #e3b592;
     --sage: #7c8a6e;
     --vetria-blue: #4b5bff;
     --vetria-blue-soft: #7c89ff;
     --vetria-navy: #0b0f19;
-    --vetria-gold: #d4a76a;
+    --vetria-gold: #C99A5B;
     --vetria-gold-soft: #e6d2ac;
     --client-accent: {{COR_DESTAQUE}}; /* cor de marca do cliente. padrão: var(--terracotta) */
-    --ink-hi: #2c2419;
-    --ink-dim: #6f6656;
-    --ink-faint: #a99d86;
+    --stage-navy: #060811;
+    --gray-panel: #e9ebef;
+    --gray-panel-line: #d7dbe1;
+    --gray-panel-ink: #4a4f58;
+    --ink-hi: #F3F1EA;
+    --ink-dim: #9AA0B4;
+    --ink-faint: #666C82;
     --wood: #b9885b;
     --wood-dark: #8a6440;
     --brass: #af8c56;
     --skin: #e3b28a;
     --hair: #2a2032;
     --pants: #3a3530;
+    --avatar-preto: #6b4426;
+    --avatar-branca: #f0c9a0;
+    --avatar-parda: #c68a5d;
     --plant-1: #5c7a4f;
     --plant-2: #7a9968;
     --pot: #a86f45;
@@ -44,12 +54,20 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; }
+  html { background: var(--cream-0); } /* base sólida por trás do canvas, evita flash antes do 1º frame */
+  #vetriaNebulaCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    display: block;
+  }
   body {
     font-family: var(--font-body);
-    background:
-      radial-gradient(circle at 12% 8%, rgba(193,122,82,0.08), transparent 42%),
-      radial-gradient(circle at 88% 78%, rgba(124,138,110,0.08), transparent 46%),
-      var(--cream-0);
+    /* sem fundo próprio — a nebulosa fixa (#vetriaNebulaCanvas) é quem pinta
+       o fundo inteiro da página agora, igual dentro e fora do palco do orb */
+    background: transparent;
     color: var(--ink-hi);
     min-height: 100vh;
     padding: 0 24px 24px;
@@ -117,7 +135,7 @@
     color: var(--line-strong);
   }
 
-  /* ---------- SALA DOS ESPECIALISTAS ---------- */
+  /* ---------- SALA DOS ESPECIALISTAS (Vetria Orb) ---------- */
 
   .sala {
     position: relative;
@@ -127,428 +145,20 @@
     border-radius: 18px;
     overflow: hidden;
     background: var(--cream-1);
-    box-shadow: 0 24px 60px rgba(90, 62, 30, 0.10), inset 0 1px 0 rgba(255,255,255,0.6);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.06);
     zoom: 0.95;
   }
 
-  .zona-loja {
+  .orb-stage {
     position: relative;
-    display: flex;
-    height: 340px;
-    background:
-      linear-gradient(180deg, var(--cream-1) 0%, var(--cream-1) 62%, var(--cream-2) 62%, var(--cream-2) 100%);
+    height: 220px;
+    margin-bottom: 6px;
+    /* transparente de propósito — a nebulosa de fundo agora vem do canvas fixo
+       de página inteira (#vetriaNebulaCanvas), sem retângulo/borda delimitando
+       a constelação, que flutua livre por cima */
+    background: transparent;
   }
-
-  .estacao {
-    position: relative;
-    flex: 1 1 0;
-    min-width: 220px;
-    height: 100%;
-    border-right: 1px solid var(--line);
-    padding: 20px;
-    overflow: hidden;
-  }
-  .estacao:last-child { border-right: none; }
-
-  /* arco (nicho) de fundo, estilo boutique */
-  .arco {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 168px;
-    height: 250px;
-    background: linear-gradient(180deg, var(--cream-0), var(--cream-2));
-    border: 1px solid var(--line);
-    border-radius: 84px 84px 0 0;
-    box-shadow: inset 0 0 34px rgba(120, 90, 50, 0.06);
-  }
-  /* pendente (luminária suspensa) */
-  .pendente {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 44px;
-    background: var(--brass);
-    z-index: 3;
-  }
-  .pendente::after {
-    content: "";
-    position: absolute;
-    bottom: -9px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px; height: 16px;
-    background: radial-gradient(circle at 50% 30%, #fff6e4, var(--brass));
-    border-radius: 50% 50% 40% 40%;
-    box-shadow: 0 16px 28px rgba(230, 180, 110, 0.4);
-  }
-
-  .estacao-estoque-decor {
-    position: absolute;
-    bottom: 54px;
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-  }
-
-  .estacao-quadro {
-    position: absolute;
-    top: 18px;
-    left: 20px;
-    display: flex;
-    gap: 4px;
-    z-index: 3;
-  }
-  .estacao-quadro span {
-    width: 10px; height: 10px; border-radius: 2px;
-  }
-
-  .rug {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 130px;
-    height: 34px;
-    background: var(--rug);
-    border-radius: 50%;
-    opacity: .55;
-  }
-
-  .etiqueta {
-    position: absolute;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -14px);
-    background: var(--cream-0);
-    border: 1px solid var(--line-strong);
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 11px;
-    white-space: nowrap;
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    box-shadow: 0 6px 16px rgba(90, 62, 30, 0.10);
-    z-index: 4;
-  }
-  .etiqueta b {
-    font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--ink-hi);
-  }
-  .etiqueta i {
-    font-style: normal;
-    color: var(--ink-faint);
-  }
-
-  .personagem {
-    position: absolute;
-    top: 52%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 64px;
-    z-index: 4;
-    animation: andar 11s ease-in-out infinite;
-  }
-  /* durações e atrasos diferentes por estação — sem isso os três
-     especialistas andariam em sincronia perfeita, o que parece robótico
-     em vez de vivo. */
-  .estacao:nth-child(2) .personagem { animation-duration: 13s; animation-delay: -2.5s; }
-  .estacao:nth-child(3) .personagem { animation-duration: 9.5s; animation-delay: -5s; }
-  @keyframes andar {
-    0%   { transform: translateX(-50%) translate(0, 0)     scaleX(1); }
-    10%  { transform: translateX(-50%) translate(-9px, -3px) scaleX(-1); }
-    22%  { transform: translateX(-50%) translate(-18px, 0)  scaleX(-1); }
-    38%  { transform: translateX(-50%) translate(-18px, 0)  scaleX(-1); }
-    48%  { transform: translateX(-50%) translate(-9px, -3px) scaleX(-1); }
-    50%  { transform: translateX(-50%) translate(0, 0)     scaleX(1); }
-    60%  { transform: translateX(-50%) translate(9px, -3px)  scaleX(1); }
-    72%  { transform: translateX(-50%) translate(18px, 0)   scaleX(1); }
-    88%  { transform: translateX(-50%) translate(18px, 0)   scaleX(1); }
-    98%  { transform: translateX(-50%) translate(9px, -3px)  scaleX(1); }
-    100% { transform: translateX(-50%) translate(0, 0)     scaleX(1); }
-  }
-  .personagem { transform-origin: 50% 85%; }
-  .personagem svg { display: block; width: 100%; height: 100%; overflow: visible; }
-  .personagem .p-cabelo { fill: var(--hair); }
-
-  .movel-mesa {
-    position: absolute;
-    bottom: 50px;
-    width: 92px; height: 34px;
-    background: var(--wood);
-    border: 1px solid var(--wood-dark);
-    border-radius: 4px;
-    z-index: 2;
-  }
-  .movel-mesa::after {
-    content: "";
-    position: absolute;
-    left: 6px; right: 6px; top: 6px; bottom: -3px;
-    background: var(--wood-dark);
-    border-radius: 3px;
-    z-index: -1;
-  }
-  .movel-tela {
-    position: absolute;
-    width: 30px; height: 20px;
-    background: var(--ink-hi);
-    border: 1px solid var(--wood-dark);
-    border-radius: 3px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 2px;
-    padding: 3px;
-    z-index: 3;
-  }
-  .movel-tela span { border-radius: 1px; }
-
-  .planta {
-    position: absolute;
-    bottom: 12px;
-    width: 30px; height: 34px;
-    z-index: 3;
-  }
-  .planta-vaso {
-    position: absolute; bottom: 0; left: 6px;
-    width: 18px; height: 12px;
-    background: var(--pot);
-    border-radius: 2px 2px 5px 5px;
-  }
-  .planta-folha {
-    position: absolute;
-    border-radius: 50%;
-    background: var(--plant-2);
-  }
-  .planta-folha.a { width: 20px; height: 20px; bottom: 10px; left: 5px; background: var(--plant-1); }
-  .planta-folha.b { width: 14px; height: 14px; bottom: 16px; left: 1px; }
-  .planta-folha.c { width: 14px; height: 14px; bottom: 16px; right: 1px; }
-
-  .estacao-piso {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 44px;
-    background: linear-gradient(to top, rgba(120, 90, 50, 0.10), transparent);
-  }
-
-  /* elementos de loja */
-  .caixa-sapato {
-    position: absolute;
-    width: 16px; height: 11px;
-    background: var(--wood);
-    border: 1px solid var(--wood-dark);
-    border-radius: 1px;
-  }
-  .caixa-sapato::before {
-    content: "";
-    position: absolute; left: 0; right: 0; top: 3px; height: 1px;
-    background: var(--wood-dark);
-  }
-
-  .vitrine {
-    position: absolute;
-    bottom: 50px;
-    width: 76px; height: 130px;
-    z-index: 2;
-  }
-  .manequim {
-    position: absolute;
-    bottom: 14px; left: 50%;
-    transform: translateX(-50%);
-    width: 26px; height: 62px;
-    z-index: 2;
-  }
-  .espelho {
-    position: absolute;
-    width: 34px; height: 92px;
-    border-radius: 50% / 26px;
-    background: linear-gradient(160deg, rgba(255,255,255,0.6), rgba(255,255,255,0.18) 55%, rgba(120,90,50,0.10));
-    border: 3px solid var(--brass);
-    box-shadow: 0 8px 18px rgba(90,62,30,0.14);
-    z-index: 1;
-  }
-  .manequim .cabeca {
-    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 10px; height: 10px;
-    background: var(--ink-hi);
-    border-radius: 50%;
-    opacity: .82;
-  }
-  .manequim .haste {
-    position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
-    width: 2px; height: 8px;
-    background: var(--ink-faint);
-  }
-  .manequim .corpo {
-    position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
-    width: 22px; height: 30px;
-    background: var(--client-accent);
-    border-radius: 5px 5px 8px 8px;
-    opacity: .92;
-  }
-  .manequim .base {
-    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 30px; height: 5px;
-    background: var(--wood);
-    border: 1px solid var(--wood-dark);
-    border-radius: 2px;
-  }
-  .post {
-    position: absolute;
-    width: 14px; height: 14px;
-    border-radius: 3px;
-  }
-
-  .prateleira {
-    position: absolute;
-    width: 66px; height: 3px;
-    background: var(--wood-dark);
-    border-radius: 1px;
-    z-index: 2;
-  }
-  .sapato {
-    position: absolute;
-    width: 15px; height: 7px;
-    background: var(--client-accent);
-    border-radius: 2px 6px 6px 2px;
-    opacity: .85;
-    z-index: 2;
-  }
-  .sapato::after {
-    content: "";
-    position: absolute; right: -2px; top: -3px;
-    width: 6px; height: 6px;
-    background: inherit;
-    border-radius: 2px 6px 2px 2px;
-  }
-
-  .bolsa {
-    position: absolute;
-    width: 20px; height: 17px;
-    background: var(--cor-bolsa, var(--client-accent));
-    border-radius: 3px 3px 8px 8px;
-    opacity: .88;
-    z-index: 2;
-  }
-  .bolsa::before {
-    content: "";
-    position: absolute;
-    top: -8px; left: 4px;
-    width: 12px; height: 9px;
-    border: 2px solid var(--cor-bolsa, var(--client-accent));
-    border-bottom: none;
-    border-radius: 8px 8px 0 0;
-  }
-
-  /* estação única do escritório: Vetria Marketing (planejamento, calendário editorial) */
-  .est-mkt .movel-mesa { left: 50%; transform: translateX(-50%); width: 84px; }
-  .est-mkt .movel-tela { left: 50%; transform: translateX(-50%); margin-left: -15px; bottom: 68px; }
-  .est-mkt .movel-tela span:nth-child(odd) { background: var(--vetria-gold); }
-  .est-mkt .movel-tela span:nth-child(even) { background: var(--terracotta-soft); }
-
-  .parede-calendario {
-    position: absolute;
-    top: 26px;
-    left: 34px;
-    z-index: 3;
-  }
-  .parede-quadros {
-    position: absolute;
-    top: 26px;
-    right: 34px;
-    display: flex;
-    gap: 8px;
-    z-index: 3;
-  }
-  .calendario {
-    width: 30px; height: 30px;
-    background: var(--cream-0);
-    border: 1px solid var(--line-strong);
-    border-radius: 3px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 7px repeat(2, 1fr);
-    gap: 1.5px;
-    padding: 2px;
-    box-shadow: 0 4px 10px rgba(90,62,30,.08);
-  }
-  .calendario span:nth-child(-n+4) { background: var(--vetria-gold); border-radius: 1px 1px 0 0; }
-  .calendario span:not(:nth-child(-n+4)) { background: var(--cream-2); border-radius: 1px; }
-  .quadro-func {
-    position: relative;
-    width: 22px; height: 28px;
-    background: var(--cream-0);
-    border: 1px solid var(--line-strong);
-    border-radius: 3px;
-    box-shadow: 0 4px 10px rgba(90,62,30,.08);
-    overflow: hidden;
-  }
-  .quadro-func::before {
-    content: "";
-    position: absolute;
-    top: 4px; left: 4px; right: 4px;
-    height: 14px;
-    background: var(--cor-quadro);
-    border-radius: 2px;
-    opacity: .85;
-  }
-
-  /* estação da loja: Gerente IA no caixa (indicadores em tempo real) */
-  .est-ger .movel-mesa { left: 50%; transform: translateX(-50%); width: 96px; }
-  .est-ger .movel-tela { left: 50%; transform: translateX(-50%); margin-left: -15px; bottom: 88px; }
-  .est-ger .movel-tela span:nth-child(odd) { background: var(--vetria-blue); }
-  .est-ger .movel-tela span:nth-child(even) { background: var(--terracotta-soft); }
-  .est-ger .planta { left: 14px; bottom: 12px; }
-  .registradora {
-    position: absolute;
-    bottom: 84px;
-    left: calc(50% + 26px);
-    width: 18px; height: 13px;
-    background: var(--ink-hi);
-    border: 1px solid var(--wood-dark);
-    border-radius: 2px;
-    z-index: 3;
-  }
-  .registradora::before {
-    content: "";
-    position: absolute; top: 2px; left: 2px; right: 2px; height: 4px;
-    background: var(--terracotta-soft);
-    border-radius: 1px;
-    opacity: .8;
-  }
-
-  /* estação da loja: Vetria Stylist. mostruário de calçados e bolsas */
-  .est-sty .planta { left: 132px; bottom: 12px; }
-
-  .estacao-status {
-    position: absolute;
-    top: 18px;
-    right: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 10px;
-    color: var(--ink-dim);
-    letter-spacing: 0.04em;
-    z-index: 4;
-  }
-  .estacao-status .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--cor-especialista, var(--vetria-gold));
-    box-shadow: 0 0 8px var(--cor-especialista, var(--vetria-gold));
-    animation: pulse 2.2s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .4; }
-  }
+  .orb-stage canvas { display: block; width: 100%; height: 100%; }
 
   /* ---------- RODAPÉ DA SALA (convite dos especialistas + chat) ---------- */
 
@@ -686,10 +296,22 @@
     gap: 10px;
   }
   .bloco {
-    background: var(--cream-1);
-    border: 1px solid var(--line);
-    border-radius: 12px;
+    background: var(--gray-panel);
+    border: 1px solid var(--gray-panel-line);
+    border-radius: 10px;
     padding: 12px 14px;
+    height: 190px;
+    overflow-y: auto;
+    /* o resto da tela agora é escuro (--ink-hi/--ink-faint viraram claros lá
+       em cima), mas esses cards continuam claros de propósito — então
+       sobrescrevo aqui TODOS os tokens de texto/linha que os componentes
+       internos leem (agente-linha, corrida-item, atividade-item...), não só
+       --ink-dim, senão o texto ficaria claro sobre fundo claro */
+    --line: var(--gray-panel-line);
+    --line-strong: var(--gray-panel-line);
+    --ink-hi: #262a33;
+    --ink-dim: var(--gray-panel-ink);
+    --ink-faint: #8a8f9a;
   }
   .bloco-titulo {
     display: flex;
@@ -698,7 +320,7 @@
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--ink-dim);
+    color: var(--gray-panel-ink);
     margin-bottom: 8px;
   }
   .bloco-titulo::before {
@@ -816,6 +438,17 @@
     color: var(--ink-faint);
     white-space: nowrap;
   }
+  .avatar-vendedor {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,.15);
+  }
+  .avatar-vendedor.avatar-preto  { background: var(--avatar-preto); }
+  .avatar-vendedor.avatar-branca { background: var(--avatar-branca); }
+  .avatar-vendedor.avatar-parda  { background: var(--avatar-parda); }
   .vendedor-linha .meta-parcial, .rank-linha .meta-parcial {
     font-family: var(--font-mono);
     font-size: 9.5px;
@@ -939,6 +572,7 @@
 </style>
 </head>
 <body>
+  <canvas id="vetriaNebulaCanvas" aria-hidden="true"></canvas>
   <div class="faixa-header">
     <div class="faixa-header-inner">
       <header>
@@ -952,7 +586,6 @@
   </div>
   <div class="wrap">
     <section class="empresa">
-      <div class="empresa-eyebrow">Sala dos especialistas</div>
       <div class="empresa-nome">{{NOME_EMPRESA}}</div>
       <div class="empresa-meta">
         <span>{{SEGMENTO}}</span>
@@ -961,115 +594,11 @@
       </div>
     </section>
 
+    <div class="orb-stage">
+      <canvas id="vetriaOrbCanvas" aria-label="Vetria — malha viva dos especialistas"></canvas>
+    </div>
+
     <section class="sala">
-      <div class="zona-loja">
-        <div class="estacao est-mkt" style="--cor-especialista: var(--vetria-gold);">
-          <div class="arco"></div>
-          <div class="pendente"></div>
-          <div class="estacao-status"><span class="dot"></span>pronta</div>
-          <div class="parede-calendario">
-            <div class="calendario"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-          </div>
-          <div class="parede-quadros">
-            <div class="quadro-func" style="--cor-quadro: var(--vetria-blue);"></div>
-            <div class="quadro-func" style="--cor-quadro: var(--vetria-gold);"></div>
-            <div class="quadro-func" style="--cor-quadro: var(--client-accent);"></div>
-          </div>
-          <div class="movel-mesa"></div>
-          <div class="movel-tela"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-          <div class="etiqueta"><b>MARKETING</b><i>comunicação</i></div>
-          <div class="personagem">
-            <svg viewBox="0 0 40 64">
-              <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(90,62,30,.14)"/>
-              <rect x="10" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
-              <rect x="22" y="38" width="8" height="20" rx="4" fill="var(--pants)"/>
-              <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-              <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-              <rect x="7" y="16" width="26" height="26" rx="13" fill="var(--cor-especialista)"/>
-              <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
-              <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
-            </svg>
-          </div>
-          <div class="estacao-piso"></div>
-        </div>
-
-      <div class="estacao est-ger" style="--cor-especialista: var(--vetria-blue);">
-        <div class="arco"></div>
-        <div class="pendente"></div>
-        <div class="estacao-quadro">
-          <span style="background: var(--vetria-blue);"></span>
-          <span style="background: var(--vetria-blue-soft);"></span>
-          <span style="background: var(--client-accent);"></span>
-        </div>
-        <div class="estacao-status"><span class="dot"></span>pronta</div>
-        <div class="movel-mesa"></div>
-        <div class="movel-tela"><span></span><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="registradora"></div>
-        <div class="rug"></div>
-        <div class="planta"><div class="planta-folha a"></div><div class="planta-folha b"></div><div class="planta-folha c"></div><div class="planta-vaso"></div></div>
-        <div class="etiqueta"><b>GERENTE IA</b><i>gestão · caixa</i></div>
-        <div class="personagem">
-          <svg viewBox="0 0 40 64">
-            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(90,62,30,.14)"/>
-            <path d="M13 38 H27 L33 58 Q20 63 7 58 Z" fill="var(--cor-especialista)"/>
-            <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-            <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-            <rect x="7" y="16" width="26" height="24" rx="13" fill="var(--cor-especialista)"/>
-            <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
-            <rect x="5" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
-            <rect x="29" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
-            <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
-          </svg>
-        </div>
-        <div class="estacao-piso"></div>
-      </div>
-
-      <div class="estacao est-sty" style="--cor-especialista: var(--client-accent);">
-        <div class="arco"></div>
-        <div class="pendente"></div>
-        <div class="estacao-quadro">
-          <span style="background: var(--client-accent);"></span>
-          <span style="background: var(--vetria-gold);"></span>
-          <span style="background: var(--vetria-blue);"></span>
-        </div>
-        <div class="estacao-status"><span class="dot"></span>pronta</div>
-        <div class="prateleira" style="left: 20px; bottom: 118px;"></div>
-        <div class="sapato" style="left: 22px; bottom: 121px;"></div>
-        <div class="sapato" style="left: 42px; bottom: 121px; opacity: .65;"></div>
-        <div class="sapato" style="left: 62px; bottom: 121px; opacity: .45;"></div>
-        <div class="prateleira" style="left: 20px; bottom: 94px;"></div>
-        <div class="sapato" style="left: 22px; bottom: 97px; opacity: .75;"></div>
-        <div class="sapato" style="left: 42px; bottom: 97px; opacity: .55;"></div>
-        <div class="sapato" style="left: 62px; bottom: 97px; opacity: .35;"></div>
-        <div class="bolsa" style="left: 24px; bottom: 70px; --cor-bolsa: var(--client-accent);"></div>
-        <div class="bolsa" style="left: 50px; bottom: 66px; --cor-bolsa: var(--terracotta-soft);"></div>
-        <div class="espelho" style="right: 24px; bottom: 50px;"></div>
-        <div class="manequim" style="right: 30px; left: auto; bottom: 64px; transform: none;">
-          <div class="cabeca"></div>
-          <div class="haste"></div>
-          <div class="corpo"></div>
-          <div class="base"></div>
-        </div>
-        <div class="rug"></div>
-        <div class="planta"><div class="planta-folha a"></div><div class="planta-folha b"></div><div class="planta-folha c"></div><div class="planta-vaso"></div></div>
-        <div class="etiqueta"><b>STYLIST</b><i>moda</i></div>
-        <div class="personagem">
-          <svg viewBox="0 0 40 64">
-            <ellipse cx="20" cy="61" rx="12" ry="3" fill="rgba(90,62,30,.14)"/>
-            <path d="M13 38 H27 L33 58 Q20 63 7 58 Z" fill="var(--cor-especialista)"/>
-            <rect x="2" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-            <rect x="31" y="20" width="7" height="20" rx="3.5" fill="var(--skin)"/>
-            <rect x="7" y="16" width="26" height="24" rx="13" fill="var(--cor-especialista)"/>
-            <circle cx="20" cy="9" r="9" fill="var(--skin)"/>
-            <rect x="5" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
-            <rect x="29" y="7" width="6" height="19" rx="3" fill="var(--hair)"/>
-            <rect class="p-cabelo" x="10" y="1" width="20" height="9" rx="9"/>
-          </svg>
-        </div>
-        <div class="estacao-piso"></div>
-      </div>
-      </div>
-
       <div class="sala-rodape">
         <div class="rodape-dica">
           <span class="dot" id="rodapeDot"></span>
@@ -1097,8 +626,8 @@
         {{CORRIDAS_BLOCO}}
       </div>
       <div class="bloco">
-        <div class="bloco-titulo">Atividade recente</div>
-        {{ATIVIDADE_BLOCO}}
+        <div class="bloco-titulo">Calendário de conteúdo</div>
+        <div class="bloco-vazio">Carregando...</div>
       </div>
     </section>
 
@@ -1124,8 +653,8 @@
     // desabilitado com uma explicação, em vez de fingir que funciona.
     (function () {
       var DICAS = [
-        { nome: 'GERENTE IA', role: 'GESTÃO & INDICADORES', texto: 'Peça o fechamento da semana ou uma ideia pra reverter um dia fraco', cor: 'var(--vetria-blue)' },
-        { nome: 'VETRIA MARKETING', role: 'CONTEÚDO & CAMPANHAS', texto: 'Peça uma ideia de post ou o calendário do mês', cor: 'var(--vetria-gold)' },
+        { nome: 'GERENTE IA', role: 'GESTÃO & INDICADORES', texto: 'Peça o fechamento da semana ou uma ideia pra reverter um dia fraco', cor: 'var(--vetria-gold)' },
+        { nome: 'VETRIA MARKETING', role: 'CONTEÚDO & CAMPANHAS', texto: 'Peça uma ideia de post ou o calendário do mês', cor: 'var(--vetria-blue)' },
         { nome: 'VETRIA STYLIST', role: 'STYLING & VENDAS', texto: 'Peça uma prancha ou combinação a qualquer momento', cor: 'var(--client-accent)' }
       ];
       var dot = document.getElementById('rodapeDot');
@@ -1154,6 +683,438 @@
         if (anexo) anexo.disabled = true;
         input.placeholder = 'Disponível no aplicativo Vetria';
         if (status) status.textContent = 'Abra pelo aplicativo Vetria pra conversar com os especialistas.';
+      }
+    })();
+  </script>
+  <script>
+    // Vetria Orb: malha viva dos 3 especialistas, sempre ambiente — sem
+    // controles, sem estado "ativo" real (não há telemetria de execução
+    // chegando nesta página estática). Fica derivando devagar e, depois de
+    // um tempo parada, se assenta nos 10 pontos reais da constelação Vetria
+    // (3 deles dourados, um por especialista). Recomeça a cada load/reload
+    // (a própria página já recarrega sozinha a cada 5 min).
+    (function () {
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var canvas = document.getElementById('vetriaOrbCanvas');
+      if (!canvas) return;
+
+      function cssVar(name, fallback) {
+        var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        return v || fallback;
+      }
+      function seededRandom(seed) {
+        var s = seed;
+        return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+      }
+      function hexToRgba(hex, a) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+        var r = parseInt(hex.slice(0, 2), 16), g = parseInt(hex.slice(2, 4), 16), b = parseInt(hex.slice(4, 6), 16);
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+      }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+      function drawGlow(ctx, x, y, radius, alpha, color) {
+        if (alpha <= 0 || radius <= 0) return;
+        var g = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        g.addColorStop(0, hexToRgba(color, alpha));
+        g.addColorStop(1, hexToRgba(color, 0));
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // Gerente = dourado, Marketing = azul, Stylist = cor de marca do
+      // próprio cliente (--client-accent já existe pra isso no template)
+      var COLORS = {
+        gerente: '#C99A5B',
+        marketing: '#4B5BFF',
+        stylist: '#8A7AAD'
+      };
+      var AGENTS = ['gerente', 'marketing', 'stylist'];
+
+      var rand = seededRandom(19);
+      var NODES = [];
+      AGENTS.forEach(function (id, ai) {
+        for (var k = 0; k < 6; k++) {
+          NODES.push({ agent: ai, color: COLORS[id], r: 5.5 + rand() * 3, flickerPhase: rand() * Math.PI * 2, flickerSpeed: 0.4 + rand() * 0.7, pos: { x: 0.5, y: 0.5 } });
+        }
+      });
+
+      var scatterSeed = seededRandom(31);
+      var IDLE_LAYOUT = NODES.map(function () {
+        return { x: 0.16 + scatterSeed() * 0.68, y: 0.18 + scatterSeed() * 0.64 };
+      });
+      NODES.forEach(function (n, i) { n.pos.x = IDLE_LAYOUT[i].x; n.pos.y = IDLE_LAYOUT[i].y; });
+
+      // layouts de agente ativo — os pontos dele se reúnem perto do centro,
+      // os outros dois abrem espaço ao redor. Usado quando o chat de verdade
+      // ativa um especialista (ver window.__vetriaOrbSetState mais abaixo).
+      function agentScatterLayout(seed, clusterAgent) {
+        var r = seededRandom(seed);
+        return NODES.map(function (n) {
+          if (n.agent === clusterAgent) {
+            var ang = r() * Math.PI * 2, d = 0.06 + r() * 0.16;
+            return { x: 0.5 + Math.cos(ang) * d * 1.35, y: 0.46 + Math.sin(ang) * d * 0.62 };
+          }
+          var ang2 = r() * Math.PI * 2, d2 = 0.22 + r() * 0.12;
+          return { x: 0.5 + Math.cos(ang2) * d2 * 1.3, y: 0.5 + Math.sin(ang2) * d2 * 0.65 };
+        });
+      }
+      var LAYOUTS = {
+        gerente: agentScatterLayout(32, 0),
+        marketing: agentScatterLayout(33, 1),
+        stylist: agentScatterLayout(34, 2)
+      };
+
+      // estado real (não é mais só decoração): o chat de verdade chama
+      // window.__vetriaOrbSetState quando manda uma pergunta e quando a
+      // resposta chega — ver electron/main.js, enviarPergunta/mostrarRespostaNaCena
+      // "pensando" ficou violento demais numa tentativa anterior (jitter
+      // 3.2x lia como travamento/glitch, não como "pensando") — agora é só
+      // um brilho pulsando mais rápido, sem nenhum tremor extra de posição:
+      // delicado, mas ainda claramente diferente do repouso. "respondendo"
+      // mantém um pouco de movimento (fala tem corpo), bem mais moderado
+      // que antes. O jitter mais baixo também ajuda o cluster do agente a
+      // ficar legível — antes o tremor era grande o bastante pra mascarar a
+      // própria forma do agrupamento.
+      var ACTIVITY_DEF = {
+        ouvindo: { jitter: 1.0, glowMult: 0.8, breatheAmp: 0.010, breathePeriod: 3000, sparkEveryMs: 0 },
+        pensando: { jitter: 1.0, glowMult: 1.05, breatheAmp: 0.020, breathePeriod: 1300, sparkEveryMs: 650 },
+        respondendo: { jitter: 1.3, glowMult: 1.25, breatheAmp: 0.026, breathePeriod: 1400, sparkEveryMs: 320 }
+      };
+      var currentAgent = 'idle';
+      var currentActivity = 'ouvindo';
+
+      // "corrente elétrica": um pulso de luz viaja de um ponto ao outro ao
+      // longo de uma linha real da malha (não um caminho inventado) —
+      // pensando é mais espaçado/deliberado, respondendo mais frequente.
+      var sparks = [];
+      var lastSparkAt = 0;
+      function spawnSpark(edgeSet) {
+        var keys = Object.keys(edgeSet);
+        if (!keys.length) return;
+        var pair = edgeSet[keys[Math.floor(rand() * keys.length)]];
+        if (rand() < 0.5) pair = [pair[1], pair[0]]; // direção aleatória, senão sempre "sobe" o índice
+        sparks.push({ a: pair[0], b: pair[1], t: 0, speed: 0.028 + rand() * 0.014 });
+      }
+      function drawSparks(ctx, screenPos) {
+        sparks = sparks.filter(function (s) {
+          s.t += s.speed;
+          if (s.t >= 1) return false;
+          var pa = screenPos[s.a], pb = screenPos[s.b];
+          if (!pa || !pb) return false;
+          var x = lerp(pa.x, pb.x, s.t), y = lerp(pa.y, pb.y, s.t);
+          var fade = Math.sin(s.t * Math.PI); // 0 nas pontas, pico no meio do trajeto
+          drawGlow(ctx, x, y, 9, 0.85 * fade, '#EAF6FF');
+          ctx.beginPath();
+          ctx.fillStyle = hexToRgba('#EAF6FF', fade);
+          ctx.arc(x, y, 1.6, 0, Math.PI * 2);
+          ctx.fill();
+          return true;
+        });
+      }
+
+      // só "respondendo" usa rajada (picos/pausas irregulares, tipo fala) —
+      // "pensando" agora é deliberadamente liso/calmo, sem essa variação
+      function speechEnvelope(t) {
+        return 0.35 + 0.65 * Math.abs(Math.sin(t / 260)) * (0.5 + 0.5 * Math.abs(Math.sin(t / 860 + 0.7))) * (0.55 + 0.45 * Math.abs(Math.sin(t / 150 + 2.1)));
+      }
+
+      var bursts = [];
+      function triggerBurst(color) {
+        var cx = 0, cy = 0;
+        NODES.forEach(function (n) { cx += n.pos.x; cy += n.pos.y; });
+        bursts.push({ x: cx / NODES.length, y: cy / NODES.length, t: 0, color: color || '#EAF6FF' });
+      }
+      function drawBursts(ctx, w, h) {
+        bursts = bursts.filter(function (b) {
+          b.t += 0.045;
+          if (b.t >= 1) return false;
+          var p = { x: b.x * w, y: b.y * h };
+          var e = 1 - b.t;
+          drawGlow(ctx, p.x, p.y, 150 * b.t + 20, 0.55 * e, '#EAF6FF');
+          ctx.strokeStyle = hexToRgba(b.color, 0.6 * e);
+          ctx.lineWidth = 2.4 * e + 0.4;
+          ctx.beginPath(); ctx.arc(p.x, p.y, 100 * b.t, 0, Math.PI * 2); ctx.stroke();
+          return true;
+        });
+      }
+
+      // API real: main.js chama isso quando o chat manda uma pergunta
+      // (agentId=null, activity='pensando'), quando dá pra identificar quem
+      // vai responder (agentId='gerente-ia'|'marketing'|'stylist',
+      // activity='respondendo' — aqui só troca de cor/organiza a malha pro
+      // agente certo, sem estourar ainda) e window.__vetriaOrbBurst separado,
+      // chamado só quando a resposta está pronta de verdade (ver main.js).
+      window.__vetriaOrbSetState = function (agentId, activity) {
+        var mapped = agentId === 'gerente-ia' ? 'gerente' : agentId;
+        var novo = LAYOUTS[mapped] ? mapped : 'idle';
+        currentAgent = novo;
+        if (activity && ACTIVITY_DEF[activity]) currentActivity = activity;
+        lastInteraction = performance.now();
+      };
+      // Estouro de ativação — chamado só quando a resposta está pronta,
+      // junto com a abertura do balão (não mais na hora de identificar o
+      // agente, que já reorganiza a malha sozinha sem precisar do estouro).
+      window.__vetriaOrbBurst = function (agentId) {
+        var mapped = agentId === 'gerente-ia' ? 'gerente' : agentId;
+        triggerBurst(COLORS[mapped] || '#EAF6FF');
+      };
+
+      // os 10 pontos reais da constelação Vetria (4 no topo, 3 no meio, 2
+      // embaixo, 1 navy na base), em unidades LOCAIS (não normalizadas 0-1 por
+      // eixo) — a razão largura:altura real do desenho é 144:102. Resolvendo
+      // pra tela com uma única escala uniforme (não x e y independentes), o V
+      // nunca fica esticado/deformado, seja qual for a proporção do palco.
+      var UNIT_W = 1.0, UNIT_H = 102 / 144;
+      var UNIT_GOLD = [{ x: 1.0, y: 0 }, { x: 0.833, y: 0.2361 }, { x: 0.667, y: 0.4722 }];
+      var UNIT_OTHER = [
+        { x: 0, y: 0 }, { x: 0.333, y: 0 }, { x: 0.667, y: 0 },
+        { x: 0.167, y: 0.2361 }, { x: 0.5, y: 0.2361 },
+        { x: 0.333, y: 0.4722 },
+        { x: 0.5, y: 0.7083 }
+      ];
+      function unitToNormalized(u, w, h) {
+        var vFrac = 0.74; // fração da altura do palco usada pra altura do V
+        var scale = (h * vFrac) / UNIT_H;
+        if (scale * UNIT_W > w * 0.9) scale = (w * 0.9) / UNIT_W; // não estoura a largura em palcos mais estreitos
+        var boxW = scale * UNIT_W, boxH = scale * UNIT_H;
+        var offX = (w - boxW) / 2, offY = (h - boxH) / 2;
+        return { x: (offX + u.x * scale) / w, y: (offY + u.y * scale) / h };
+      }
+      var groupCounters = [0, 0, 0];
+      NODES.forEach(function (n) { n.groupIdx = groupCounters[n.agent]++; });
+      NODES.forEach(function (n) { if (n.groupIdx === 0) { n.unitPoint = UNIT_GOLD[n.agent]; n.slotSubIndex = 0; n.isGoldRep = true; } });
+      var nonLeaderByAgent = [[], [], []];
+      NODES.forEach(function (n) { if (!n.isGoldRep) nonLeaderByAgent[n.agent].push(n); });
+      var interleaved = [];
+      for (var k = 0; k < 5; k++) { for (var a = 0; a < 3; a++) { interleaved.push(nonLeaderByAgent[a][k]); } }
+      var slotCounts = UNIT_OTHER.map(function () { return 0; });
+      interleaved.forEach(function (n, idx) {
+        var slot = idx % UNIT_OTHER.length;
+        n.unitPoint = UNIT_OTHER[slot];
+        n.slotSubIndex = slotCounts[slot]++;
+      });
+      function vClusterPos(n, w, h) {
+        var base = unitToNormalized(n.unitPoint, w, h);
+        var ang = n.slotSubIndex * 2.4 + n.agent;
+        var dPx = 9 + (n.slotSubIndex % 2) * 5; // deslocamento em pixels reais, pra ficar circular em qualquer proporção de tela
+        return { x: base.x + (Math.cos(ang) * dPx) / w, y: base.y + (Math.sin(ang) * dPx * 0.85) / h };
+      }
+
+      // nebulosa agora é só do canvas fixo de página inteira
+      // (#vetriaNebulaCanvas, script mais abaixo) — este canvas fica
+      // transparente por baixo, só desenha malha/pontos por cima dela.
+
+      var HOLD_MS = 6000, RAMP_MS = 9000;
+      var lastInteraction = null;
+
+      function setupCanvas() {
+        var ratio = window.devicePixelRatio || 1;
+        var cssW = canvas.clientWidth || 600, cssH = canvas.clientHeight || 340;
+        canvas.width = cssW * ratio; canvas.height = cssH * ratio;
+        var ctx = canvas.getContext('2d');
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        return { ctx: ctx, w: cssW, h: cssH };
+      }
+
+      function frame(t) {
+        if (lastInteraction === null) lastInteraction = t;
+        var dims = setupCanvas();
+        var ctx = dims.ctx, w = dims.w, h = dims.h;
+        ctx.clearRect(0, 0, w, h);
+
+        // O relaxamento pro V só pode contar enquanto está de verdade ociosa
+        // — "pensando" mantém currentAgent='idle' (ainda não se sabe quem vai
+        // responder), então sem essa segunda checagem a malha começava a se
+        // assentar no repouso NO MEIO de uma espera real, parecendo "dormir"
+        // bem quando devia parecer mais viva.
+        var reallyIdle = currentAgent === 'idle' && currentActivity === 'ouvindo';
+        var deepIdleFactor = reallyIdle ? clamp01((t - lastInteraction - HOLD_MS) / RAMP_MS) : 0;
+        var settle = 1 - deepIdleFactor * 0.75;
+        var ACT = ACTIVITY_DEF[currentActivity];
+
+        drawBursts(ctx, w, h);
+
+        // só "respondendo" usa rajada (picos/pausas, tipo fala) — "pensando"
+        // fica com um pulso liso e calmo, sem tremor extra de posição
+        var envelope = currentActivity === 'respondendo' ? speechEnvelope(t) : null;
+        var breathe = envelope !== null
+          ? 1 + (envelope - 0.6) * ACT.breatheAmp * 3
+          : 1 + Math.sin(t / ACT.breathePeriod) * ACT.breatheAmp;
+        var envelopeJitterMul = envelope !== null ? (0.5 + envelope * 1.1) : 1;
+
+        NODES.forEach(function (n, i) {
+          var tgt = currentAgent === 'idle' ? IDLE_LAYOUT[i] : LAYOUTS[currentAgent][i];
+          if (currentAgent === 'idle' && deepIdleFactor > 0) {
+            var vp = vClusterPos(n, w, h);
+            tgt = { x: lerp(tgt.x, vp.x, deepIdleFactor), y: lerp(tgt.y, vp.y, deepIdleFactor) };
+          }
+          var jitterMul = ACT.jitter * settle * envelopeJitterMul;
+          var wx = Math.sin(t / (7000 / n.flickerSpeed) + n.flickerPhase) * 0.018 * jitterMul;
+          var wy = Math.cos(t / (8600 / n.flickerSpeed) + n.flickerPhase * 1.2) * 0.015 * jitterMul;
+          // mais rápido do que antes (era 0.02, ~2s pra convergir) — o
+          // usuário precisa perceber a malha virando o agente certo antes do
+          // balão abrir, então a reorganização não pode ser lenta
+          n.pos.x = lerp(n.pos.x, tgt.x + wx, 0.055);
+          n.pos.y = lerp(n.pos.y, tgt.y + wy, 0.055);
+        });
+
+        var screenPos = NODES.map(function (n) { return { x: n.pos.x * w, y: n.pos.y * h }; });
+        var edgeSet = {};
+        NODES.forEach(function (n, i) {
+          var dists = screenPos.map(function (p, j) {
+            if (i === j) return { j: j, d: Infinity };
+            var dx = p.x - screenPos[i].x, dy = p.y - screenPos[i].y;
+            return { j: j, d: dx * dx + dy * dy };
+          }).sort(function (p, q) { return p.d - q.d; });
+          for (var kk = 0; kk < 4; kk++) {
+            var pair = [i, dists[kk].j].sort(function (x, y) { return x - y; });
+            edgeSet[pair[0] + '-' + pair[1]] = pair;
+          }
+        });
+
+        // garante que a malha inteira fique sempre conectada — nenhum grupo
+        // pode se soltar do resto da constelação
+        (function ensureConnected() {
+          var parent = NODES.map(function (_, i) { return i; });
+          function find(x) { while (parent[x] !== x) { x = parent[x]; } return x; }
+          function union(a, b) { var ra = find(a), rb = find(b); if (ra !== rb) parent[ra] = rb; }
+          Object.keys(edgeSet).forEach(function (key) { var p = edgeSet[key]; union(p[0], p[1]); });
+          var comps = {};
+          NODES.forEach(function (_, i) { var r = find(i); (comps[r] = comps[r] || []).push(i); });
+          var compList = Object.keys(comps).map(function (kk) { return comps[kk]; });
+          while (compList.length > 1) {
+            var best = null;
+            for (var a = 0; a < compList.length; a++) {
+              for (var b = a + 1; b < compList.length; b++) {
+                compList[a].forEach(function (i) {
+                  compList[b].forEach(function (j) {
+                    var dx = screenPos[i].x - screenPos[j].x, dy = screenPos[i].y - screenPos[j].y;
+                    var d = dx * dx + dy * dy;
+                    if (!best || d < best.d) best = { i: i, j: j, d: d, a: a, b: b };
+                  });
+                });
+              }
+            }
+            var mergePair = [best.i, best.j].sort(function (x, y) { return x - y; });
+            edgeSet[mergePair[0] + '-' + mergePair[1]] = mergePair;
+            compList[best.a] = compList[best.a].concat(compList[best.b]);
+            compList.splice(best.b, 1);
+          }
+        })();
+
+        if (ACT.sparkEveryMs > 0 && t - lastSparkAt > ACT.sparkEveryMs) {
+          lastSparkAt = t;
+          spawnSpark(edgeSet);
+        }
+
+        ctx.lineCap = 'round';
+        Object.keys(edgeSet).forEach(function (key) {
+          var pair = edgeSet[key];
+          var a = NODES[pair[0]], b = NODES[pair[1]];
+          var sameAgent = a.agent === b.agent;
+          ctx.strokeStyle = hexToRgba(sameAgent ? a.color : '#7E8AFF', sameAgent ? 0.16 : 0.08);
+          ctx.lineWidth = 0.55;
+          ctx.beginPath();
+          ctx.moveTo(screenPos[pair[0]].x, screenPos[pair[0]].y);
+          ctx.lineTo(screenPos[pair[1]].x, screenPos[pair[1]].y);
+          ctx.stroke();
+        });
+
+        NODES.forEach(function (n, i) {
+          var p = screenPos[i];
+          var flick = 0.72 + 0.28 * Math.sin(t / (600 / n.flickerSpeed) + n.flickerPhase);
+          if (deepIdleFactor > 0.3 && n.isGoldRep) drawGlow(ctx, p.x, p.y, 26 * deepIdleFactor, 0.28 * deepIdleFactor, COLORS.gerente);
+          // brilho suave pulsando junto com pensando/respondendo — em
+          // "pensando" segue o próprio breathe (calmo, sem rajada); em
+          // "respondendo" segue o envelope de fala (com picos)
+          if (currentActivity !== 'ouvindo') {
+            var glowPulse = envelope !== null ? envelope : (breathe - 1) / ACT.breatheAmp * 0.5 + 0.5;
+            drawGlow(ctx, p.x, p.y, n.r * (2.0 + glowPulse * 1.3), 0.18 * ACT.glowMult * glowPulse, n.color);
+          }
+          ctx.beginPath();
+          ctx.fillStyle = hexToRgba(n.color, 0.7 * flick * (currentActivity !== 'ouvindo' ? ACT.glowMult : 1));
+          ctx.arc(p.x, p.y, n.r * breathe, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        drawSparks(ctx, screenPos);
+
+        requestAnimationFrame(frame);
+      }
+
+      if (reduceMotion) {
+        var dims = setupCanvas();
+        NODES.forEach(function (n, i) { drawGlow(dims.ctx, IDLE_LAYOUT[i].x * dims.w, IDLE_LAYOUT[i].y * dims.h, 16, 0.4, n.color); });
+      } else {
+        requestAnimationFrame(frame);
+      }
+    })();
+  </script>
+  <script>
+    // Nebulosa de página inteira — o mesmo "fundo com sombras" que existia
+    // só dentro do palco do orb, agora atrás de tudo, fixo, cobrindo a
+    // janela inteira, pra não ter costura entre "dentro" e "fora" do palco.
+    (function () {
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var canvas = document.getElementById('vetriaNebulaCanvas');
+      if (!canvas) return;
+
+      function seededRandom(seed) {
+        var s = seed;
+        return function () { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+      }
+      function hexToRgba(hex, a) {
+        hex = hex.replace('#', '');
+        if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+        var r = parseInt(hex.slice(0, 2), 16), g = parseInt(hex.slice(2, 4), 16), b = parseInt(hex.slice(4, 6), 16);
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+      }
+      function drawGlow(ctx, x, y, radius, alpha, color) {
+        if (alpha <= 0 || radius <= 0) return;
+        var g = ctx.createRadialGradient(x, y, 0, x, y, radius);
+        g.addColorStop(0, hexToRgba(color, alpha));
+        g.addColorStop(1, hexToRgba(color, 0));
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fill();
+      }
+
+      var COLORS = ['#C99A5B', '#4B5BFF', '#8A7AAD'];
+      var nebulaSeed = seededRandom(7);
+      var NEBULA = [];
+      for (var i = 0; i < 9; i++) {
+        NEBULA.push({ nx: nebulaSeed(), ny: nebulaSeed(), r: 220 + nebulaSeed() * 260, color: COLORS[i % 3], speedX: (nebulaSeed() - 0.5) * 0.00006, speedY: (nebulaSeed() - 0.5) * 0.00006, phase: nebulaSeed() * Math.PI * 2 });
+      }
+
+      function setupCanvas() {
+        var ratio = window.devicePixelRatio || 1;
+        var cssW = window.innerWidth, cssH = window.innerHeight;
+        canvas.width = cssW * ratio; canvas.height = cssH * ratio;
+        var ctx = canvas.getContext('2d');
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        return { ctx: ctx, w: cssW, h: cssH };
+      }
+
+      function draw(t) {
+        var dims = setupCanvas();
+        var ctx = dims.ctx, w = dims.w, h = dims.h;
+        ctx.clearRect(0, 0, w, h);
+        NEBULA.forEach(function (n) {
+          var nx = n.nx + Math.sin(t * n.speedX + n.phase) * 0.08;
+          var ny = n.ny + Math.cos(t * n.speedY + n.phase) * 0.08;
+          var pulse = 1 + Math.sin(t / 5200 + n.phase) * 0.16;
+          drawGlow(ctx, nx * w, ny * h, n.r * pulse, 0.055, n.color);
+          drawGlow(ctx, nx * w, ny * h, n.r * 0.4 * pulse, 0.05, '#f6f1e7');
+        });
+        requestAnimationFrame(draw);
+      }
+
+      if (reduceMotion) {
+        var dims = setupCanvas();
+        NEBULA.forEach(function (n) { drawGlow(dims.ctx, n.nx * dims.w, n.ny * dims.h, n.r, 0.055, n.color); });
+      } else {
+        requestAnimationFrame(draw);
       }
     })();
   </script>

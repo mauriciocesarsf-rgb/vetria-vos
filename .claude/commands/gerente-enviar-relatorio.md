@@ -47,6 +47,8 @@ Leia `minhas-empresas/{ativa}/dna/indicadores/vendas.csv`.
 
 Se não existir ou só tiver o cabeçalho: informe que não há dados de vendas registrados, oriente a preencher `dna/indicadores/COMO-PREENCHER.md`. Encerre.
 
+Leia também `dna/indicadores/vendedores.json` (se existir) — só pra saber o `valorVendasPessoal` de cada vendedor, usado no Passo 4. Isso não entra em nenhuma soma de meta coletiva, é só usado pra decidir se a linha de aviso pessoal aparece ou não.
+
 Filtre as linhas de `vendas.csv` dentro do período da corrida escolhida (no relatório combinado, repita esse filtro para o período de cada corrida incluída — normalmente é o mesmo período, mas trate cada uma independente). Para cada vendedor, some `valor`, `tickets`, `pecas_liquidas`, `clientes_atendidos` de todas as linhas dele no período. A partir dessas somas, calcule:
 - PA = `pecas_liquidas / tickets`
 - TM (ticket médio) = `valor / tickets`
@@ -74,6 +76,7 @@ Feito até o momento:
 {ícone de gênero} {vendedor}
 💰 Vendido: R$ {soma valor}
 📈 Faltam R$ {meta - vendido, nunca negativo — ver nota} para atingir a meta.
+{se valorVendasPessoal do vendedor estiver preenchido em vendedores.json e a soma dele no período < valorVendasPessoal: ⚠️ Abaixo do mínimo pessoal (R$ {valorVendasPessoal formatado}) — mostre isso como um aviso à parte, nunca reescreva ou altere a conta da meta coletiva acima}
 
 (repita para cada vendedor)
 

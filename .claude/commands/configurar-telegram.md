@@ -100,9 +100,19 @@ curl -s -X POST "https://api.telegram.org/bot{TOKEN}/sendMessage" -H "Content-Ty
 - 401: token inválido, repita o Passo 2.
 - `"chat not found"`: Chat ID errado, repita o Passo 3 para esse destino.
 
+## Passo 4.5. Mais alguém autorizado a conversar com a Vetria (opcional)
+
+Só o "gerente" (Chat ID do Passo 3) pode conversar com a Vetria pelo Telegram — qualquer outra mensagem é ignorada, de propósito, pra ninguém sem querer disparar uma execução ou digitar um dado errado. Se mais de uma pessoa precisa poder conversar (ex: gerente + sub-gerente), pergunte:
+
+```
+Só você (gerente) vai poder conversar com a Vetria pelo Telegram, ou tem mais alguém que deveria poder também?
+```
+
+Se tiver mais alguém: repita o Passo 3 ("Destino: gerente") pra cada pessoa nova — pedir pra ela iniciar conversa com o bot, rodar `getUpdates`, achar o `chat.id` dela. Guarde os IDs numa lista separada por vírgula (nunca substitua o Chat ID do gerente principal, que continua sendo o destino dos relatórios automáticos — isso aqui só amplia quem pode *conversar*, não quem *recebe relatório*).
+
 ## Passo 5. Salvar no `.env`
 
-Leia `.env`. Atualize ou adicione `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID_GRUPO` e/ou `TELEGRAM_CHAT_ID_GERENTE` (só os que foram configurados agora). Adicione também `GERENTE_CANAL_RELATORIO=TELEGRAM` se ainda não existir.
+Leia `.env`. Atualize ou adicione `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID_GRUPO` e/ou `TELEGRAM_CHAT_ID_GERENTE` (só os que foram configurados agora). Se o Passo 4.5 rendeu números extras, salve em `TELEGRAM_CHAT_IDS_AUTORIZADOS` (separados por vírgula, sem espaço — ex: `111111,222222`). Adicione também `GERENTE_CANAL_RELATORIO=TELEGRAM` se ainda não existir.
 
 Confirme:
 ```

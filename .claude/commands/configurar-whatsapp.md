@@ -132,6 +132,22 @@ Qual o número do WhatsApp do gerente (com DDI e DDD, sem espaços ou símbolos)
 ```
 Salve `GERENTE_WHATSAPP_DESTINO_GERENTE={numero}`.
 
+## Passo 4.5. Ativar o chat livre (webhook de mensagem recebida)
+
+Só faz sentido depois do destino "gerente" (Passo 4) estar salvo — é ele que autoriza quem pode conversar. Sem esse passo, o gerente ainda recebe relatório, mas mandar mensagem pro número conectado não tem efeito (nada escuta a mensagem chegando).
+
+```bash
+curl -s -X PUT "https://api.z-api.io/instances/{INSTANCE_ID}/token/{TOKEN}/update-webhook-received" \
+  -H "Content-Type: application/json" \
+  -H "Client-Token: {CLIENT_TOKEN}" \
+  --data-raw '{"value": "https://vetria-backend-production.up.railway.app/webhook/whatsapp/{clienteId}"}'
+```
+
+`{clienteId}` é o identificador da loja no backend (mesmo valor usado em `/sync/{clienteId}` — pergunte ao usuário ou confira no arquivo local de instalação se não souber). Se o endpoint acima retornar erro (nome mudou, parâmetro diferente), faça `WebSearch` em `site:developer.z-api.io "update-webhook-received"` (ou "webhook ao receber") antes de desistir — a Z-API já mudou nome de endpoint de webhook antes. Confirme o resultado com:
+```bash
+curl -s "https://api.z-api.io/instances/{INSTANCE_ID}/token/{TOKEN}/webhooks" -H "Client-Token: {CLIENT_TOKEN}"
+```
+
 ## Passo 5. Salvar no `.env`
 
 Leia `.env`. Para cada variável configurada (`ZAPI_INSTANCE_ID`, `ZAPI_TOKEN`, `ZAPI_CLIENT_TOKEN`, `GERENTE_WHATSAPP_TIPO_GRUPO`, `GERENTE_WHATSAPP_DESTINO_GRUPO`, `GERENTE_WHATSAPP_DESTINO_GERENTE`, `GERENTE_CANAL_RELATORIO=WHATSAPP`): atualize se já existir a linha, senão adicione ao final.

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Prancha — {{TITULO_LOOK}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<style>
+  :root {
+    --cream-0: #faf6f0;
+    --cream-1: #f3ece1;
+    --cream-2: #eae0cf;
+    --line: #e2d6c1;
+    --line-strong: #d3c3a4;
+    --terracotta: #c17a52;
+    --client-accent: {{COR_DESTAQUE}}; /* cor de marca do cliente. padrão: var(--terracotta) */
+    --ink-hi: #2c2419;
+    --ink-dim: #6f6656;
+    --ink-faint: #a99d86;
+    --font-display: "Fraunces", ui-serif, Georgia, serif;
+    --font-body: "Inter", ui-sans-serif, system-ui;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1350px; }
+  body {
+    font-family: var(--font-body);
+    background: var(--cream-0);
+    color: var(--ink-hi);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  .prancha {
+    width: 1080px;
+    height: 1350px;
+    display: flex;
+    background: var(--cream-0);
+  }
+
+  /* ---------- FOTO (esquerda) ---------- */
+  .coluna-foto {
+    width: 46%;
+    height: 100%;
+    position: relative;
+    flex-shrink: 0;
+    background: var(--cream-2) center/cover no-repeat;
+  }
+  .coluna-foto img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .coluna-foto .sem-foto {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-faint);
+    font-size: 15px;
+    text-align: center;
+    padding: 40px;
+    line-height: 1.6;
+  }
+  .marca-selo {
+    position: absolute;
+    left: 28px; bottom: 28px;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(250,246,240,0.92);
+    border-radius: 999px;
+    padding: 7px 14px 7px 7px;
+    box-shadow: 0 6px 18px rgba(44,36,25,0.15);
+  }
+  .marca-selo img { width: 26px; height: 26px; border-radius: 50%; }
+  .marca-selo span {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink-hi);
+  }
+
+  /* ---------- CONTEÚDO (direita) ---------- */
+  .coluna-conteudo {
+    width: 54%;
+    height: 100%;
+    padding: 56px 48px 40px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cabecalho { margin-bottom: 28px; }
+  .titulo-look {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--ink-hi);
+  }
+  .subtitulo-look {
+    margin-top: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--client-accent);
+  }
+
+  .secao { margin-bottom: 24px; }
+  .secao:last-child { margin-bottom: 0; }
+  .secao-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 14px;
+  }
+  .secao-titulo svg { flex-shrink: 0; color: var(--client-accent); }
+  .secao-titulo::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* Look completo — lista de peças */
+  .lista-pecas { display: flex; flex-direction: column; gap: 12px; }
+  .peca-linha {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .peca-dot {
+    flex-shrink: 0;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--client-accent);
+    margin-top: 7px;
+  }
+  .peca-texto .peca-nome {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-hi);
+    letter-spacing: 0.01em;
+  }
+  .peca-texto .peca-desc {
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    line-height: 1.45;
+    margin-top: 1px;
+  }
+
+  /* Acessórios */
+  .lista-acessorios {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+  .acessorio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 68px;
+  }
+  .acessorio-icone {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--cream-1);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--client-accent);
+  }
+  .acessorio-nome {
+    font-size: 10.5px;
+    color: var(--ink-dim);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Por que funciona */
+  .por-que-texto {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+  }
+
+  /* Perfeito para — tags */
+  .lista-tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .tag-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--cream-1);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 13px 7px 9px;
+  }
+  .tag-item svg { flex-shrink: 0; color: var(--client-accent); }
+  .tag-item span {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink-hi);
+  }
+
+  /* Para completar */
+  .lista-completar {
+    display: flex;
+    gap: 12px;
+  }
+  .completar-card {
+    flex: 1;
+    background: var(--cream-1);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .completar-card svg { flex-shrink: 0; color: var(--client-accent); }
+  .completar-card span {
+    font-size: 12px;
+    color: var(--ink-dim);
+    line-height: 1.35;
+  }
+
+  .rodape {
+    margin-top: auto;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .frase-final {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--ink-hi);
+  }
+</style>
+</head>
+<body>
+  <div class="prancha">
+    <div class="coluna-foto">
+      {{FOTO_MODELO_TAG}}
+      <div class="marca-selo">
+        <img src="{{LOGO_MARCA}}" alt="">
+        <span>{{NOME_MARCA}}</span>
+      </div>
+    </div>
+
+    <div class="coluna-conteudo">
+      <div class="cabecalho">
+        <div class="titulo-look">{{TITULO_LOOK}}</div>
+        <div class="subtitulo-look">{{SUBTITULO_LOOK}}</div>
+      </div>
+
+      <div class="secao">
+        <div class="secao-titulo">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+          Look completo
+        </div>
+        <div class="lista-pecas">
+          {{ITENS_LOOK}}
+        </div>
+      </div>
+
+      <div class="secao">
+        <div class="secao-titulo">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          Acessórios
+        </div>
+        <div class="lista-acessorios">
+          {{ACESSORIOS}}
+        </div>
+      </div>
+
+      <div class="secao">
+        <div class="secao-titulo">Por que funciona?</div>
+        <div class="por-que-texto">{{POR_QUE_FUNCIONA}}</div>
+      </div>
+
+      <div class="secao">
+        <div class="secao-titulo">Perfeito para</div>
+        <div class="lista-tags">
+          {{PERFEITO_PARA}}
+        </div>
+      </div>
+
+      <div class="secao">
+        <div class="secao-titulo">Para completar</div>
+        <div class="lista-completar">
+          {{PARA_COMPLETAR}}
+        </div>
+      </div>
+
+      <div class="rodape">
+        <div class="frase-final">{{FRASE_FINAL}}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

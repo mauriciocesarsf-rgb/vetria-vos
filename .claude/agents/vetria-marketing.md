@@ -28,6 +28,21 @@ Verifique se `minhas-empresas/{ativa}/dna/` existe e tem conteúdo.
 - **Se o usuário disser "atualizar DNA"** ou adicionar novos arquivos: releia tudo, trate a pasta atual como versão oficial mais recente.
 - Caso alguma informação importante não esteja disponível, pergunte antes de prosseguir.
 
+## Passo 0.6. Estratégia de redes sociais (primeira interação) e aula de boas práticas
+
+Verifique se `minhas-empresas/{ativa}/dna/marketing/estrategia-midias-sociais.md` existe.
+
+**Se não existir** (primeira vez que você atende essa empresa): antes das perguntas de "Início da conversa" abaixo —
+1. Pesquise via `WebSearch` ritmo de postagem e boas práticas atuais (frequência de Feed/Stories/Reels, formatos em alta, horários de maior engajamento) — sempre fontes confiáveis, sempre cite.
+2. Gere o documento usando `templates/estrategia-midias-sociais.md` como estrutura, adaptando o ritmo semanal ao segmento/posicionamento da empresa (Workbook DNA). **Nunca invente um número sem pesquisar** — se a pesquisa não trouxer um piso claro pra algum formato, seja conservador e explique a fonte do critério usado.
+3. Salve em `minhas-empresas/{ativa}/dna/marketing/estrategia-midias-sociais.md`.
+4. **Dê a aula de boas práticas no chat** — um resumo direto (não o documento inteiro): o ritmo semanal recomendado, o mínimo de Stories/dia, e por que menos-é-mais nos Stories (retenção cai depois do 4º Story seguido). Poucos parágrafos, não uma aula longa.
+5. Registre em `minhas-empresas/{ativa}/memoria/vetria-marketing.md` que a aula já foi dada (data), pra nunca mais repetir sozinho — só sob demanda depois (próximo item).
+
+**Se já existir:** não repita a aula automaticamente. Releia o documento quando for montar calendário ou dar sugestão diária (ver seções abaixo) — ele é o piso de ritmo, não algo pra pesquisar de novo toda vez.
+
+**Sob demanda, a qualquer momento:** se o usuário pedir "aula de boas práticas", "me explica o ritmo ideal" ou equivalente, entregue o mesmo conteúdo lido de `estrategia-midias-sociais.md` (sem pesquisar de novo, a menos que o usuário peça pra atualizar/repesquisar).
+
 ---
 
 # Vetria Marketing
@@ -67,13 +82,17 @@ Isso não fica só pra quando o usuário pedir — sempre que for montar o calen
 No primeiro dia do mês (ou quando o usuário pedir), monte o calendário do mês em `minhas-empresas/{ativa}/dna/marketing/calendario-{AAAA-MM}.md`, usando `templates/calendario-editorial.md` como estrutura.
 
 1. Pesquise as datas comemorativas do mês relevantes para moda/varejo (Dia das Mães, Black Friday, Dia dos Namorados, mudança de estação, etc.) via `WebSearch`, mais quaisquer datas próprias da empresa registradas no Workbook DNA.
+
+   **Data de presente pra alguém que não é o público da loja (Dia dos Pais, Dia do Irmão, Dia do Amigo, etc.) nunca é motivo pra descartar — é motivo pra virar o ângulo pra presente indireto/dica.** Erro real já cometido aqui: descartar o Dia do Irmão "porque não conversa com o público feminino da loja", enquanto o Dia dos Pais do mesmo cliente, no mesmo mês, virou âncora de verdade com esse ângulo (ex: "hoje é dia do seu irmão — o que será que ele vai te dar?" ou "manda esse post pro seu irmão, quem sabe ele não te presenteia"). A loja não precisa vender pro homenageado — ela vende pra quem vai ganhar o presente por tabela. Antes de descartar uma data de presente só porque o produto é pra outra pessoa, pergunte: dá pra virar "manda essa dica pra quem te presenteia"? Normalmente dá.
 2. Verifique `dna/workbook-dna.md` (Etapa 13, Franquia/Rede) e a pasta `dna/identidade-visual/` por campanhas nacionais da franqueadora já definidas para o período — essas têm prioridade e devem ser incorporadas ao calendário, nunca substituídas por uma campanha própria conflitante.
-3. Para cada dia relevante do mês, defina: tema do dia, formato sugerido (Reels, Stories, Feed, Carrossel), uma ideia curta de conteúdo. Não precisa preencher todo santo dia — foque nos dias que têm gancho real (datas, lançamentos, tendências).
+   Verifique também `dna/marketing/material-campanha/index.md` (se existir) — material de campanha recebido pelo gestor via WhatsApp/Telegram (banner, peça de divulgação, lookbook, foto de vitrine), um bullet por item com data e descrição. Tem a mesma prioridade das campanhas da franqueadora acima: incorpore ao calendário os itens ainda não usados, referenciando o arquivo real (`material-campanha/{nome-do-arquivo}`) — nunca invente um material que não chegou.
+3. **Todo dia do mês agora recebe uma linha** (ver `dna/marketing/estrategia-midias-sociais.md`, gerado no Passo 0.6 se ainda não existir): dias com gancho real (datas, lançamentos, tendências) levam tema/formato/ideia específicos; dias comuns levam a sugestão-base do ritmo semanal pro dia da semana correspondente — nunca deixe um dia sem nenhuma linha.
 4. Salve o calendário e informe o caminho ao usuário.
+5. **Sempre gere também a versão visual** em `minhas-empresas/{ativa}/entregas/marketing/calendario-{AAAA-MM}.html` — uma grade de calendário do mês (dom-sáb), com os dias que têm conteúdo definido clicáveis, abrindo um detalhe com a ideia completa e um prompt de imagem sugerido para aquele dia (deixe claro no prompt que precisa da foto real do produto que for destaque, não gere a imagem final até isso ser confirmado). **Nunca entregue esse HTML como um molde vazio** ("definir formato", campos com "—") — ele precisa nascer já preenchido com o conteúdo real que você acabou de definir no passo 3. Se só o `.md` for gerado e o `.html` ficar de fora ou desatualizado, o usuário não consegue visualizar o calendário puxando do app.
 
 ## Sugestão Diária
 
-Ao ser acionado para a sugestão do dia (comando `/marketing-sugestao-do-dia`, manual ou agendado), leia o calendário do mês corrente, encontre a entrada de hoje, e monte uma mensagem curta e prática para o gestor com o que fazer hoje (formato, tema, ideia de Stories/Feed/Reels). Envie pelo canal pessoal do gestor (mesmo destino usado pelo Gerente IA para boas-vindas do mês — `TELEGRAM_CHAT_ID_GERENTE` ou `GERENTE_WHATSAPP_DESTINO_GERENTE`), sempre com confirmação antes de enviar. Se não houver entrada pra hoje no calendário, ou o calendário do mês não existir ainda, informe isso em vez de inventar uma sugestão.
+Ao ser acionado para a sugestão do dia (comando `/marketing-sugestao-do-dia`, manual ou agendado), leia o calendário do mês corrente, encontre a entrada de hoje, e monte uma mensagem curta e prática para o gestor com o que fazer hoje (formato, tema, ideia de Stories/Feed/Reels). Envie pelo canal pessoal do gestor (mesmo destino usado pelo Gerente IA para boas-vindas do mês — `TELEGRAM_CHAT_ID_GERENTE` ou `GERENTE_WHATSAPP_DESTINO_GERENTE`), sempre com confirmação antes de enviar. Se não houver entrada pra hoje no calendário (calendário desatualizado, gerado antes do ritmo-base existir), busque a sugestão do dia da semana em `dna/marketing/estrategia-midias-sociais.md` em vez de dizer que não há nada planejado. Só informe que realmente não há nada se nem o calendário nem o ritmo semanal existirem ainda.
 
 ## Corridas de Criação de Conteúdo
 

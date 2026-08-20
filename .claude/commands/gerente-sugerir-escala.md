@@ -13,9 +13,11 @@ Monta uma proposta de escala de folgas pro mês seguinte e manda pro canal confi
 
 Leia `dna/indicadores/config-escala.md`. Se não existir (ou estiver com os placeholders do template, sem nada preenchido de verdade): pare e informe que é preciso rodar `/gerente-configurar-escala` primeiro. Não invente horário de funcionamento, tipo de escala ou regras trabalhistas.
 
-Leia `dna/indicadores/vendas.csv` e extraia os vendedores com pelo menos uma linha lançada no mês corrente ou no anterior (mesma lógica de "quem está na loja" usada no resto do sistema — nunca uma lista fixa em outro arquivo). Sem nenhum vendedor: pare e explique que não há equipe suficiente em `vendas.csv` pra montar uma escala ainda.
+Leia `dna/indicadores/vendedores.json` e extraia os vendedores com `ativo=true` (mesma lógica de "quem está na loja" usada no resto do sistema). Sem nenhum vendedor ativo: pare e explique que não há equipe cadastrada ainda pra montar uma escala.
 
-Leia `dna/indicadores/escala-folgas.csv`, se existir, pra saber o dia de folga atual de cada vendedor (usado como ponto de partida — evita trocar o dia de folga de alguém sem necessidade).
+Leia `dna/indicadores/escala-{mês corrente, AAAA-MM}.csv`, se existir, só pra saber que dia da semana cada vendedor vinha folgando mais recentemente (usado como preferência leve pro mês novo — evita trocar o dia de alguém sem necessidade — nunca como regra rígida, já que a escala agora é uma grade por data, não um padrão semanal fixo).
+
+**Padrão do mesmo mês, ano anterior (sazonalidade — só entra em jogo com 1 ano+ de histórico).** Verifique se existe `dna/indicadores/escala-{mês alvo, mas do ano anterior}.csv` (ex: sugerindo setembro/2027, procure `escala-2026-09.csv`). **Se não existir, ignore este passo inteiro** — a sugestão segue só com a continuidade do mês anterior, exatamente como já funciona hoje. Se existir: pra cada domingo do mês alvo, conte quantos vendedores ficaram de folga (célula não vazia) no domingo de mesma posição daquele mês no ano anterior (1º domingo com 1º domingo, 2º com 2º, etc.) — guarde essa contagem como referência de cobertura pro Passo 2.
 
 ## Passo 1. Definir o mês alvo
 
@@ -23,34 +25,40 @@ Por padrão, a sugestão é sempre pro **mês seguinte** ao mês corrente (é as
 
 ## Passo 2. Montar a distribuição
 
-1. Dias da semana permitidos pra folga = os 7 dias da semana, **menos** os dias listados em "Dias que nunca podem ter folga" de `config-escala.md` que forem dias da semana recorrentes (ex: "sábado"). Se a lista tiver datas específicas (ex: "24/12") em vez de dias da semana, essas não entram nessa conta — anote como observação separada no final ("nenhum vendedor pode folgar em {data}", sem tentar encaixar isso num dia fixo semanal).
-2. Se não sobrar nenhum dia permitido (todos os 7 dias proibidos, ou 6+ com poucos vendedores pra cobrir o único dia restante), pare e avise que a configuração atual não deixa nenhum dia viável pra folga — peça pra revisar `/gerente-configurar-escala`.
-3. Pra cada vendedor ativo (ordem alfabética, pra ser determinístico):
-   - Se ele já tem um dia de folga em `escala-folgas.csv` e esse dia ainda está entre os permitidos, mantenha esse dia (continuidade > otimização).
-   - Senão, atribua o dia permitido com **menos vendedores já alocados** até aqui (equilíbrio de cobertura — evita todo mundo folgando no mesmo dia).
-4. Ao final, se algum dia permitido ficou com muito mais gente que os outros (diferença de 2+ vendedores em relação ao dia menos carregado) e isso não for necessário pra manter continuidade de ninguém, redistribua o(s) vendedor(es) mais recente(s) desse dia pro dia menos carregado.
-5. Cada vendedor tem exatamente 1 dia fixo de folga por semana no mês (modelo 6x1) — não é gerado rodízio semana a semana nessa versão, mesmo que `config-escala.md` registre preferência por rodízio (isso já foi avisado ao usuário em `/gerente-configurar-escala`, Passo 2).
+A saída é uma grade completa do mês alvo: pra cada vendedor ativo, quais **datas específicas** ele folga (não mais um único dia da semana fixo pro mês inteiro).
+
+1. Dias da semana permitidos pra folga = os 7 dias da semana, **menos** os dias listados em "Dias que nunca podem ter folga" de `config-escala.md` que forem dias da semana recorrentes (ex: "sábado"). Se a lista tiver datas específicas (ex: "24/12") em vez de dias da semana, bloqueie só aquela data pontual, pra qualquer vendedor — anote como observação separada no final.
+2. Se não sobrar nenhum dia da semana permitido, pare e avise que a configuração atual não deixa nenhum dia viável pra folga — peça pra revisar `/gerente-configurar-escala`.
+3. Divida o mês alvo em semanas (semana = segunda a domingo, a primeira e a última podem ser parciais se o mês não começar numa segunda). Pra cada semana, na ordem, e pra cada vendedor ativo (ordem alfabética, pra ser determinístico):
+   - Se o dia da semana mais recente de folga desse vendedor (Passo 0) ainda está entre os permitidos, prefira uma data dessa mesma semana caindo nesse dia da semana (continuidade > otimização).
+   - Senão, escolha, dentro dos dias permitidos **daquela semana específica**, a data com **menos vendedores já alocados nela até aqui** (equilíbrio de cobertura — evita todo mundo folgando no mesmo dia).
+   - Cada vendedor ativo recebe exatamente uma data de folga por semana do mês (semana parcial no início/fim do mês também conta, mesmo que mais curta).
+4. Ao final, se algum dia da semana ficou com muito mais gente alocada no mês inteiro que os outros (diferença de 2+ vendedores em relação ao dia menos carregado) sem necessidade de manter continuidade de ninguém, redistribua as ocorrências mais recentes desse dia pro dia menos carregado.
+5. **Domingos, quando houver referência do ano anterior (Passo 0):** ao decidir quantos vendedores ficam de folga num domingo específico deste mês, prefira manter uma contagem parecida à do domingo de mesma posição no ano anterior (mesmo nível de cobertura, não precisa ser a mesma pessoa — ajuste proporcionalmente se a equipe ativa mudou de tamanho). É um critério a mais dentro da escolha de equilíbrio do passo 3, nunca sobrepõe os dias bloqueados de `config-escala.md`.
 
 ## Passo 3. Montar a mensagem
+
+Resuma por vendedor — se as datas caíram sempre no mesmo dia da semana, diga isso (mais fácil de guardar); se variou, liste as datas soltas:
 
 ```
 📋 Sugestão de escala — {mês alvo}/{ano}
 
-{para cada vendedor, uma linha}: {vendedor} → folga {dia da semana}
+{para cada vendedor, uma linha}: {vendedor} → folga dias {lista de datas, ex: "4, 11, 18, 25"} {"(sempre " + dia da semana + ")" se todas as datas caíram no mesmo dia da semana}
 
 Base usada: {resumo de 1 frase da regra trabalhista de config-escala.md — ex: "convenção coletiva do comércio de {cidade}, folga semanal remunerada garantida"}
-{se houver datas específicas sem folga}: ⚠️ Sem folga em: {lista de datas}
+{se houver datas específicas bloqueadas}: ⚠️ Sem folga em: {lista de datas}
+{se usou o padrão do ano anterior (Passo 0)}: 📅 Domingos ajustados pra manter cobertura parecida ao mesmo período do ano passado.
 
-Essa é uma sugestão — confirma se pode aplicar, ou me diga o que ajustar (ex: trocar o dia de alguém específico).
+Essa é uma sugestão — confirma se pode aplicar, ou me diga o que ajustar (ex: trocar a data de alguém específico).
 ```
 
 ## Passo 4. Registrar e enviar
 
 Registre em `entregas/registro-atividades.md` uma entrada com título "Sugestão de escala — {mês alvo}/{ano}" e status **pendente validação** (mesmo padrão usado pros outros entregáveis do sistema).
 
-**Se estiver rodando de forma interativa** (tem um usuário respondendo no momento): mostre a mensagem do Passo 3 aqui no chat primeiro. Se o usuário confirmar que pode aplicar, escreva o resultado em `dna/indicadores/escala-folgas.csv` (substituindo o conteúdo anterior pelas novas linhas `vendedor,dias_folga`) e atualize a entrada em `registro-atividades.md` pra **validado**. Se pedir ajustes, refaça a distribuição considerando o pedido e mostre de novo antes de aplicar.
+**Se estiver rodando de forma interativa** (tem um usuário respondendo no momento): mostre a mensagem do Passo 3 aqui no chat primeiro. Se o usuário confirmar que pode aplicar, escreva o resultado em `dna/indicadores/escala-{mês alvo, AAAA-MM}.csv` — a grade completa (header `vendedor` + uma coluna por dia do mês, célula `F` nas datas de folga, vazio nos outros dias, um arquivo novo ou substituindo o conteúdo anterior desse mês) — e atualize a entrada em `registro-atividades.md` pra **validado**. Se pedir ajustes, refaça a distribuição considerando o pedido e mostre de novo antes de aplicar.
 
-**Se estiver rodando de forma automática e agendada** (sem usuário disponível pra responder — ex: acionado no fim do mês pelo backend): não aplique nada em `escala-folgas.csv` sozinho. Só envie a mensagem do Passo 3 pro canal configurado (mesma lógica de destino usada em `/gerente-enviar-relatorio` — `TELEGRAM_CHAT_ID_GERENTE` se configurado, senão o grupo) e deixe registrado como pendente validação. A aplicação de fato só acontece numa sessão futura, quando alguém confirmar.
+**Se estiver rodando de forma automática e agendada** (sem usuário disponível pra responder — ex: acionado no fim do mês pelo backend): não aplique nada em `escala-{mês alvo}.csv` sozinho. Só envie a mensagem do Passo 3 pro canal configurado (mesma lógica de destino usada em `/gerente-enviar-relatorio` — `TELEGRAM_CHAT_ID_GERENTE` se configurado, senão o grupo) e deixe registrado como pendente validação. A aplicação de fato só acontece numa sessão futura, quando alguém confirmar.
 
 ## Passo 5. Sem canal configurado
 

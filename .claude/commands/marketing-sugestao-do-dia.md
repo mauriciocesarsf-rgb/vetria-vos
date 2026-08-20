@@ -22,7 +22,10 @@ Este comando usa o **destino pessoal do gestor** — o mesmo canal usado por `/g
 Leia `minhas-empresas/.ativa`. Leia `minhas-empresas/{ativa}/dna/marketing/calendario-{AAAA-MM do mês corrente}.md`.
 
 - Se o calendário do mês não existir: informe e oriente a rodar `/marketing-criar-calendario` primeiro. Encerre.
-- Encontre a entrada de hoje. Se não houver entrada para hoje (dia sem gancho especial no calendário): informe isso — não invente uma sugestão pra preencher o vazio.
+- Encontre a entrada de hoje — desde que o calendário tenha sido gerado com o ritmo semanal (todo dia tem uma linha, gancho real ou ritmo-base), deveria sempre existir uma.
+- **Se ainda assim não houver entrada pra hoje** (calendário antigo, gerado antes do ritmo-base existir): leia `minhas-empresas/{ativa}/dna/marketing/estrategia-midias-sociais.md` e use a sugestão do dia da semana de lá. Só informe que não há sugestão se nem o calendário nem esse arquivo tiverem nada pra hoje — nunca invente.
+
+Verifique também `dna/marketing/corridas-conteudo.csv`, se existir — filtre as linhas cujo período (`periodo_inicio` a `periodo_fim`) cobre hoje. Havendo uma corrida vigente, ela vira um lembrete curto extra na mensagem (Passo 3), reforçando o tema do dia — não substitui a sugestão principal.
 
 ## Passo 3. Montar a mensagem
 
@@ -33,6 +36,12 @@ Leia `minhas-empresas/.ativa`. Leia `minhas-empresas/{ativa}/dna/marketing/calen
 📱 Formato: {formato sugerido}
 
 💡 Ideia: {conteúdo sugerido, adaptado ao tom de comunicação da empresa}
+```
+
+Se houver corrida de conteúdo vigente (ver Passo 2), acrescente uma linha final:
+```
+
+🏁 Lembrete: a corrida "{tema da corrida}" está rodando até {periodo_fim} — {critério resumido em poucas palavras}.
 ```
 
 ## Passo 4. Confirmar e enviar

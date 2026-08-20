@@ -1,6 +1,6 @@
 # Como preencher os indicadores
 
-Cinco arquivos, ritmos diferentes. Não existe uma planilha separada "da loja" — o total da loja em qualquer dia ou período é sempre a soma das linhas de `vendas.csv` daquele dia/período, calculada automaticamente. Só lance os dados de cada vendedor.
+Seis arquivos, ritmos diferentes. Não existe uma planilha separada "da loja" — o total da loja em qualquer dia ou período é sempre a soma das linhas de `vendas.csv` daquele dia/período, calculada automaticamente. Só lance os dados de cada vendedor.
 
 **Qual arquivo usar pra cada tipo de premiação:**
 - Prêmio é uma disputa entre vendedores (quem vender mais, quem tiver melhor P.A. etc.)? → `corridas.csv`.
@@ -12,27 +12,36 @@ Só 4 números por linha. Nada de calcular PA, ticket médio ou venda média na 
 
 | Coluna | O que é | Exemplo |
 |---|---|---|
+| `id` | Identificador único da linha (UUID), gerado automaticamente — nunca preencha na mão | `f1a2...` |
 | `data` | Data do dia, formato AAAA-MM-DD | `2026-08-06` |
 | `vendedor` | Nome do vendedor | `Nome do Vendedor` |
 | `valor` | Faturamento (R$) do dia | `1720.50` |
 | `tickets` | Número de vendas (tickets) fechadas | `7` |
 | `pecas_liquidas` | Peças líquidas vendidas | `9` |
 | `clientes_atendidos` | Quantos clientes foram atendidos | `15` |
+| `atualizadoEm` | Data/hora da última alteração dessa linha, gerada automaticamente | `2026-08-13T14:02:00.000Z` |
 
 Uma linha por vendedor por dia. Dia de folga: pode pular a linha desse dia para essa pessoa, ou lançar tudo zerado — o Gerente IA ignora dias sem atendimento no cálculo de médias.
 
-**É um arquivo só, pra sempre — nunca crie um novo a cada mês nem apague linhas antigas.** É exatamente por manter o histórico completo, com a data de cada linha, que o Gerente IA consegue comparar meses (mês atual vs. mês anterior, ou o mesmo mês do ano passado, útil pra moda por causa da sazonalidade) sem precisar de nenhuma planilha extra. Se o arquivo crescer muito com o tempo, avise o sistema — ele orienta como arquivar sem perder a comparação.
+**É um arquivo só, pra sempre — nunca crie um novo a cada mês nem apague linhas antigas.** É exatamente por manter o histórico completo, com a data de cada linha, que o Gerente IA consegue comparar meses (mês atual vs. mês anterior, ou o mesmo mês do ano passado, útil pra moda por causa da sazonalidade) sem precisar de nenhuma planilha extra.
 
-## `escala-folgas.csv` — opcional, só se quiser o ritmo de meta mais preciso
+**Este arquivo é autoridade do `vetria-backend`, não editado direto.** Lançamento é feito pela Área Adm do app (aba "Desempenho") ou pedindo pro Gerente IA no Telegram/WhatsApp da loja ("registra a venda de hoje da Kelly, R$450, 2 tickets") — os dois caminhos passam pela mesma API do backend, que é quem grava `id`/`atualizadoEm`. A cópia dentro de `dna/indicadores/` é só uma cópia de leitura, atualizada a cada sincronização — editá-la manualmente não tem efeito permanente, a próxima sincronização sobrescreve com a versão do backend.
 
-O painel mostra, pra cada vendedor e pra loja, se estão "em ritmo" pra bater a meta até a data de hoje (verde) ou atrás (vermelho) — comparando o que já venderam com o que deveriam ter vendido até agora. Sem esse arquivo, esse cálculo assume que todo mundo trabalha todos os dias do mês (dias corridos). Preenchendo, o cálculo passa a descontar o dia de folga fixo de cada um, ficando mais justo.
+## `escala-{AAAA-MM}.csv` — opcional, um arquivo por mês
 
-| Coluna | O que é | Exemplo |
-|---|---|---|
-| `vendedor` | Nome do vendedor, igual ao usado em `vendas.csv` | `Nome do Vendedor` |
-| `dias_folga` | Dia(s) de folga fixo por semana, abreviado (`seg`, `ter`, `qua`, `qui`, `sex`, `sab`, `dom`). Mais de um dia: separe por `;` | `seg` ou `qua;dom` |
+O painel mostra, pra cada vendedor e pra loja, se estão "em ritmo" pra bater a meta até a data de hoje (verde) ou atrás (vermelho) — comparando o que já venderam com o que deveriam ter vendido até agora. Sem esse arquivo, esse cálculo assume que todo mundo trabalha todos os dias do mês (dias corridos). Preenchendo, o cálculo passa a descontar os dias de folga/falta/atestado/férias de cada um, ficando mais justo.
 
-Só é preciso ter uma linha pra quem tem folga fixa semanal — quem não aparece no arquivo é considerado sem folga fixa (trabalha todos os dias) nesse cálculo. Se a escala mudar (folga rotativa, trocou de dia), é só atualizar a linha — não precisa histórico, é sempre o valor atual.
+Cadastrado pela Área Adm do app (aba "Escala") — grade do mês, uma linha por vendedor, uma coluna por dia (`1, 2, 3, ...`), célula com um código (`F` = folga, `X` = falta, `A` = atestado, `FE` = férias) ou vazia (trabalha normal). Quem não aparece no arquivo do mês, ou se o arquivo não existir, é tratado como sem folga (dias corridos) nesse cálculo.
+
+## `calendario-gerencial.json` — agenda do gestor (notas, reuniões, tarefas)
+
+Diferente dos outros arquivos desta pasta, é **JSON, não CSV** (array que cresce pra sempre, mesmo espírito de `vendas.csv`) — cada item tem `id, data, hora, tipo (nota|reuniao|tarefa), titulo, descricao, vendedorId, prazo, concluida, atualizadoEm`. `hora` (formato `"HH:mm"`) é opcional, pra evento com horário marcado. `reuniao` pode ligar a um vendedor de `vendedores.json` por `vendedorId`; `tarefa` com `prazo` preenchido dispara um lembrete automático pelo `vetria-backend` no dia.
+
+Cadastrado pela Área Adm (aba "Calendário") ou pedindo pro Gerente IA no chat/Telegram/WhatsApp ("registra uma reunião com a Kelly sobre o PA dela amanhã"). **Também é autoridade do backend, mesmo motivo de `vendas.csv`** — a cópia em `dna/indicadores/` é só leitura.
+
+## `vendedores.json` — cadastro de cada vendedor (define quem está ativo)
+
+Ao contrário dos outros arquivos desta pasta, não é CSV nem se preenche por template — é cadastrado direto no app, na Área Adm, tela "Vendedores" (botão "Novo Vendedor"). É lá que se define nome, função, datas, telefone, sonhos, objetivos e um valor de vendas pessoal, e é o botão "Ativar"/"Desativar" dessa tela — não mais ter lançamento em `vendas.csv` — que define quem conta como equipe ativa pros cálculos de meta. `vendas.csv` continua sendo só o histórico de vendas de cada um.
 
 ## `corridas.csv` — uma linha por meta ou campanha do mês
 
@@ -75,6 +84,6 @@ Quando `automatizavel=nao`, o Gerente IA menciona o prêmio como pendente de con
 
 ## Equipe
 
-O Gerente IA não usa uma lista fixa de vendedores. Quem está "na loja" num período é definido dinamicamente por quem tem linhas em `vendas.csv` naquele período — se alguém sai da equipe, basta parar de lançar os dados dela; se entra alguém novo, basta começar a lançar. Nunca é preciso editar uma lista de nomes em separado.
+Quem está "na loja" é definido por `vendedores.json` (cadastrado pela Área Adm, aba "Vendedores"), campo `ativo` — não mais por ter linha em `vendas.csv`. `vendas.csv` continua sendo só o histórico de vendas de cada um, ligado ao perfil por nome (ou por `nomesAnteriores`, se a pessoa foi renomeada no cadastro).
 
 O Gerente IA relê estes arquivos automaticamente antes de qualquer análise ou relatório, e sempre recalcula do zero — nunca reaproveita um número de uma resposta anterior.

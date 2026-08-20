@@ -75,7 +75,7 @@ Comandos são atalhos pra tarefas específicas — digite `/` no chat pra ver a 
 | `/marketing-fechamento-mensal` | Fecha o mês de conteúdo: o que funcionou, o que não, o que repetir |
 | `/marketing-corrida-conteudo` | Cria uma corrida de criação de conteúdo entre vendedores |
 
-**Configuração (roda uma vez só)**
+**Configuração (roda uma vez só)** — veja [MANUAL-CONFIGURACAO-INICIAL.md](MANUAL-CONFIGURACAO-INICIAL.md) pra saber, antes de começar, o que cada um pede fora da conversa (Telegram, WhatsApp, geração de imagem — os únicos passos que não dá pra automatizar)
 | Comando | O que faz |
 |---|---|
 | `/configurar-canal-relatorio` | Escolhe Telegram (recomendado) ou WhatsApp pros relatórios automáticos |

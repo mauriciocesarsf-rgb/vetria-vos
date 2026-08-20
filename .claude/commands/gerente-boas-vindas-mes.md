@@ -19,13 +19,13 @@ Leia `.env`. Verifique `GERENTE_CANAL_RELATORIO`.
 
 ## Passo 2. Ler meta do mês, corridas e desempenho do mês anterior
 
-Leia `minhas-empresas/.ativa`. Leia `minhas-empresas/{ativa}/dna/indicadores/meta-mensal-loja.csv`, `corridas.csv`, `premios-especiais.csv` e `vendas.csv`.
+Leia `minhas-empresas/.ativa`. Leia `minhas-empresas/{ativa}/dna/indicadores/meta-mensal-loja.csv`, `corridas.csv`, `premios-especiais.csv`, `vendas.csv` e `vendedores.json`.
 
 Determine o mês de referência (o mês corrente, ou o que o usuário indicar). Encontre a linha de `meta-mensal-loja.csv` desse mês. Se não existir, informe que a meta do mês ainda não foi cadastrada e oriente a preencher antes de rodar este comando. Encerre.
 
 Filtre `corridas.csv` e `premios-especiais.csv` para as linhas vigentes no mês (período cobre alguma parte do mês).
 
-Identifique os vendedores ativos: quem tem pelo menos uma linha em `vendas.csv` no mês anterior completo. Se ninguém tiver histórico (equipe toda nova ou primeiro mês de uso), pergunte ao usuário os nomes dos vendedores ativos antes de prosseguir — nunca invente.
+Identifique os vendedores ativos: leia `vendedores.json` e filtre `ativo=true` (ao casar com `vendas.csv`, confira também `nomesAnteriores`). Se o arquivo não existir ou estiver vazio (equipe toda nova, ninguém cadastrado ainda), pergunte ao usuário os nomes dos vendedores ativos antes de prosseguir — nunca invente.
 
 **Meta individual do mês:** `meta_loja` do mês ÷ número de vendedores ativos (mesma lógica de `/gerente-enviar-relatorio`).
 
@@ -57,7 +57,7 @@ Para cada vendedor, monte (adapte o tom ao "Tom de comunicação" do Workbook DN
 
 💡 Sugestão prática: {1 sugestão concreta e acionável ligada ao ponto de melhoria — ex: se PM baixo, reforçar oferta de complementos; se conversão baixa, sugerir abordagem mais rápida; nunca genérica tipo "se esforce mais"}
 
-🔥 {frase motivacional curta, variando entre vendedores para não parecer copiado e colado}
+🔥 {frase motivacional curta, variando entre vendedores para não parecer copiado e colado — se `sonhos` e/ou `objetivos` estiverem preenchidos pra esse vendedor em `vendedores.json`, use-os pra tornar a frase concreta e pessoal (ex: citar o sonho ou um dos objetivos) em vez de genérica; sem esses campos preenchidos, mantenha a regra atual (nunca genérica tipo "se esforce mais")}
 ```
 
 A primeira linha ("📋 Encaminhar para: {vendedor}") existe só para o gerente saber pra quem repassar — não faz parte do texto que ele efetivamente encaminha; deixe claro isso na prévia do Passo 4.

@@ -1,7 +1,7 @@
 ---
 name: vetria:marketing-fechamento-mensal
-description: Fechamento mensal de conteúdo — o que funcionou, o que não funcionou, e o que repetir no próximo mês, a partir do calendário do mês e da avaliação do usuário (o sistema não tem acesso a métricas do Instagram/TikTok).
-allowed-tools: Read, Write
+description: Fechamento mensal de conteúdo — o que funcionou, o que não funcionou, e o que repetir no próximo mês, a partir do calendário do mês, da Validação de Ideias e da avaliação do usuário (o sistema não tem acesso a métricas do Instagram/TikTok) — já deixa um rascunho do calendário do mês seguinte pronto pra revisão do gerente.
+allowed-tools: Read, Write, WebSearch
 model: sonnet
 ---
 
@@ -15,19 +15,22 @@ Leia `minhas-empresas/.ativa`. Leia `minhas-empresas/{ativa}/dna/marketing/calen
 
 Se não existir: informe que não há calendário registrado para esse mês, e pergunte se quer montar o fechamento só com o que o usuário lembrar, sem o calendário como referência.
 
-## Passo 2. Perguntar o que funcionou
+## Passo 2. Ler o que já foi avaliado (Validação de Ideias)
 
 **Limitação importante:** o sistema não tem acesso direto a métricas do Instagram/TikTok (visualizações, curtidas, alcance, vendas atribuídas). Nunca invente esses números.
 
-```
-Olhando o calendário deste mês, quais temas/conteúdos tiveram bom resultado (visualizações, engajamento, ou venda que você percebeu)?
+Antes de perguntar ao usuário, leia `minhas-empresas/{ativa}/entregas/registro-atividades.md` — cada linha tem o formato `- **{data}** · {agente} · {título} · [ver arquivo]({caminho}) · status: {status}`. Filtre as linhas onde o agente é "Vetria Marketing" (ou equivalente) e o status começa com `validado` ou `não funcionou` (ignore `pendente validação` — ainda não foi avaliado). O texto depois do `—` no status, quando houver, é o motivo que a pessoa deu na Área Adm.
 
-E quais não performaram como esperado?
+- **Se houver pelo menos 1-2 itens avaliados esse mês:** use isso diretamente como "o que funcionou"/"o que não funcionou" — é dado real, não precisa perguntar de novo ao usuário. Cite o item e o motivo registrado.
+- **Se não houver dado suficiente** (ninguém avaliou nada na Validação de Ideias esse mês): caia no fluxo manual —
+  ```
+  Olhando o calendário deste mês, quais temas/conteúdos tiveram bom resultado (visualizações, engajamento, ou venda que você percebeu)?
 
-Pode listar livremente, ou me passar números se tiver à mão.
-```
+  E quais não performaram como esperado?
 
-Aguarde a resposta antes de montar o relatório.
+  Pode listar livremente, ou me passar números se tiver à mão.
+  ```
+  Aguarde a resposta antes de montar o relatório.
 
 ## Passo 3. Montar o relatório
 
@@ -50,6 +53,12 @@ Aguarde a resposta antes de montar o relatório.
 ```
 
 Salve em `minhas-empresas/{ativa}/entregas/marketing/fechamento-{AAAA-MM}.md`. Mostre o resumo (seções "O que funcionou" e "Recomendações") no chat, sem o documento inteiro.
+
+## Passo 4. Rascunhar o calendário do mês seguinte
+
+Se `dna/marketing/calendario-{AAAA-MM do mês seguinte}.md` **ainda não existir**: monte um rascunho agora, seguindo **o processo completo de `/marketing-criar-calendario`, passo a passo, sem pular nenhum** — pesquisa de datas comemorativas via `WebSearch`, campanhas da franqueadora, **material recebido em `dna/marketing/material-campanha/index.md` (se existir)**, ritmo-base de `estrategia-midias-sociais.md` pros dias comuns, e sazonalidade (checar `calendario-{mesmo mês, ano anterior}.md` e o que validou/não funcionou naquele período, se existir) — mas **incorporando as recomendações do Passo 3** — repita o que foi validado, ajuste ou evite o que não funcionou.
+
+Salve o rascunho normalmente em `dna/marketing/calendario-{AAAA-MM do mês seguinte}.md`. **Nunca trate como definitivo sem mostrar pro gerente primeiro** — apresente um resumo curto (destaques do mês + o que mudou por causa do aprendizado deste fechamento) e pergunte se está bom ou se quer ajustar algo antes de considerar pronto. Se o arquivo do mês seguinte já existir (alguém já rodou `/marketing-criar-calendario` antes), não sobrescreva — só informe que já existe.
 
 ## Regras
 
