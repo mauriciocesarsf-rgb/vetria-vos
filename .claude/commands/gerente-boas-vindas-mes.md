@@ -64,6 +64,12 @@ A primeira linha ("📋 Encaminhar para: {vendedor}") existe só para o gerente 
 
 Regras: nunca inclua julgamento negativo. "Onde focar" descreve o indicador, não a pessoa ("PA do mês passado ficou em 1,1, abaixo da média do time" — não "você vendeu pouco"). A sugestão prática é específica ao indicador identificado, nunca genérica.
 
+## Passo 3.5. Gerar a versão ilustrada (uma por vendedor)
+
+Conteúdo de início de mês sempre vai ilustrado, com a identidade visual da própria loja, seguindo o Passo 2d de `.claude/skills/gerar-imagem/SKILL.md`. Gere uma imagem por vendedor (mesmo conteúdo da mensagem individual dele no Passo 3), salvando cada uma em `entregas/gestao/apresentacoes/boas-vindas-mes-{vendedor-slug}-{AAAA-MM}.png`.
+
+Sem `VETRIA_EXE_PATH` disponível: siga sem imagem, só com o texto do Passo 3 normalmente — sem bloquear a entrega.
+
 ## Passo 4. Confirmar envio
 
 Mostre as {N} mensagens (prévia completa ou resumida se forem muitas) e pergunte:
@@ -82,11 +88,11 @@ Se opção 3: encerre sem chamar nenhuma API. Se opção 2: pergunte quais.
 
 ## Passo 5. Enviar
 
-Para cada vendedor confirmado, envie a mensagem dele como uma chamada separada à API, para o **destino do gerente** — não o destino de grupo:
+Para cada vendedor confirmado, envie a mensagem dele (com a imagem do Passo 3.5 correspondente, quando existir, como legenda igual ao padrão de imagem) como uma chamada separada à API, para o **destino do gerente** — não o destino de grupo:
 
-**Se `TELEGRAM`:** use `TELEGRAM_CHAT_ID_GERENTE` (em vez de `TELEGRAM_CHAT_ID_GRUPO`) no mesmo formato de `curl` de `/gerente-enviar-relatorio` Passo 6.
+**Se `TELEGRAM`:** use `TELEGRAM_CHAT_ID_GERENTE` (em vez de `TELEGRAM_CHAT_ID_GRUPO`) no mesmo formato de `curl` de `/gerente-enviar-relatorio` Passo 6 (variante com imagem ou sem, conforme o Passo 3.5 tenha gerado ou não).
 
-**Se `WHATSAPP`:** use `GERENTE_WHATSAPP_DESTINO_GERENTE` (em vez de `GERENTE_WHATSAPP_DESTINO_GRUPO`) no mesmo formato de `curl` de lá — o `phone` do payload é sempre esse número, é sempre um contato individual, nunca um grupo.
+**Se `WHATSAPP`:** use `GERENTE_WHATSAPP_DESTINO_GERENTE` (em vez de `GERENTE_WHATSAPP_DESTINO_GRUPO`) no mesmo formato de lá — o `phone`/destino do payload é sempre esse número, sempre um contato individual, nunca um grupo.
 
 Mesmas regras de segurança: arquivo temporário para o corpo da requisição, nunca credenciais como argumento de linha de comando, nunca imprimir Token/Client-Token/Bot Token no chat. São {N} chamadas separadas, uma por vendedor — nunca uma mensagem só concatenada.
 

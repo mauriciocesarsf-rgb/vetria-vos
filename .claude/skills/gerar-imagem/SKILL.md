@@ -196,6 +196,21 @@ Ambos os modos: saída de sucesso é `OK {caminho absoluto do arquivo gerado}` n
 
 `--render-html-para-png` aceita HTML com caminhos de imagem relativos (`<img src="produto.png">`) resolvidos relativos à pasta do próprio arquivo HTML — gere o HTML e as imagens de apoio na mesma pasta.
 
+### 2d. Apresentação de Relatório / Início de Mês (tela cheia, `entregas/{área}/apresentacoes/`)
+
+Formato reservado pra **relatórios** (acompanhamento de meta, ranking, fechamento de período, fechamento mensal) e **conteúdo de início de mês** (boas-vindas do mês, escala sugerida) — nunca pro dia a dia comum do chat. Esse conteúdo é pensado pra ser visto grande, guardado e até impresso na loja, não só lido de relance no balão pequeno.
+
+**O gatilho é só o caminho onde a imagem é salva.** Salve em `entregas/{gestao, marketing ou styling}/apresentacoes/{nome-descritivo}.png` (não em `.../imagens/`) e referencie esse caminho puro na resposta, exatamente como já faz pra imagem comum — o app abre automaticamente em tela cheia com opção de baixar, em vez do balão pequeno. Nenhuma instrução extra na mensagem, nenhuma menção de "modo tela cheia" — é inteiramente automático a partir da pasta.
+
+**a. Identidade visual.** Sempre a da própria loja, nunca a da Vetria. Leia `dna/workbook-dna.docx`, seção "Identidade Visual" (cores, tipografia, descrição do logo). Faça `Glob` em `dna/identidade-visual/**/*.{png,jpg,jpeg,svg}` e `dna/**/*logo*.{png,jpg,jpeg,svg}` — se achar um logo real, use-o (`<img>`, caminho relativo, resolvido pela mesma pasta do HTML). Sem logo encontrado, não invente: use o nome da loja como wordmark tipografado. Sem nenhuma cor institucional definida, escolha uma paleta neutra e sóbria coerente com o segmento (nunca navy/dourado — são da marca Vetria) e prossiga.
+
+**b. HTML.** Página única, formato vertical (largura 1080, altura conforme o conteúdo), pensada pra abrir bem numa tela de celular:
+- **Topo:** logo/wordmark da loja + título do relatório + período/mês por extenso.
+- **Corpo:** o conteúdo real do relatório (meta batida/faltante por vendedor, ranking com destaque pros 3 primeiros, texto de fechamento, o que for) — hierarquia visual clara (números grandes, nome do vendedor em destaque, medalha/posição de ranking com um selo visual, não só emoji de texto).
+- **Rodapé:** linha motivacional ou de fechamento, numa caixa discreta com a cor de acento da marca.
+
+**c. Renderizar.** Mesmo mecanismo do Passo 2c acima (`VETRIA_EXE_PATH`, `--render-html-para-png`, `--width 1080`). Sem `VETRIA_EXE_PATH` disponível: sem alternativa de renderização — envie só o texto normal (formato de sempre daquele relatório) e avise que atualizar a Vetria habilita a versão ilustrada.
+
 ## Passo 3. Entregar
 
 Se o script imprimir `OK {caminho}`, informe o caminho ao usuário. Nunca mostre base64 no chat.

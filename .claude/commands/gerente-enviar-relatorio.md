@@ -130,6 +130,12 @@ Bora pra cima, equipe! 💪🚀
 
 Em todos os formatos: nunca inclua julgamento negativo sobre ninguém. Adapte o tom (mais formal ou mais descontraído) ao que o Workbook DNA da empresa define em "Tom de comunicação", ou ao que o usuário pedir na hora.
 
+## Passo 4.5. Gerar a versão ilustrada
+
+Todo relatório é conteúdo de "relatório" (não dia a dia) — sempre vai ilustrado, com a identidade visual da própria loja, seguindo o Passo 2d de `.claude/skills/gerar-imagem/SKILL.md`. Monte o HTML com o conteúdo real da mensagem do Passo 4 (meta/vendido/faltam por vendedor, ranking com destaque pros 3 primeiros, linha motivacional), renderize e salve em `entregas/gestao/apresentacoes/relatorio-{corrida ou período}-{AAAA-MM-DD}.png`.
+
+Sem `VETRIA_EXE_PATH` disponível: siga sem imagem, só com o texto do Passo 4 normalmente — sem bloquear a entrega.
+
 ## Passo 5. Confirmar envio
 
 ```
@@ -143,15 +149,29 @@ Enviar para {destino legível}?
 2. Não, só mostrar aqui
 ```
 
-Se opção 2: encerre sem chamar nenhuma API.
+Se opção 2: encerre sem chamar nenhuma API. Se a imagem do Passo 4.5 foi gerada, mostre-a aqui no chat antes de perguntar (referencie `entregas/gestao/apresentacoes/{arquivo}.png` puro na resposta — abre em tela cheia automaticamente).
 
 ## Passo 6. Enviar
 
-O envio depende de `GERENTE_CANAL_RELATORIO`.
+O envio depende de `GERENTE_CANAL_RELATORIO`. A mensagem do Passo 4 vira legenda da imagem quando ela existe; sem imagem, segue como texto puro, igual sempre foi.
 
-**Se `TELEGRAM`:**
+**Se `TELEGRAM`, com imagem gerada:**
 
-Leia `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID_GRUPO` do `.env`. Salve a mensagem num arquivo temporário para evitar problemas de escape:
+Leia `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID_GRUPO` do `.env`. Salve a legenda num arquivo temporário:
+
+```bash
+TMPFILE=$(mktemp)
+cat > "$TMPFILE" <<'EOF'
+{MENSAGEM}
+EOF
+curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+  -F "chat_id=${TELEGRAM_CHAT_ID_GRUPO}" \
+  -F "caption=<${TMPFILE}" \
+  -F "photo=@${CAMINHO_PNG}"
+rm "$TMPFILE"
+```
+
+**Se `TELEGRAM`, sem imagem (fallback):**
 
 ```bash
 TMPFILE=$(mktemp)
@@ -164,9 +184,37 @@ curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" 
 rm "$TMPFILE"
 ```
 
-**Se `WHATSAPP`:**
+**Se `WHATSAPP`, com imagem gerada:**
 
-Leia `ZAPI_INSTANCE_ID`, `ZAPI_TOKEN`, `ZAPI_CLIENT_TOKEN`, `GERENTE_WHATSAPP_DESTINO_GRUPO` do `.env`:
+Leia `ZAPI_INSTANCE_ID`, `ZAPI_TOKEN`, `ZAPI_CLIENT_TOKEN`, `GERENTE_WHATSAPP_DESTINO_GRUPO` do `.env`. A Z-API espera a imagem como base64/data URI, então use um script Node curto (leia os valores do `.env` dentro do próprio script, nunca literal no comando):
+
+```bash
+node -e '
+const https = require("https");
+const fs = require("fs");
+function lerEnv(chave) {
+  const c = fs.readFileSync(".env", "utf8");
+  const m = new RegExp(`^${chave}=(.*)$`, "m").exec(c);
+  return m ? m[1].trim() : null;
+}
+const instanceId = lerEnv("ZAPI_INSTANCE_ID");
+const token = lerEnv("ZAPI_TOKEN");
+const clientToken = lerEnv("ZAPI_CLIENT_TOKEN");
+const phone = lerEnv("GERENTE_WHATSAPP_DESTINO_GRUPO");
+const img = fs.readFileSync(process.argv[1]).toString("base64");
+const caption = process.argv[2];
+const body = JSON.stringify({ phone, image: `data:image/png;base64,${img}`, caption });
+const req = https.request(
+  `https://api.z-api.io/instances/${instanceId}/token/${token}/send-image`,
+  { method: "POST", headers: { "Content-Type": "application/json", "Client-Token": clientToken } },
+  (res) => { let d=""; res.on("data", c=>d+=c); res.on("end", () => console.log(res.statusCode, d.slice(0,300))); }
+);
+req.write(body);
+req.end();
+' "${CAMINHO_PNG}" "{MENSAGEM}"
+```
+
+**Se `WHATSAPP`, sem imagem (fallback):**
 
 ```bash
 TMPFILE=$(mktemp)

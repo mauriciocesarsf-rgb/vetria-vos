@@ -15,9 +15,9 @@ Leia `minhas-empresas/.ativa`. Sem empresa ativa, informe e pare.
 
 ## Passo 2. Conferir a Pasta DNA
 
-Leia `minhas-empresas/{ativa}/dna/workbook-dna.docx`. Confira as 13 seções (mesma lógica do painel: uma seção conta como preenchida se tiver conteúdo além do título).
+Leia `minhas-empresas/{ativa}/dna/workbook-dna.docx`. Confira as 10 seções (01 Dados da Empresa, 02 Missão/Visão/Valores, 03 Marca, 04 Produtos, 05 Comunicação, 06 Identidade Visual, 07 Equipe, 08 Objetivo Atual, 09 Materiais Disponíveis, 10 Informações Complementares) — uma seção conta como preenchida se tiver conteúdo além do título/rótulo dos campos.
 
-**Se estiver 13/13:** siga direto pro Passo 3.
+**Se estiver 10/10:** siga direto pro Passo 3.
 
 **Se faltar algo:** liste o que falta e pergunte:
 

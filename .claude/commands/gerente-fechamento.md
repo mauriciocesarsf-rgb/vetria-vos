@@ -101,7 +101,7 @@ Quer que eu mande um aviso curto pro seu canal (Telegram/WhatsApp) avisando que 
 2. Não
 ```
 
-Se sim: monte um resumo curto (resumo executivo + destaque de 1 vendedor positivo, sem citar quem está em ponto de atenção — isso é sensível demais para uma notificação curta, fica só no documento completo) e envie para o **destino do gerente** (mesma lógica de `/gerente-boas-vindas-mes`, nunca o grupo — este conteúdo é avaliação de equipe, não é para o grupo geral). Confirme antes de enviar, como sempre.
+Se sim: monte um resumo curto (resumo executivo + destaque de 1 vendedor positivo, sem citar quem está em ponto de atenção — isso é sensível demais para uma notificação curta, fica só no documento completo). Esse aviso é conteúdo de fechamento/início de mês, então vai ilustrado: siga o Passo 2d de `.claude/skills/gerar-imagem/SKILL.md`, salvando em `entregas/gestao/apresentacoes/fechamento-resumo-{periodo_inicio}-a-{periodo_fim}.png` (sem `VETRIA_EXE_PATH` disponível, siga só com o texto). Envie para o **destino do gerente** (mesma lógica de `/gerente-boas-vindas-mes`, nunca o grupo — este conteúdo é avaliação de equipe, não é para o grupo geral), com a imagem quando existir e o resumo curto como legenda, no mesmo formato de `curl`/Node de `/gerente-enviar-relatorio` Passo 6. Confirme antes de enviar, como sempre.
 
 ## Regras
 

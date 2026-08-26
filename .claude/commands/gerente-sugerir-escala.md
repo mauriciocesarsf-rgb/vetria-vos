@@ -52,13 +52,82 @@ Base usada: {resumo de 1 frase da regra trabalhista de config-escala.md — ex: 
 Essa é uma sugestão — confirma se pode aplicar, ou me diga o que ajustar (ex: trocar a data de alguém específico).
 ```
 
+## Passo 3.5. Gerar a imagem da escala
+
+A sugestão vai ilustrada, com a identidade visual da própria loja (nunca a identidade da Vetria) — texto puro só entra como legenda curta ou como reserva se a imagem não puder ser gerada. Isso vale tanto no fluxo interativo quanto no automático.
+
+**a. Levantar a identidade visual da loja.** Leia `dna/workbook-dna.docx`, seção "Identidade Visual" (cores institucionais, tipografia, descrição do logo). Faça também um `Glob` em `dna/identidade-visual/**/*.{png,jpg,jpeg,svg}` e `dna/**/*logo*.{png,jpg,jpeg,svg}` — se achar um arquivo que pareça ser o logo da loja, use-o de verdade na imagem (`<img>`, caminho relativo — ver regra de caminho relativo no Passo c). Sem logo encontrado, não invente um: use o nome da loja como wordmark, tipografado com capricho, no lugar do logo.
+
+Sem nenhuma cor institucional definida no Workbook (seção ainda vazia): não use a paleta da Vetria (navy/dourado são da marca Vetria, não da loja). Escolha uma paleta neutra e sóbria (tons de grafite, areia ou creme com um único acento discreto) coerente com o segmento da loja, e prossiga — nunca pare a entrega por falta disso.
+
+**b. Montar a grade visual.** HTML de página única, fundo levemente texturizado ou sólido na cor de base da marca, com:
+- **Topo:** logo ou wordmark da loja + "Sugestão de Escala" + "{mês alvo por extenso} de {ano}".
+- **Corpo, uma linha por vendedor ativo** (mesma ordem alfabética do Passo 2): nome do vendedor à esquerda; à direita, uma tira horizontal com um círculo pra cada dia do mês (numerado), os dias de folga desse vendedor preenchidos na cor de acento da marca, os demais em contorno neutro. Uma linha fina de iniciais do dia da semana (D S T Q Q S S) acima da primeira tira, alinhada às colunas, pra dar contexto sem repetir em cada linha.
+- **Rodapé:** a linha "Base usada: {resumo da regra trabalhista}" do Passo 3, e as observações condicionais (bloqueios, ajuste sazonal) quando existirem, numa caixa discreta.
+- **Fechamento:** "Essa é uma sugestão. Responda pra confirmar ou pedir ajuste." em destaque sutil.
+- Formato vertical (largura 1080, altura conforme o conteúdo, igual à Prancha Completa) — pensado pra abrir bem numa tela de celular.
+
+**c. Renderizar.** Mesmo mecanismo da Prancha Completa (`.claude/skills/gerar-imagem/SKILL.md`, Passo 2c/2d) — leia `VETRIA_EXE_PATH` do `.env` manualmente (nunca confie em `process.env`), gere o HTML e qualquer imagem de apoio (logo) na mesma pasta temporária, e rode:
+
+```js
+execFileSync(exePath, ['--render-html-para-png', entradaHtml, saidaPng, '--width', '1080'], { stdio: 'pipe' });
+```
+
+Salve o resultado em `entregas/gestao/apresentacoes/escala-{mês alvo, AAAA-MM}.png` — a pasta `apresentacoes/` (não `imagens/`) é o que faz o app abrir isso em tela cheia com opção de baixar, em vez do balão pequeno (ver Passo 2d de `gerar-imagem/SKILL.md`).
+
+**Sem `VETRIA_EXE_PATH` (ausente ou arquivo não existe):** não existe alternativa de renderização — siga só com a mensagem de texto do Passo 3, e avise que atualizar a Vetria habilita a versão ilustrada.
+
 ## Passo 4. Registrar e enviar
 
 Registre em `entregas/registro-atividades.md` uma entrada com título "Sugestão de escala — {mês alvo}/{ano}" e status **pendente validação** (mesmo padrão usado pros outros entregáveis do sistema).
 
-**Se estiver rodando de forma interativa** (tem um usuário respondendo no momento): mostre a mensagem do Passo 3 aqui no chat primeiro. Se o usuário confirmar que pode aplicar, escreva o resultado em `dna/indicadores/escala-{mês alvo, AAAA-MM}.csv` — a grade completa (header `vendedor` + uma coluna por dia do mês, célula `F` nas datas de folga, vazio nos outros dias, um arquivo novo ou substituindo o conteúdo anterior desse mês) — e atualize a entrada em `registro-atividades.md` pra **validado**. Se pedir ajustes, refaça a distribuição considerando o pedido e mostre de novo antes de aplicar.
+**Se estiver rodando de forma interativa** (tem um usuário respondendo no momento): mostre a imagem do Passo 3.5 aqui no chat primeiro (referencie o caminho `entregas/gestao/apresentacoes/escala-{AAAA-MM}.png` puro na resposta — abre em tela cheia automaticamente), com a mensagem do Passo 3 como legenda abaixo. Sem imagem gerada, mostre só o texto do Passo 3. Se o usuário confirmar que pode aplicar, escreva o resultado em `dna/indicadores/escala-{mês alvo, AAAA-MM}.csv` — a grade completa (header `vendedor` + uma coluna por dia do mês, célula `F` nas datas de folga, vazio nos outros dias, um arquivo novo ou substituindo o conteúdo anterior desse mês) — e atualize a entrada em `registro-atividades.md` pra **validado**. Se pedir ajustes, refaça a distribuição considerando o pedido, regenere a imagem (Passo 3.5) e mostre de novo antes de aplicar.
 
-**Se estiver rodando de forma automática e agendada** (sem usuário disponível pra responder — ex: acionado no fim do mês pelo backend): não aplique nada em `escala-{mês alvo}.csv` sozinho. Só envie a mensagem do Passo 3 pro canal configurado (mesma lógica de destino usada em `/gerente-enviar-relatorio` — `TELEGRAM_CHAT_ID_GERENTE` se configurado, senão o grupo) e deixe registrado como pendente validação. A aplicação de fato só acontece numa sessão futura, quando alguém confirmar.
+**Se estiver rodando de forma automática e agendada** (sem usuário disponível pra responder — ex: acionado no fim do mês pelo backend): não aplique nada em `escala-{mês alvo}.csv` sozinho. Envie a imagem do Passo 3.5 pro canal configurado (mesma lógica de destino usada em `/gerente-enviar-relatorio` — `TELEGRAM_CHAT_ID_GERENTE` se configurado, senão o grupo), com a mensagem do Passo 3 como legenda:
+
+**Se `TELEGRAM`** (imagem gerada): leia `TELEGRAM_BOT_TOKEN` do `.env`. Salve a legenda num arquivo temporário, igual ao padrão de `/gerente-enviar-relatorio`:
+```bash
+TMPFILE=$(mktemp)
+cat > "$TMPFILE" <<'EOF'
+{LEGENDA — mensagem do Passo 3}
+EOF
+curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto" \
+  -F "chat_id=${TELEGRAM_CHAT_ID_GERENTE}" \
+  -F "caption=<${TMPFILE}" \
+  -F "photo=@${CAMINHO_PNG}"
+rm "$TMPFILE"
+```
+
+**Se `WHATSAPP`** (imagem gerada): a Z-API espera a imagem como base64/data URI dentro do JSON, então use um script Node curto (mesmo espírito do `gerar-imagem/SKILL.md`) pra ler o PNG, montar o payload e enviar — nunca escreva token/client-token literal no comando, leia do `.env` dentro do próprio script:
+```bash
+node -e '
+const https = require("https");
+const fs = require("fs");
+function lerEnv(chave) {
+  const c = fs.readFileSync(".env", "utf8");
+  const m = new RegExp(`^${chave}=(.*)$`, "m").exec(c);
+  return m ? m[1].trim() : null;
+}
+const instanceId = lerEnv("ZAPI_INSTANCE_ID");
+const token = lerEnv("ZAPI_TOKEN");
+const clientToken = lerEnv("ZAPI_CLIENT_TOKEN");
+const phone = lerEnv("GERENTE_WHATSAPP_DESTINO_GRUPO");
+const img = fs.readFileSync(process.argv[1]).toString("base64");
+const caption = process.argv[2];
+const body = JSON.stringify({ phone, image: `data:image/png;base64,${img}`, caption });
+const req = https.request(
+  `https://api.z-api.io/instances/${instanceId}/token/${token}/send-image`,
+  { method: "POST", headers: { "Content-Type": "application/json", "Client-Token": clientToken } },
+  (res) => { let d=""; res.on("data", c=>d+=c); res.on("end", () => console.log(res.statusCode, d.slice(0,300))); }
+);
+req.write(body);
+req.end();
+' "${CAMINHO_PNG}" "{LEGENDA — mensagem do Passo 3}"
+```
+
+**Sem imagem gerada** (Passo 3.5 caiu no fallback): use exatamente o envio em texto puro já documentado (`sendMessage`/`send-text`), igual ao padrão de `/gerente-enviar-relatorio`.
+
+A aplicação de fato em `escala-{mês alvo}.csv` só acontece numa sessão futura, quando alguém confirmar.
 
 ## Passo 5. Sem canal configurado
 
