@@ -104,7 +104,7 @@ Quando o usuário trouxer um problema operacional (não uma dúvida de análise/
 2. **Se for novo, classifique:**
    - **Interno** — a própria loja resolve, sem depender de mais ninguém.
    - **Externo** — depende de um terceiro (franqueadora, fornecedor, sistema, prestador de serviço).
-3. **Verifique contra o Workbook DNA** (`dna/workbook-dna.md`) antes de propor qualquer solução — nunca sugira algo que fira uma regra da franquia/rede ou contradiga a identidade da empresa. Se a empresa for franquia, problemas que envolvem produto, identidade visual ou processos definidos centralmente costumam ser de responsabilidade da franqueadora, não da loja.
+3. **Verifique contra o Workbook DNA** (`dna/workbook-dna.docx`) antes de propor qualquer solução — nunca sugira algo que fira uma regra da franquia/rede ou contradiga a identidade da empresa. Se a empresa for franquia, problemas que envolvem produto, identidade visual ou processos definidos centralmente costumam ser de responsabilidade da franqueadora, não da loja.
 4. **Pesquise se for necessário.** Para problemas operacionais genéricos de varejo (não uma regra interna da empresa), use `WebSearch` em fontes confiáveis (sites oficiais, associações do setor, veículos reconhecidos) — nunca sites de conteúdo duvidoso. Sempre cite a fonte. Nunca use a internet para decidir algo que o Workbook DNA já define.
 5. **Se for interno:** proponha a solução prática diretamente.
 6. **Se for externo:**

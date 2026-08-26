@@ -15,7 +15,7 @@ Leia `minhas-empresas/.ativa`. Sem empresa ativa, informe e pare.
 
 ## Passo 2. Conferir a Pasta DNA
 
-Leia `minhas-empresas/{ativa}/dna/workbook-dna.md`. Confira as 13 seções (mesma lógica do painel: uma seção conta como preenchida se tiver conteúdo além do título).
+Leia `minhas-empresas/{ativa}/dna/workbook-dna.docx`. Confira as 13 seções (mesma lógica do painel: uma seção conta como preenchida se tiver conteúdo além do título).
 
 **Se estiver 13/13:** siga direto pro Passo 3.
 
@@ -30,7 +30,7 @@ Quer completar agora antes da largada, ou seguir com o que já temos e completar
 2. Seguir com o que já tem — completo depois
 ```
 
-- **Opção 1:** conduza o preenchimento das seções faltantes (mesmo fluxo de ativação normal — pergunte, nunca invente), atualize `workbook-dna.md`, depois siga pro Passo 3.
+- **Opção 1:** conduza o preenchimento das seções faltantes (mesmo fluxo de ativação normal — pergunte, nunca invente), atualize `workbook-dna.docx`, depois siga pro Passo 3.
 - **Opção 2:** siga pro Passo 3 mesmo assim. No plano final, sinalize com clareza quais recomendações ficaram mais genéricas por falta daquela informação (ex: sem "Público principal" preenchido, uma sugestão de conteúdo não pode ser tão direcionada).
 
 ## Passo 3. Ler a situação atual

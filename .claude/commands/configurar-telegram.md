@@ -36,19 +36,40 @@ Você já tem um bot do Telegram criado?
 2. Não tenho ainda
 ```
 
-**Se não tiver:** instrua:
+**Se não tiver:** a pessoa do outro lado pode nunca ter feito nada parecido — trate cada tela como se fosse a primeira vez dela usando um app de mensagens pra algo técnico. Mostre uma ilustração por sub-passo (nunca despeje o passo a passo inteiro de uma vez), e espere a confirmação antes de seguir pra próxima.
+
+Copie `assets/tutoriais/telegram-passo1-buscar.png` para `minhas-empresas/{ativa}/entregas/gestao/imagens/tutorial-telegram-passo1.png` (crie a pasta se não existir) e mostre, referenciando esse caminho na resposta:
 ```
-Vamos criar seu bot (leva 2 minutos):
+Vamos criar seu bot, leva 2 minutos. Primeiro:
 
 1. Abra o Telegram
-2. Busque por @BotFather
-3. Envie o comando: /newbot
-4. Escolha um nome (ex: Vetria Gerente)
-5. Escolha um username terminado em "bot" (ex: vetria_santalolla_bot)
-6. O BotFather responde com o token, no formato:
-   123456789:AAFxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+2. Na busca, digite @BotFather e toque no resultado (é o bot oficial, vem com esse nome exato)
 
-Copie esse token e cole aqui.
+entregas/gestao/imagens/tutorial-telegram-passo1.png
+
+Me avisa quando estiver na conversa com o BotFather.
+```
+
+Depois de confirmado, copie `assets/tutoriais/telegram-passo2-criar.png` para `.../imagens/tutorial-telegram-passo2.png` e mostre:
+```
+Agora, dentro da conversa com o BotFather:
+
+1. Envie o comando /newbot (só isso, sem mais nada na mensagem)
+2. Ele vai perguntar um nome pro bot — pode ser "Vetria {nome da loja}"
+3. Depois vai pedir um username, que precisa terminar em "bot" — sugestão: vetria_{algo curto da loja}_bot
+
+entregas/gestao/imagens/tutorial-telegram-passo2.png
+
+Manda um "ok" ou já cola aqui o que o BotFather respondeu, o que for mais fácil.
+```
+
+Por fim, copie `assets/tutoriais/telegram-passo3-token.png` para `.../imagens/tutorial-telegram-passo3.png` e mostre:
+```
+Perfeito. O BotFather agora respondeu com um token, uma linha comprida começando com números e dois pontos, tipo 123456789:AAF...
+
+entregas/gestao/imagens/tutorial-telegram-passo3.png
+
+Copia essa linha inteira e cola aqui pra mim.
 ```
 
 **Se já tiver:** peça o token.
@@ -67,10 +88,16 @@ curl -s "https://api.telegram.org/bot{TOKEN_INFORMADO}/getMe" | head -c 300
 Faça isso para cada destino que ainda falta (grupo e/ou gerente).
 
 **Destino: grupo da loja**
+
+Copie `assets/tutoriais/telegram-passo4-grupo.png` para `minhas-empresas/{ativa}/entregas/gestao/imagens/tutorial-telegram-passo4.png` (crie a pasta se não existir) e mostre:
 ```
-1. Adicione o bot ao grupo da loja.
-2. Envie qualquer mensagem no grupo (pode ser só "oi").
-3. Me avise quando fizer isso.
+1. Abra o grupo da loja no Telegram, vá em Adicionar membro
+2. Busque o nome de usuário do bot que você criou (termina em "bot") e adicione ele
+3. Depois, envie qualquer mensagem no grupo, pode ser só "oi"
+
+entregas/gestao/imagens/tutorial-telegram-passo4.png
+
+Me avisa quando fizer isso.
 ```
 
 **Destino: gerente**

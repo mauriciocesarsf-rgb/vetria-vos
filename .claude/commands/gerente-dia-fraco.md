@@ -19,7 +19,7 @@ Se não houver dados suficientes pra comparar (histórico curto), pergunte diret
 
 ## Passo 2. Levantar contexto
 
-Leia o Workbook DNA da empresa ativa (`dna/workbook-dna.md`) para tom de comunicação, produtos em destaque e diferenciais. Leia `corridas.csv` e `premios-especiais.csv` vigentes — se houver uma corrida rodando, o playbook de hoje pode reforçá-la (ex: "hoje é um bom dia pra puxar P.A., já que está devagar").
+Leia o Workbook DNA da empresa ativa (`dna/workbook-dna.docx`) para tom de comunicação, produtos em destaque e diferenciais. Leia `corridas.csv` e `premios-especiais.csv` vigentes — se houver uma corrida rodando, o playbook de hoje pode reforçá-la (ex: "hoje é um bom dia pra puxar P.A., já que está devagar").
 
 Identifique os vendedores ativos: leia `dna/indicadores/vendedores.json` e filtre `ativo=true` (ao casar com `vendas.csv`, confira também `nomesAnteriores`). Se o arquivo não existir ou estiver vazio, pergunte ao usuário — nunca invente.
 

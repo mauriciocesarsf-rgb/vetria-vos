@@ -1,40 +1,48 @@
 # Instalação — Vetria VOS
 
-Como colocar o Vetria pra rodar numa loja nova. Este documento é sobre **acesso** (onde abrir), não sobre uso — pra isso, ver [`MANUAL-DE-USO.md`](MANUAL-DE-USO.md).
+Como colocar o Vetria pra rodar numa loja nova. Este documento é sobre **acesso** (como abrir e ativar), não sobre uso do dia a dia — pra isso, ver [`MANUAL-DE-USO.md`](MANUAL-DE-USO.md).
 
-## Pré-requisito obrigatório: conta Claude
+> **Nota de versão:** este documento substitui a versão anterior, que descrevia o fluxo antigo (abrir a pasta manualmente no VS Code/Cursor). Hoje existe um instalador de verdade (`Vetria Setup 1.0.0.exe`) que faz a maior parte disso sozinho.
 
-O Vetria **não é um programa independente** — é um conjunto de instruções (`CLAUDE.md`, agents, commands) que só roda dentro do **Claude Code**, da Anthropic. Sem uma conta Claude com acesso ao Claude Code, não tem como usar o Vetria, de nenhuma forma.
+## Pré-requisito obrigatório: conta Claude com Claude Code
 
-Isso é um custo separado do cliente, não incluído no Vetria em si. Ao vender/implantar o Vetria pra um cliente novo, deixe isso explícito antes de qualquer coisa.
+O Vetria roda por baixo dos panos usando o **Claude Code**, da Anthropic — o app instala o motor sozinho, mas **não cria nem paga a conta**. Sem uma conta Claude com acesso ao Claude Code, autenticada na máquina, o chat da Vetria não responde.
 
-## Duas formas de abrir o projeto
+Isso é um custo separado do cliente, não incluído no Vetria em si. Ao implantar o Vetria pra um cliente novo, deixe isso explícito antes de qualquer coisa.
 
-### 1. Desktop (VS Code ou Cursor) — mais completo, testado nesta implantação
+**Como autenticar (uma vez só, por máquina):**
+1. Instale o Claude Code seguindo [claude.com/claude-code](https://claude.com/claude-code).
+2. Rode `claude` uma vez no terminal e siga o login (abre o navegador, autentica com a conta Claude do cliente).
+3. Pronto — essa sessão fica salva na máquina, e o Vetria reaproveita ela automaticamente. Não precisa repetir isso depois de instalar o Vetria, só precisa já estar feito antes de abrir o app.
 
-1. Instale o [Claude Code](https://claude.com/claude-code) (CLI) e a extensão no VS Code ou Cursor.
-2. Clone o repositório `vetria-vos` (ou baixe a pasta) na máquina.
-3. Abra a pasta no VS Code/Cursor.
-4. O `CLAUDE.md` é lido automaticamente a cada conversa nova.
+## Instalar o Vetria (instalador único, Windows)
 
-É o caminho usado até agora, o mais testado.
+1. Baixe `Vetria Setup 1.0.0.exe`.
+2. Rode o instalador. Ele:
+   - instala o **Git** e o **Node.js** automaticamente, se ainda não existirem na máquina;
+   - baixa a versão mais recente do Vetria direto do repositório oficial pra Área de Trabalho;
+   - cria o atalho **Vetria** na Área de Trabalho e no Menu Iniciar.
+3. Abra o Vetria pelo atalho.
 
-### 2. Celular / navegador puro — testado, **não funciona hoje**
+Não precisa clonar repositório na mão, não precisa abrir VS Code, não precisa saber o que é terminal — isso tudo acontece dentro do instalador.
 
-Testamos ao vivo em 2026-08 (Android, Chrome): dentro de claude.ai, a seção "Código" (em Produtos, na barra lateral) leva pra `claude.ai/code`, mas essa página é só uma **divulgação do produto Claude Code**, com o comando de instalação do CLI (`curl -fsSL https://claude.ai/install.sh | bash`) — feito pra rodar num terminal de computador. Não existe uma sessão de código utilizável direto do navegador do celular.
+> **Ainda não existe versão para Mac.** O `Vetria Setup 1.0.0.exe` só instala em Windows por enquanto. Loja com Mac precisa esperar uma versão futura ou usar um computador Windows pra rodar o Vetria.
 
-**Conclusão prática: hoje não dá pra usar o Vetria só pelo celular, sem um computador rodando o Claude Code por trás.** Se isso for um requisito forte, as opções realistas são:
-- **Acesso remoto** a um computador que já tem o Vetria instalado (app de área de trabalho remota tipo AnyDesk/TeamViewer) — funciona hoje, mas a experiência num celular é ruim (tela pequena, feita pra desktop).
-- **App mobile dedicado** (chat + gerador de imagem, como cheguei a levantar antes) — construção separada e grande, fora da arquitetura atual de prompts.
-- **Esperar o produto Claude Code evoluir** — a Anthropic pode lançar acesso web completo no futuro; vale reconferir essa página de tempos em tempos.
+## Primeira ativação da loja
 
-Por ora, todo uso do Vetria depende de um computador (desktop ou notebook) com VS Code/Cursor + Claude Code instalados.
+Na primeira vez que abre o Vetria (antes de qualquer loja cadastrada), o app pede pra você contar sobre a loja — nome, segmento — direto numa conversa, sem formulário. Com isso, ele já cria a pasta da empresa e o painel visual aparece.
 
-## Pra quem revender o Vetria (contexto de produto)
+## Uso no dia a dia
 
-Cada cliente novo precisa, além de receber o Vetria:
-1. Ter (ou criar) a própria conta Claude com acesso ao Claude Code.
-2. Ter um computador (desktop/notebook) com VS Code ou Cursor + Claude Code instalados — celular sozinho não é suficiente hoje (ver acima).
-3. Preencher a Pasta DNA da empresa dele (ver `MANUAL-DE-USO.md`).
+Depois de ativada, o Vetria abre sempre no painel da loja: a constelação viva dos três especialistas, os indicadores do mês, e o campo de chat pra conversar com eles a qualquer momento. Ver `MANUAL-DE-USO.md` pros detalhes de cada especialista e comando.
 
-O empacotamento desktop (instalador tipo Fluxo Criativo, nos "próximos passos" do `README.md`) deixa o passo 1-2 mais simples de guiar, mas não remove a exigência da conta Claude — só facilita a instalação em volta dela.
+## Pra quem revende o Vetria (contexto de produto)
+
+Cada cliente novo precisa, além de receber o instalador:
+1. Ter (ou criar) a própria conta Claude com acesso ao Claude Code, autenticada na máquina (ver acima) — **isso não é feito pelo instalador**, precisa acontecer antes.
+2. Ter um computador Windows (Mac ainda não é suportado).
+3. Preencher a Pasta DNA da empresa dele durante a conversa inicial e ao longo do uso (ver `MANUAL-DE-USO.md`).
+
+## Uso pelo celular
+
+**Ainda não existe.** O Vetria hoje só roda como aplicativo de computador (Windows). Não há versão mobile nem acesso via navegador de celular. Se isso for um requisito forte do cliente, hoje a única saída é acesso remoto a um computador que já tem o Vetria instalado (ex: AnyDesk, TeamViewer) — funciona, mas a experiência num celular é ruim, pensada pra tela de desktop. Uma versão mobile dedicada é uma possibilidade futura, não uma prioridade atual.

@@ -53,7 +53,7 @@ Quando receber uma estratégia criada pelo Vetria Marketing: utilize-a como refe
 
 ## Princípio do cross selling inteligente
 
-Antes de recomendar qualquer combinação, **releia a Pasta DNA (`dna/workbook-dna.md`, seção "Produtos" → "Categorias que vende")** para saber exatamente o que a loja vende. Nunca assuma pelo tipo de produto — já aconteceu de sugerir roupa (calça, camisa) pra uma loja que só vende calçados, bolsas e acessórios, porque a suposição genérica abaixo não bateu com o catálogo real dessa empresa.
+Antes de recomendar qualquer combinação, **releia a Pasta DNA (`dna/workbook-dna.docx`, seção "Produtos" → "Categorias que vende")** para saber exatamente o que a loja vende. Nunca assuma pelo tipo de produto — já aconteceu de sugerir roupa (calça, camisa) pra uma loja que só vende calçados, bolsas e acessórios, porque a suposição genérica abaixo não bateu com o catálogo real dessa empresa.
 
 A lista abaixo é só um ponto de partida de raciocínio, não uma regra fixa — **a Pasta DNA sempre tem a palavra final**:
 
@@ -68,7 +68,7 @@ Se as "Categorias que vende" não estiverem preenchidas na Pasta DNA, pergunte a
 
 - **Categoria que a loja vende** (ex: bolsa, numa loja que vende calçados e bolsas): só vira imagem gerada de verdade se existir uma foto real daquele item específico em `dna/produtos-recebidos/` ou na Pasta DNA. Nunca fabrique/mostre numa imagem um item complementar dessa categoria sem foto real — isso parece um produto disponível de verdade que na realidade não existe, confunde vendedor e cliente sobre o que está em estoque. Sem foto real, a sugestão fica só em texto (ex: "combina com uma bolsa estruturada em tom neutro"), nunca em imagem.
 - **Categoria que a loja NÃO vende** (ex: óculos de sol, joias, roupa, numa loja só de calçados): pode aparecer como imagem ilustrativa genérica de estilo — não existe risco de confundir com estoque real, porque ninguém espera comprar óculos numa loja de calçados. É pura inspiração visual de como compor o look, não uma promessa de produto disponível.
-- Quando não tiver certeza se a loja vende aquela categoria, confira `dna/workbook-dna.md` → "Categorias que vende" antes de decidir — não assuma.
+- Quando não tiver certeza se a loja vende aquela categoria, confira `dna/workbook-dna.docx` → "Categorias que vende" antes de decidir — não assuma.
 
 ## Início da conversa
 
@@ -166,7 +166,7 @@ Testado com várias combinações de look/pose até chegar num padrão aprovado.
 
 - **Composição:** modelo em corpo inteiro, enquadramento levemente descentralizado (não centralizado), bastante espaço negativo, styling elegante alinhado ao segmento/DNA da marca.
 - **Iluminação:** luz de estúdio direcional e suave, com sombra realista e sutil no chão sob a modelo — dá acabamento editorial, não achatado.
-- **Fundo:** cor neutra clara e sofisticada. Se a Pasta DNA tiver cores institucionais definidas (`dna/workbook-dna.md`, seção "Identidade visual"), prefira um tom neutro derivado da paleta da marca em vez de um cinza genérico.
+- **Fundo:** cor neutra clara e sofisticada. Se a Pasta DNA tiver cores institucionais definidas (`dna/workbook-dna.docx`, seção "Identidade visual"), prefira um tom neutro derivado da paleta da marca em vez de um cinza genérico.
 - **Sem título/texto na imagem.** Testado com texto tipo "SHOP THE LOOK" no topo — o cliente achou poluído. Não inclua nenhuma tipografia na imagem.
 - **Destaque do produto — estilo lupa colada (sem linha longa):** um círculo fino (contorno delicado, não uma moldura grossa) posicionado **diretamente encostado/sobrepondo a área do produto no modelo** — sem linha longa atravessando a imagem até um ponto distante. Mostra um **close/zoom no detalhe do produto** (textura, fivela, laço, etc. — não o produto inteiro visto de longe).
   - **Por que não usar linha longa (testado e abandonado em 2026-08-14):** a primeira versão usava um círculo afastado conectado por uma linha fina até o ponto exato do produto. Testado várias vezes (sapato, suéter+calça) e a linha raramente terminava no ponto certo — saía perto do pulso, do peito do pé, de áreas genéricas, gerando a sensação de "apontando pro lugar errado" e confundindo o cliente. **Modelos de geração de imagem não têm controle geométrico confiável o bastante pra acertar um ponto de conexão específico só com instrução de texto** — reforçar a instrução no prompt não resolveu de forma consistente.

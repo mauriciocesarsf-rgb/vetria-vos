@@ -39,7 +39,7 @@ Tem algum dia (ou data) em que a loja nunca pode ficar sem cobertura suficiente 
 
 ## Passo 4. Regras trabalhistas / convenção coletiva
 
-Leia `dna/workbook-dna.md`, seção "1. Dados básicos" → **Endereço completo**, pra identificar cidade/estado da loja. Se não houver endereço preenchido, pergunte direto: "em que cidade/estado fica a loja?" (precisa disso pra saber qual convenção coletiva vale).
+Leia `dna/workbook-dna.docx`, seção "1. Dados básicos" → **Endereço completo**, pra identificar cidade/estado da loja. Se não houver endereço preenchido, pergunte direto: "em que cidade/estado fica a loja?" (precisa disso pra saber qual convenção coletiva vale).
 
 Com a cidade/estado em mãos:
 

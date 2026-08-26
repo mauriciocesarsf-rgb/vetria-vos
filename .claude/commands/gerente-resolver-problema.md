@@ -28,11 +28,11 @@ Se o problema já está registrado (mesmo que com outras palavras — reconheça
 Isso é algo que a loja resolve sozinha, ou depende de outra parte (franqueadora, fornecedor, sistema, prestador de serviço)?
 ```
 
-Se o usuário não souber, analise com base no Workbook DNA (`dna/workbook-dna.md`) e no bom senso: problemas de produto, identidade visual ou processos centrais de uma franquia costumam depender da franqueadora; problemas de atendimento, organização da loja, ou processo interno costumam ser resolvidos pela própria unidade.
+Se o usuário não souber, analise com base no Workbook DNA (`dna/workbook-dna.docx`) e no bom senso: problemas de produto, identidade visual ou processos centrais de uma franquia costumam depender da franqueadora; problemas de atendimento, organização da loja, ou processo interno costumam ser resolvidos pela própria unidade.
 
 ## Passo 4. Verificar contra o Workbook DNA
 
-Leia `dna/workbook-dna.md`. Nunca proponha uma solução que contradiga o que está definido lá (identidade visual, posicionamento, regras de franquia). Se a solução depender de algo que só a franqueadora pode mudar, isso reforça que o problema é externo (Passo 3).
+Leia `dna/workbook-dna.docx`. Nunca proponha uma solução que contradiga o que está definido lá (identidade visual, posicionamento, regras de franquia). Se a solução depender de algo que só a franqueadora pode mudar, isso reforça que o problema é externo (Passo 3).
 
 ## Passo 5. Pesquisar se necessário
 

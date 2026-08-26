@@ -11,7 +11,7 @@ Executa imediatamente: monta o calendário editorial do mês corrente (ou do mê
 
 ## Passo 1. Contexto
 
-Leia `minhas-empresas/.ativa`. Leia `dna/workbook-dna.md` (posicionamento, tom de comunicação, público, produtos) e `dna/identidade-visual/` (materiais da franqueadora, se houver).
+Leia `minhas-empresas/.ativa`. Leia `dna/workbook-dna.docx` (posicionamento, tom de comunicação, público, produtos) e `dna/identidade-visual/` (materiais da franqueadora, se houver).
 
 Verifique se `dna/marketing/estrategia-midias-sociais.md` existe — é o piso de ritmo semanal (mínimo de Stories/dia, Feed/Reels por semana) usado no Passo 4. Se não existir, gere agora seguindo o mesmo fluxo do Passo 0.6 do seu agent (`vetria-marketing.md`) — pesquisa + `templates/estrategia-midias-sociais.md` — antes de continuar (sem repetir a aula de boas práticas se essa não for a primeira interação com a empresa).
 

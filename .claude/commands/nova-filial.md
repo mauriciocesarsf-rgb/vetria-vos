@@ -40,7 +40,7 @@ Gere um slug em kebab-case a partir do nome novo. Crie:
 ```
 minhas-empresas/{slug-novo}/
 ├── dna/
-│   ├── workbook-dna.md
+│   ├── workbook-dna.docx
 │   ├── identidade-visual/     (copiado da origem)
 │   ├── indicadores/           (vazio, a partir dos templates)
 │   └── marketing/             (vazio, a partir dos templates)
@@ -51,7 +51,7 @@ minhas-empresas/{slug-novo}/
 1. Copie `minhas-empresas/{slug-origem}/dna/identidade-visual/` inteira para `minhas-empresas/{slug-novo}/dna/identidade-visual/`.
 2. Copie `templates/vendas-indicadores.csv`, `templates/corridas.csv`, `templates/premios-especiais.csv`, `templates/meta-mensal-loja.csv` (só cabeçalho) e `templates/COMO-PREENCHER-indicadores.md` para `minhas-empresas/{slug-novo}/dna/indicadores/`. Copie `templates/corridas-conteudo.csv` (só cabeçalho) para `minhas-empresas/{slug-novo}/dna/marketing/`. Nunca copie os arquivos de indicadores, calendário ou corridas da origem — cada filial começa zerada nisso, só a identidade de marca é compartilhada.
 3. Copie `templates/problemas-conhecidos.md` (vazio) para `minhas-empresas/{slug-novo}/dna/problemas-conhecidos.md`. Se a origem tiver problemas registrados cujo responsável é a franqueadora/rede (não a loja específica), esses provavelmente afetam a nova unidade também — pergunte ao usuário se quer copiá-los.
-4. Monte `minhas-empresas/{slug-novo}/dna/workbook-dna.md`:
+4. Monte `minhas-empresas/{slug-novo}/dna/workbook-dna.docx`:
    - **Copie exatamente da origem** (sem reescrever): Missão (2), Visão (3), Valores (4), Posicionamento (5), Tom de comunicação (9), Identidade visual (10).
    - **Preencha com o que foi respondido no Passo 2**: Dados básicos (1), Equipe e objetivo atual (11) fica em branco (pergunte depois ou deixe pendente).
    - **Deixe em branco para responder depois**: Diferenciais (6) e Público principal (7) — são específicos de cada unidade, não herdam da matriz.
