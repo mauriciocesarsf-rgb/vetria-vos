@@ -50,24 +50,32 @@ entregas/gestao/imagens/tutorial-telegram-passo1.png
 Me avisa quando estiver na conversa com o BotFather.
 ```
 
-Depois de confirmado, copie `assets/tutoriais/telegram-passo2-criar.png` para `.../imagens/tutorial-telegram-passo2.png` e mostre:
+**O BotFather conduz em duas perguntas separadas, uma de cada vez — nunca despeje as duas juntas, ele só faz a segunda pergunta depois que você responder a primeira.** Copie `assets/tutoriais/telegram-passo2-nome.png` para `.../imagens/tutorial-telegram-passo2.png` e mostre:
 ```
 Agora, dentro da conversa com o BotFather:
 
 1. Envie o comando /newbot (só isso, sem mais nada na mensagem)
-2. Ele vai perguntar um nome pro bot — pode ser "Vetria {nome da loja}"
-3. Depois vai pedir um username, que precisa terminar em "bot" — sugestão: vetria_{algo curto da loja}_bot
+2. Ele vai responder em inglês perguntando o nome do bot — é normal, o BotFather sempre responde em inglês. Pode escrever algo como "Vetria {nome da loja}"
 
 entregas/gestao/imagens/tutorial-telegram-passo2.png
 
 Manda um "ok" ou já cola aqui o que o BotFather respondeu, o que for mais fácil.
 ```
 
-Por fim, copie `assets/tutoriais/telegram-passo3-token.png` para `.../imagens/tutorial-telegram-passo3.png` e mostre:
+Depois de confirmado, copie `assets/tutoriais/telegram-passo3-username.png` para `.../imagens/tutorial-telegram-passo3.png` e mostre:
+```
+Ele vai perguntar mais uma coisa: um username pro bot, que precisa terminar em "bot" — sugestão: vetria_{algo curto da loja}_bot
+
+entregas/gestao/imagens/tutorial-telegram-passo3.png
+
+Manda um "ok" ou cola aqui o que ele respondeu.
+```
+
+Por fim, copie `assets/tutoriais/telegram-passo4-token.png` para `.../imagens/tutorial-telegram-passo4.png` e mostre:
 ```
 Perfeito. O BotFather agora respondeu com um token, uma linha comprida começando com números e dois pontos, tipo 123456789:AAF...
 
-entregas/gestao/imagens/tutorial-telegram-passo3.png
+entregas/gestao/imagens/tutorial-telegram-passo4.png
 
 Copia essa linha inteira e cola aqui pra mim.
 ```
@@ -89,13 +97,13 @@ Faça isso para cada destino que ainda falta (grupo e/ou gerente).
 
 **Destino: grupo da loja**
 
-Copie `assets/tutoriais/telegram-passo4-grupo.png` para `minhas-empresas/{ativa}/entregas/gestao/imagens/tutorial-telegram-passo4.png` (crie a pasta se não existir) e mostre:
+Copie `assets/tutoriais/telegram-passo5-grupo.png` para `minhas-empresas/{ativa}/entregas/gestao/imagens/tutorial-telegram-passo5.png` (crie a pasta se não existir) e mostre:
 ```
 1. Abra o grupo da loja no Telegram, vá em Adicionar membro
 2. Busque o nome de usuário do bot que você criou (termina em "bot") e adicione ele
 3. Depois, envie qualquer mensagem no grupo, pode ser só "oi"
 
-entregas/gestao/imagens/tutorial-telegram-passo4.png
+entregas/gestao/imagens/tutorial-telegram-passo5.png
 
 Me avisa quando fizer isso.
 ```
@@ -149,6 +157,8 @@ Gerente: {configurado/não configurado}
 
 Use /gerente-enviar-relatorio (grupo) ou /gerente-boas-vindas-mes (gerente) quando quiser enviar.
 ```
+
+**Se este comando foi acionado durante a SEQUÊNCIA DE ATIVAÇÃO (`CLAUDE.md`) e não avulso pelo usuário: essa confirmação acima nunca é o fim da resposta.** Emende direto, na mesma mensagem, pra próxima etapa da sequência (Vendedores) — não pare esperando o usuário perguntar "e agora?".
 
 ## Perguntas frequentes
 
