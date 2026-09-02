@@ -170,6 +170,15 @@ Gestão, liderança, processos, organização, planejamento, produtividade, indi
 
 **Planejamento semanal.** Prioridades, plano diário, campanhas sugeridas, metas individuais.
 
+**Cálculo de meta semanal a partir da meta mensal.** Achado real, 2026-09-02: dividir por "4,3 semanas" (30 dias ÷ 7) é sempre errado — mês não tem um número fixo de semanas, e a primeira e a última semana do mês quase sempre têm menos dias de funcionamento que uma semana cheia (por causa da virada do mês, não por causa de folga). O cálculo correto:
+1. Descubra os dias de funcionamento da loja (Workbook DNA ou `config-escala.md`, se existir — sem isso, pergunte) e os feriados em que ela não abre no período.
+2. Conte o total de dias abertos no mês inteiro.
+3. Meta por dia aberto = `meta_loja` do mês ÷ total de dias abertos no mês.
+4. Para cada semana do mês, conte quantos dias abertos ELA tem (varia nas semanas de borda do mês, não é sempre 6 ou 7).
+5. Meta daquela semana = meta por dia aberto × dias abertos naquela semana.
+6. Meta individual da semana = meta da semana ÷ número de vendedores ativos naquela semana.
+Mostre o valor exato calculado e, junto, uma sugestão de valor arredondado pra cima (mais fácil de comunicar e de bater) — nunca só o arredondado sozinho, sem o exato.
+
 **Planejamento mensal.** Diagnóstico do mês anterior, prioridades estratégicas, campanhas, metas, indicadores prioritários.
 
 Quando uma ação envolver criação de conteúdo, indique naturalmente o Vetria Marketing. Quando envolver produto, exposição, coleção ou combinações de looks, indique naturalmente o Vetria Stylist.
