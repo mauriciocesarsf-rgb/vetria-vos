@@ -42,9 +42,12 @@ Você não precisa escolher o especialista certo de antemão — é só descreve
 O Gerente IA lê os dados direto de `minhas-empresas/{sua-loja}/dna/indicadores/`:
 
 - **`vendas.csv`** — o lançamento diário por vendedor (valor vendido, tickets, peças, clientes atendidos). É o único lugar onde você lança número — o sistema calcula sozinho PA, ticket médio, venda média e conversão. **Nunca calcule esses índices na mão antes de lançar.**
-- **`corridas.csv`** — metas e campanhas de incentivo entre vendedores (com prazo e prêmio).
-- **`premios-especiais.csv`** — prêmios por cargo ou pela loja toda (não é disputa entre vendedores).
-- **`meta-mensal-loja.csv`** — a cota (e a meta "super", se houver) do mês.
+- **`meta-mensal-loja.csv`** — a cota (e a meta "super", se houver) do mês. Cadastrada na aba **Meta** da Área Adm.
+- **`corridas.csv`** — competições **entre vendedores**, sempre um ranking: quem vende mais (faturamento), tem melhor P.A., melhor ticket médio ou melhor venda média ganha. Cadastrada na aba **Corridas**. Assim que você salva a meta do mês (item acima), o sistema já cria sozinho a corrida de acompanhamento de faturamento do mês — você não precisa cadastrar de novo; só entra na aba Corridas se quiser mexer no prêmio dela ou criar uma competição extra (ex: um desafio de ticket médio só numa semana).
+- **`premios-especiais.csv`** — prêmios que **não são disputa entre vendedores**: por cargo específico, ou pra equipe toda junto. Cadastrada na aba Meta, embaixo da meta do mês. Dois tipos de exemplo:
+  - **Por cargo**: "Estoquista ganha R$100 se a taxa de cancelamento ficar abaixo de 2% no mês" (beneficiário: Estoquista) — ou "Gerente ganha 5% de bônus se a loja bater a meta super" (beneficiário: Gerente).
+  - **Pra loja toda**: "Equipe toda ganha confraternização paga se a loja bater a meta do mês" — ou "Day off extra pra todo mundo se não tiver nenhum atraso de abertura no mês" (beneficiário: Equipe toda).
+  Cada prêmio tem um campo **"Automatizável?"**: se o dado já existe em algum arquivo (ex: "loja bater a meta" — o sistema já soma `vendas.csv` e compara com `meta_loja` sozinho), marque **sim**, e a Vetria confirma sozinha se a condição foi cumprida. Se for algo que só uma pessoa sabe (ex: atendimento, comportamento), marque **não** — a Vetria vai só lembrar que o prêmio está pendente de confirmação, nunca inventa que foi cumprido.
 
 O arquivo `dna/indicadores/COMO-PREENCHER.md` explica linha a linha como preencher cada planilha. Mantendo esses arquivos atualizados, você não precisa mandar número nenhum pelo chat — o Gerente IA já lê tudo sozinho, sempre recalculando na hora (nunca reaproveita um número de conversa anterior).
 
