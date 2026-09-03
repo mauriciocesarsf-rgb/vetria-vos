@@ -7,7 +7,7 @@ Gerado pelo Vetria Marketing. Datas comemorativas pesquisadas + campanhas da fra
 | 01 | | | |
 | 02 | | | |
 
-<!-- Uma linha por dia com gancho real — não precisa preencher todos os dias do mês, só os que têm motivo. Formato sugerido: Reels, Stories, Feed, Carrossel, etc. -->
+<!-- Uma linha por TODO dia do mês, sem exceção — dia com gancho real (data comemorativa, campanha, tendência) recebe tema específico; dia comum recebe a sugestão de conteúdo do dia da semana (nunca escreva "ritmo-base" nem "sugestão-base" na coluna, esses são só termos internos — escreva a ideia de conteúdo de verdade). Formato sugerido: Reels, Stories, Feed, Carrossel, etc. -->
 
 ## Campanhas da franqueadora este mês
 

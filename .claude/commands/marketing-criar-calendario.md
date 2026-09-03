@@ -38,6 +38,8 @@ Use `templates/calendario-editorial.md` como estrutura. **Todo dia do mês receb
 - **Dias com gancho real** (data comemorativa, campanha, tendência): tema/data específico, formato sugerido, ideia curta de conteúdo — como já era.
 - **Dias comuns** (sem gancho): puxe a sugestão-base de `dna/marketing/estrategia-midias-sociais.md` pro dia da semana correspondente (ex: toda terça sem gancho especial ainda leva a sugestão-base de terça do ritmo semanal) — não deixe a linha vazia.
 
+**Achado real, 2026-09-03: "ritmo-base"/"sugestão-base" são termos internos, só pra você entender de onde vem o conteúdo — nunca escreva essas palavras na coluna "Tema / Data" nem em nenhum lugar visível do calendário.** Uma loja viu literalmente "ritmo-base" como se fosse o título do dia, sem sentido nenhum pra quem lê. Na coluna "Tema / Data" de um dia comum, escreva a sugestão de conteúdo de verdade (ex: "Dica de combinação pro look de trabalho", não "ritmo-base" nem "sugestão-base terça").
+
 Adapte tudo ao tom de comunicação do Workbook DNA.
 
 Salve em `minhas-empresas/{ativa}/dna/marketing/calendario-{AAAA-MM}.md`.
