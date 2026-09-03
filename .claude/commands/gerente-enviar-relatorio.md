@@ -75,8 +75,8 @@ Feito até o momento:
 
 {ícone de gênero} {vendedor}
 💰 Vendido: R$ {soma valor}
-📈 Faltam R$ {meta - vendido, nunca negativo — ver nota} para atingir a meta.
-{se valorVendasPessoal do vendedor estiver preenchido em vendedores.json e a soma dele no período < valorVendasPessoal: ⚠️ Abaixo do mínimo pessoal (R$ {valorVendasPessoal formatado}) — mostre isso como um aviso à parte, nunca reescreva ou altere a conta da meta coletiva acima}
+📈 Faltam R$ {meta individual do vendedor - vendido, nunca negativo — ver nota} para atingir a meta.
+{se a meta individual do vendedor (linha abaixo) for maior que a "Meta por vendedor" do cabeçalho: 📌 Meta pessoal (R$ {valorVendasPessoal formatado}), maior que a cota dividida — segue por essa}
 
 (repita para cada vendedor)
 
@@ -87,7 +87,9 @@ Feito até o momento:
 Bora pra cima, equipe! 💪🚀
 ```
 
-Nota: se algum vendedor já bateu a meta (vendido ≥ meta), troque a linha "Faltam" por algo como "🏆 Meta batida! Superou em R$ {vendido - meta}." — nunca mostre "faltam" negativo.
+**Meta individual do vendedor** (achado real, 2026-09-03): não é sempre igual ao `meta_por_vendedor` do cabeçalho — é o **maior valor** entre `meta_por_vendedor` da corrida e o `valorVendasPessoal` desse vendedor em `vendedores.json` (se estiver preenchido). Dividir a cota igual entre todo mundo pode gerar uma fatia menor que o mínimo pessoal já estabelecido de alguém — nesse caso, a pessoa segue pelo próprio mínimo, não pela fatia diluída. Use essa meta individual (não o valor do cabeçalho) pra calcular "Faltam" de cada vendedor. O cabeçalho "Meta por vendedor" continua mostrando o valor-base da divisão, pra dar a referência da conta coletiva.
+
+Nota: se algum vendedor já bateu a própria meta individual (vendido ≥ meta individual dele), troque a linha "Faltam" por algo como "🏆 Meta batida! Superou em R$ {vendido - meta individual}." — nunca mostre "faltam" negativo.
 
 **Se `metrica = pa`, `tm` ou `pm`** (ranking). Siga este formato:
 
