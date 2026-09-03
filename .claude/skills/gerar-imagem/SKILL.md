@@ -11,24 +11,22 @@ description: >
 
 # Gerar Imagem
 
-Skill compartilhada para agents que precisam produzir uma imagem de verdade (não só o prompt) sem sair do Claude Code. Usa a API da OpenRouter, que dá acesso a modelos de geração de imagem por uma chave só — hoje o modelo é `google/gemini-3-pro-image-preview` (Nano Banana Pro, da Google — trocado em 2026-08-18: testado lado a lado com o `gpt-image-1` anterior num caso real de textura fina/repetida — tachas metálicas numa bota — e saiu bem mais fiel, preservando o formato/acabamento do hardware em vez de reinterpretar como pérola lisa; ver `agents-memory/vetria-stylist.md` pro teste completo), via o endpoint dedicado de imagens da OpenRouter (`/api/v1/images`, formato de request diferente do chat completions — ver Passo 2; o mesmo formato com `input_references` funciona pra ambos os modelos, confirmado).
+Skill compartilhada para agents que precisam produzir uma imagem de verdade (não só o prompt) sem sair do Claude Code. A geração roda através do servidor da Vetria (não mais direto pra OpenRouter da máquina da loja — achado real, 2026-09-03: cada loja precisava criar conta e pagar a própria geração, o que deixava a maioria sem usar por padrão; agora a Vetria banca uma chave única, com um teto mensal de imagens por loja, ver Passo 1). O modelo por trás é `google/gemini-3-pro-image-preview` (Nano Banana Pro, da Google — trocado em 2026-08-18: testado lado a lado com o `gpt-image-1` anterior num caso real de textura fina/repetida — tachas metálicas numa bota — e saiu bem mais fiel, preservando o formato/acabamento do hardware em vez de reinterpretar como pérola lisa; ver `agents-memory/vetria-stylist.md` pro teste completo), mas isso é interno ao servidor — a skill só precisa saber chamar o endpoint do backend (Passo 2).
 
 ## Quando usar
 
-Sempre que um agent for entregar um "prompt de imagem" (looks, pranchas, fotos humanizadas, criativos) **e a geração estiver configurada** (ver Passo 1), gere a imagem de verdade direto, sem perguntar antes — nunca pause pra confirmar "quer que eu gere?". A pessoa já decidiu isso ao configurar a chave; perguntar de novo a cada pedido só atrasa. Informe o custo só se ela perguntar, não de forma preventiva toda hora.
+Sempre que um agent for entregar um "prompt de imagem" (looks, pranchas, fotos humanizadas, criativos), gere a imagem de verdade direto, sem perguntar antes — nunca pause pra confirmar "quer que eu gere?". Geração já vem habilitada por padrão em toda loja, não depende de configuração nenhuma. Informe o teto mensal só se a pessoa perguntar ou se ele for atingido (ver Passo 1), não de forma preventiva toda hora.
 
-**Sempre entregue o prompt de qualquer forma**, mesmo gerando a imagem — é o plano B pronto se o resultado não agradar ou se quiser tentar em outro lugar.
+**Sempre entregue o prompt de qualquer forma**, mesmo gerando a imagem — é o plano B pronto se o resultado não agradar, se quiser tentar em outro lugar, ou se o teto mensal tiver sido atingido.
 
-**Recapitulando uma prancha/peça antiga que só tem o prompt (sem imagem gerada)** — se o usuário pedir pra ver de novo algo já entregue antes (ex: "aquela prancha do mule dourado") e esse entregável não tiver uma imagem gerada, gere agora direto (mesma regra acima), mesmo que a pessoa não tenha pedido isso explicitamente — é bem provável que na época não estivesse configurado ainda.
+**Recapitulando uma prancha/peça antiga que só tem o prompt (sem imagem gerada)** — se o usuário pedir pra ver de novo algo já entregue antes (ex: "aquela prancha do mule dourado") e esse entregável não tiver uma imagem gerada, gere agora direto (mesma regra acima), mesmo que a pessoa não tenha pedido isso explicitamente.
 
-## Passo 1. Verificar se está configurado
+## Passo 1. Teto mensal por loja
 
-**Releia o `.env` na hora, sempre — mesmo que já tenha verificado antes na mesma conversa.** A configuração pode ter mudado no meio da conversa (é justamente o caso mais comum: o usuário configura a chave enquanto já está no meio de um assunto e continua de onde parou). Nunca responda "não está configurado" baseado em uma verificação anterior — isso pode já ter mudado.
+Não existe mais configuração/chave própria da loja — geração já vem pronta pra usar. A única coisa que pode impedir a geração é a loja já ter atingido o teto mensal de imagens (controlado pelo servidor da Vetria, ver Passo 2 — a resposta vem com `motivo: "limite-mensal-atingido"` quando isso acontece).
 
-Leia `.env`. Verifique `OPENROUTER_API_KEY`.
-
-- **Ausente:** informe que a geração de imagem ainda não está configurada, entregue só o prompt, e oriente a rodar `/configurar-geracao-imagem` se quiser habilitar. Não trate isso como erro — é uma opção, não obrigação.
-- **Presente:** siga para o Passo 2.
+- **Teto atingido:** informe, em tom neutro (não é erro, é um limite normal de plano), que a loja já usou as imagens geradas incluídas neste mês, entregue o prompt como alternativa (funciona em qualquer ferramenta externa), e diga que a geração volta a funcionar no início do mês seguinte. Nunca oriente a rodar `/configurar-geracao-imagem` — esse comando não existe mais como configuração, virou só uma explicação (ver o arquivo do command).
+- **Qualquer outro caso:** siga para o Passo 2 normalmente.
 
 ## Passo 2. Gerar
 
@@ -42,7 +40,7 @@ Se não houver nenhuma foto real do produto disponível (pedido é só conceitua
 
 Nunca carregue o base64 da imagem no contexto da conversa (é enorme e desperdiça espaço) — a chamada e a decodificação acontecem inteiramente via script, você só lê o resultado final (caminho do arquivo + sucesso/erro).
 
-**Nunca escreva o valor da `OPENROUTER_API_KEY` literal dentro do comando Bash** (nem em `export CHAVE="valor"`, nem em nenhum outro lugar do comando) — isso expõe a chave em texto puro no log da execução. Incidente real (2026-08-19): um comando montado dessa forma vazou a chave real no log. Sempre carregue via `set -a && source .env && set +a` (como nos exemplos abaixo) e deixe o script Node ler `process.env.OPENROUTER_API_KEY` sozinho — a chave nunca deve aparecer como texto literal em nenhum comando que você escreve.
+**Nunca escreva o valor de `VETRIA_SYNC_API_KEY` literal dentro do comando Bash** (nem em `export CHAVE="valor"`, nem em nenhum outro lugar do comando) — isso expõe a chave em texto puro no log da execução. Mesmo cuidado que já valia pra `OPENROUTER_API_KEY` antes dela sair daqui (incidente real, 2026-08-19: um comando montado dessa forma vazou a chave real no log). Sempre carregue via `set -a && source .env && set +a` (como nos exemplos abaixo) e deixe o script Node ler `process.env.VETRIA_SYNC_API_KEY` sozinho — a chave nunca deve aparecer como texto literal em nenhum comando que você escreve.
 
 **Releia este arquivo agora, não confie em ter rodado esse script antes na mesma conversa.** Já aconteceu de um agent reusar de memória um nome de modelo antigo (de uma execução anterior, na mesma conversa) em vez do que está escrito aqui embaixo — e esse arquivo pode ter sido atualizado desde a última vez que você o leu, principalmente o nome do modelo, que muda de tempos em tempos conforme a OpenRouter descontinua versões.
 
@@ -50,9 +48,12 @@ Prompt final já revisado (traduzido pro inglês costuma dar resultado mais cons
 
 ### 2a. Sem imagem de referência (só texto — só quando não existir foto real do produto)
 
+Lê `VETRIA_BACKEND_URL`, `VETRIA_SYNC_API_KEY` e `VETRIA_CLIENTE_SLUG` do `.env` (preenchidos sozinhos pelo app, ver `vetria-instalador` — nunca peça isso ao usuário nem invente valor):
+
 ```bash
 DEST="minhas-empresas/{ativa}/entregas/{gestao, styling ou marketing}/imagens/{nome-descritivo}.png"
 mkdir -p "$(dirname "$DEST")"
+set -a && source .env && set +a
 node -e '
 const https = require("https");
 const fs = require("fs");
@@ -60,19 +61,15 @@ const path = require("path");
 
 const prompt = process.argv[1];
 const dest = process.argv[2];
-const apiKey = process.env.OPENROUTER_API_KEY;
+const backendUrl = process.env.VETRIA_BACKEND_URL;
+const syncKey = process.env.VETRIA_SYNC_API_KEY;
+const slug = process.env.VETRIA_CLIENTE_SLUG;
 
-const body = JSON.stringify({
-  model: "google/gemini-3-pro-image-preview",
-  prompt: prompt,
-  n: 1,
-  quality: "high",
-  output_format: "png",
-});
+const body = JSON.stringify({ prompt });
 
 const req = https.request(
-  "https://openrouter.ai/api/v1/images",
-  { method: "POST", headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" } },
+  `${backendUrl}/imagens/${slug}/gerar`,
+  { method: "POST", headers: { "x-sync-api-key": syncKey, "Content-Type": "application/json" } },
   (res) => {
     let data = "";
     res.on("data", (c) => (data += c));
@@ -82,13 +79,12 @@ const req = https.request(
         process.exit(1);
       }
       const json = JSON.parse(data);
-      const b64 = json.data && json.data[0] && json.data[0].b64_json;
-      if (!b64) {
-        console.error("Nenhuma imagem encontrada na resposta. JSON bruto (primeiros 800 chars): " + data.slice(0, 800));
-        process.exit(1);
+      if (!json.ok) {
+        console.error("SEM_IMAGEM " + JSON.stringify(json));
+        process.exit(2);
       }
       fs.mkdirSync(path.dirname(dest), { recursive: true });
-      fs.writeFileSync(dest, Buffer.from(b64, "base64"));
+      fs.writeFileSync(dest, Buffer.from(json.b64, "base64"));
       console.log("OK " + dest);
     });
   }
@@ -101,12 +97,13 @@ req.end();
 
 ### 2b. Com imagem de referência (produto real — usar sempre que houver foto disponível)
 
-Mesma lógica, mas manda a foto real em `input_references` (base64, até 16 imagens — aqui sempre 1) — isso faz o modelo editar/recompor em cima da imagem real em vez de desenhar do zero:
+Mesma lógica, mas manda a foto real em `referenciaBase64` — isso faz o modelo editar/recompor em cima da imagem real em vez de desenhar do zero:
 
 ```bash
 DEST="minhas-empresas/{ativa}/entregas/{gestao, styling ou marketing}/imagens/{nome-descritivo}.png"
 REF="minhas-empresas/{ativa}/{caminho-da-foto-real-do-produto}"
 mkdir -p "$(dirname "$DEST")"
+set -a && source .env && set +a
 node -e '
 const https = require("https");
 const fs = require("fs");
@@ -115,24 +112,19 @@ const path = require("path");
 const prompt = process.argv[1];
 const dest = process.argv[2];
 const refPath = process.argv[3];
-const apiKey = process.env.OPENROUTER_API_KEY;
+const backendUrl = process.env.VETRIA_BACKEND_URL;
+const syncKey = process.env.VETRIA_SYNC_API_KEY;
+const slug = process.env.VETRIA_CLIENTE_SLUG;
 
 const refExt = path.extname(refPath).slice(1).toLowerCase();
-const refMime = refExt === "jpg" ? "jpeg" : refExt;
+const refMime = "image/" + (refExt === "jpg" ? "jpeg" : refExt);
 const refB64 = fs.readFileSync(refPath).toString("base64");
 
-const body = JSON.stringify({
-  model: "google/gemini-3-pro-image-preview",
-  prompt: prompt,
-  quality: "high",
-  input_references: [
-    { type: "image_url", image_url: { url: `data:image/${refMime};base64,${refB64}` } },
-  ],
-});
+const body = JSON.stringify({ prompt, referenciaBase64: refB64, referenciaMime: refMime });
 
 const req = https.request(
-  "https://openrouter.ai/api/v1/images",
-  { method: "POST", headers: { "Authorization": `Bearer ${apiKey}`, "Content-Type": "application/json" } },
+  `${backendUrl}/imagens/${slug}/gerar`,
+  { method: "POST", headers: { "x-sync-api-key": syncKey, "Content-Type": "application/json" } },
   (res) => {
     let data = "";
     res.on("data", (c) => (data += c));
@@ -142,13 +134,12 @@ const req = https.request(
         process.exit(1);
       }
       const json = JSON.parse(data);
-      const b64 = json.data && json.data[0] && json.data[0].b64_json;
-      if (!b64) {
-        console.error("Nenhuma imagem encontrada na resposta. JSON bruto (primeiros 800 chars): " + data.slice(0, 800));
-        process.exit(1);
+      if (!json.ok) {
+        console.error("SEM_IMAGEM " + JSON.stringify(json));
+        process.exit(2);
       }
       fs.mkdirSync(path.dirname(dest), { recursive: true });
-      fs.writeFileSync(dest, Buffer.from(b64, "base64"));
+      fs.writeFileSync(dest, Buffer.from(json.b64, "base64"));
       console.log("OK " + dest);
     });
   }
@@ -159,7 +150,7 @@ req.end();
 ' "PROMPT_AQUI" "$DEST" "$REF"
 ```
 
-Substitua `PROMPT_AQUI` pelo prompt real e `{ativa}`/`{gestao, styling ou marketing}`/`{nome-descritivo}`/`{caminho-da-foto-real-do-produto}` antes de rodar. Se a estrutura da resposta não bater com o esperado (a API pode mudar), o script imprime o JSON bruto (truncado) pro erro — ajuste o caminho de extração do campo de imagem e tente de novo. Nunca deixe de entregar por causa disso: mostre o prompt como alternativa nesse caso.
+Substitua `PROMPT_AQUI` pelo prompt real e `{ativa}`/`{gestao, styling ou marketing}`/`{nome-descritivo}`/`{caminho-da-foto-real-do-produto}` antes de rodar. Saída de sucesso: `OK {caminho}`, código 0. Saída `SEM_IMAGEM {json}`, código 2: o backend respondeu mas sem imagem (`motivo` no JSON diz por quê — ver Passo 4). Qualquer outro erro (rede, HTTP diferente de 200): código 1. Nunca deixe de entregar por causa disso: mostre o prompt como alternativa nesse caso.
 
 ### 2c. Prancha Completa (Vetria Stylist) — renderizar HTML e remover fundo, via Vetria.exe
 
@@ -233,8 +224,12 @@ Isso não se aplica a imagens sem produto real de referência (cards, banners, c
 
 ## Passo 4. Erros comuns
 
-- `401`/`invalid api key`: chave inválida, oriente a rodar `/configurar-geracao-imagem` de novo.
-- `402`/créditos insuficientes: conta OpenRouter sem crédito, informe e ofereça o prompt como alternativa.
-- Timeout ou erro de rede: tente uma vez mais; se persistir, entregue o prompt como alternativa em vez de travar a conversa nisso.
+O backend responde sempre com JSON (mesmo em falha) — quando `ok` for `false`, o campo `motivo` diz o que houve:
+
+- `limite-mensal-atingido`: a loja já usou as imagens do mês (ver Passo 1) — não é erro, avise em tom neutro e entregue o prompt.
+- `nao-configurado`: a chave da Vetria no servidor ainda não foi ativada (situação temporária, do lado da Vetria, nunca da loja) — informe que a geração direta está temporariamente indisponível e entregue o prompt.
+- `chave-invalida` ou `sem-credito`: problema do lado do servidor da Vetria (não da loja) — informe que a geração está temporariamente indisponível e entregue o prompt. Não oriente a loja a configurar nada, esse problema não é dela.
+- `erro-geracao`: falha genérica (rede, resposta inesperada da OpenRouter) — tente uma vez mais; se persistir, entregue o prompt como alternativa em vez de travar a conversa nisso.
+- HTTP diferente de 200 (ex: 401 do próprio backend): quase sempre `VETRIA_SYNC_API_KEY`/`VETRIA_BACKEND_URL` ausentes ou desatualizados no `.env` — instalação antiga que ainda não recebeu essas variáveis. Avise que atualizar o Vetria resolve, e entregue o prompt como alternativa.
 
 Em qualquer falha, o prompt pronto (que você já tinha) sempre resolve — a geração direta é conveniência, não dependência.

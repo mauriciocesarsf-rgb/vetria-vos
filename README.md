@@ -29,7 +29,7 @@ vetria-vos/
 │   │   ├── configurar-canal-relatorio.md  Escolhe Telegram (recomendado) ou WhatsApp
 │   │   ├── configurar-telegram.md         Conecta o bot e escolhe contato/grupo
 │   │   ├── configurar-whatsapp.md         Confirmação de risco + conecta a Z-API
-│   │   ├── configurar-geracao-imagem.md   Conecta a OpenRouter (opcional)
+│   │   ├── configurar-geracao-imagem.md   Explica a geração de imagem (automática, já habilitada, sem conta pra criar)
 │   │   ├── atualizar-painel.md            Recalcula indicadores/corridas/sugestão do dia no painel
 │   │   ├── preciso-de-ajuda.md            Porta de entrada única: descreve a necessidade, o sistema direciona
 │   │   ├── estamos-prontos.md             Largada: confere a Pasta DNA e monta um plano dos 3 especialistas juntos
@@ -121,7 +121,7 @@ Nunca envia nada automaticamente sem confirmação explícita do usuário na hor
 
 ## Geração de imagem (Gerente IA, Vetria Marketing e Vetria Stylist)
 
-Fica tudo dentro do Claude Code — a skill `gerar-imagem` usa a OpenRouter pra gerar a imagem a partir do prompt que o agent já montou, sem precisar sair pra outra plataforma. Configuração opcional via `/configurar-geracao-imagem`; sem ela, os agents continuam funcionando normalmente, só entregam o prompt pronto. **O prompt é sempre entregue de qualquer forma** — é a opção B pra tentar em outra ferramenta (Midjourney, ChatGPT, etc.) se preferir. Vetria Stylist usa pra looks/pranchas/fotos; Vetria Marketing pode usar direto pra peças simples de conteúdo sem precisar do Stylist; Gerente IA pode usar direto pra cards de indicador/ranking e banners de corrida ou prêmio.
+Fica tudo dentro do Claude Code — a skill `gerar-imagem` chama o servidor da Vetria (que usa a OpenRouter, com uma chave única paga pela Vetria) pra gerar a imagem a partir do prompt que o agent já montou, sem precisar sair pra outra plataforma. Já vem habilitado por padrão em toda loja, sem conta nem chave própria — existe um teto mensal de imagens por loja, ao atingi-lo os agents voltam a entregar só o prompt até o mês seguinte. **O prompt é sempre entregue de qualquer forma** — é a opção B pra tentar em outra ferramenta (Midjourney, ChatGPT, etc.) se preferir. Vetria Stylist usa pra looks/pranchas/fotos; Vetria Marketing pode usar direto pra peças simples de conteúdo sem precisar do Stylist; Gerente IA pode usar direto pra cards de indicador/ranking e banners de corrida ou prêmio.
 
 ## Próximos passos possíveis
 

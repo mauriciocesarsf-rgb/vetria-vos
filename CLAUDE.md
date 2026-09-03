@@ -210,9 +210,9 @@ Para enviar um resumo automático (contato ou grupo): `/configurar-canal-relator
 
 ## GERAÇÃO DE IMAGEM (Gerente IA, Vetria Marketing e Vetria Stylist)
 
-Fica tudo dentro do Claude Code — sem precisar sair pra outra plataforma pra ver a imagem pronta. A skill `gerar-imagem` (`.claude/skills/gerar-imagem/SKILL.md`) usa a API da OpenRouter para gerar a imagem a partir do prompt já montado pelo agent, e salva o arquivo direto em `entregas/{gestao, styling ou marketing}/imagens/`.
+Fica tudo dentro do Claude Code — sem precisar sair pra outra plataforma pra ver a imagem pronta. A skill `gerar-imagem` (`.claude/skills/gerar-imagem/SKILL.md`) chama o servidor da Vetria (que por sua vez usa a API da OpenRouter, com uma chave única paga pela Vetria) para gerar a imagem a partir do prompt já montado pelo agent, e salva o arquivo direto em `entregas/{gestao, styling ou marketing}/imagens/`.
 
-- Configuração: `/configurar-geracao-imagem` (opcional — `OPENROUTER_API_KEY` no `.env`). Sem isso configurado, os agents continuam funcionando normalmente, só entregam o prompt pronto em vez de gerar a imagem.
+- Já vem habilitado por padrão em toda loja — sem conta, sem chave, sem `/configurar-geracao-imagem` pra rodar (esse command hoje só explica o funcionamento, ver seu próprio arquivo). Achado real, 2026-09-03: antes cada loja precisava configurar a própria chave da OpenRouter, o que deixava a maioria sem gerar imagem de verdade. Existe um teto mensal de imagens por loja (ver `vetria-backend/src/imagens/limite.ts`) — ao atingi-lo, os agents voltam a entregar só o prompt até o mês seguinte.
 - **O prompt é sempre entregue**, mesmo quando a imagem é gerada — é a opção B pra usar em outra ferramenta (Midjourney, ChatGPT, etc.) se o usuário preferir tentar lá também.
 - Vetria Stylist usa a skill pra looks, pranchas e fotos humanizadas. Vetria Marketing pode usar direto pra peças simples (card de anúncio, arte de aviso) sem precisar encaminhar ao Stylist. Gerente IA pode usar direto pra peças de gestão (card de ranking/resultado, banner de corrida ou prêmio). Pra imagens que envolvem styling/produto vestido, o encaminhamento ao Stylist continua.
 - A chamada nunca carrega a imagem (base64) no contexto da conversa — é decodificada e salva via script, o agent só lê o caminho final.

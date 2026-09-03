@@ -10,9 +10,8 @@ Cada item abaixo tem um comando correspondente (`/configurar-...`) que guia o pa
 |---|---|---|---|---|---|
 | Telegram | Relatórios automáticos e conversa com o Gerente IA | Recomendado | Telegram | Grátis | ~1 min |
 | WhatsApp (Z-API) | Alternativa ao Telegram, pelo número da loja | Opcional | app.z-api.io | Grátis p/ testar · a partir de ~R$60/mês | ~5 min |
-| Geração de imagem (OpenRouter) | Gerar pranchas e imagens direto na conversa | Opcional | openrouter.ai | Pré-pago, centavos por imagem | ~3 min |
 
-Nenhum desses três precisa estar pronto pra começar a usar a Vetria — os especialistas funcionam sem eles (sem canal configurado, você só não recebe relatório automático; sem geração de imagem, você recebe o prompt pronto pra usar em outra ferramenta).
+Nenhum desses dois precisa estar pronto pra começar a usar a Vetria — sem canal configurado, você só não recebe relatório automático. (Geração de imagem não entra mais nessa lista — acontece automaticamente, sem nenhuma conta ou configuração da sua parte, ver seção abaixo.)
 
 ## 1. Telegram — relatórios e conversa (recomendado)
 
@@ -42,35 +41,24 @@ Nenhum desses três precisa estar pronto pra começar a usar a Vetria — os esp
 
 **Custo:** plano gratuito limitado pra testar; plano pago a partir de ~R$60/mês por instância.
 
-## 3. Geração de imagem via OpenRouter (opcional)
+## 3. Geração de imagem (automática — nada pra você fazer)
 
-**Por quê é manual:** gerar imagem tem custo real por chamada, então precisa de uma conta com crédito pré-pago — não tem como a Vetria criar essa conta por você.
+Achado real, 2026-09-03: isso já foi um passo manual (criar conta na OpenRouter, colar chave). Deixou de ser — a geração de imagem já vem habilitada, sem custo adicional pra loja, com um teto mensal de imagens incluído. Ao pedir uma prancha, look ou imagem, o Gerente IA, o Vetria Marketing e a Vetria Stylist geram a imagem de verdade direto, sempre entregando também o prompt pronto como alternativa. Ao atingir o teto do mês, a geração direta pausa até o mês seguinte — sem afetar o resto do uso da Vetria.
 
-**O que você vai fazer, fora da Vetria:**
-1. Criar conta em openrouter.ai.
-2. Adicionar crédito (pode começar pequeno, R$20–50 pra testar).
-3. Gerar uma chave em openrouter.ai/keys (começa com `sk-or-`).
-
-**De volta na Vetria:** rode `/configurar-geracao-imagem` e cole a chave — o comando testa gerando uma imagem simples antes de confirmar.
-
-**Sem essa chave configurada:** o Gerente IA, o Vetria Marketing e o Vetria Stylist continuam funcionando normalmente — só entregam o prompt pronto pra usar em outra ferramenta, em vez de gerar a imagem ali mesmo.
-
-**Custo:** pré-pago, centavos por imagem (varia por modelo).
-
-## O que a Vetria já faz sozinha, sem nenhum desses três
+## O que a Vetria já faz sozinha, sem nenhum desses dois
 
 Pra contraste: tudo isso já acontece dentro da própria conversa, sem sair da tela e sem nenhuma conta externa —
 
 - Criar a pasta da empresa e montar o painel visual personalizado
 - Calcular indicadores (PA, ticket médio, conversão) direto da planilha de vendas
 - Montar o calendário editorial do mês, com datas comemorativas e tendências
-- Gerar pranchas de venda e sugestões de look a partir de foto real de produto
+- Gerar pranchas de venda e sugestões de look a partir de foto real de produto (imagem de verdade, não só o prompt)
 - Fechar o mês (vendas ou conteúdo) e apontar o que funcionou
 
 ## Perguntas frequentes
 
-**Preciso configurar os três?** Não. Telegram é o único recomendado pra começar — os outros dois são opcionais e podem ser feitos a qualquer momento depois, rodando o comando correspondente de novo.
+**Preciso configurar os dois?** Não. Telegram é o único recomendado pra começar — WhatsApp é opcional e pode ser feito a qualquer momento depois, rodando o comando correspondente de novo.
 
 **Posso trocar de Telegram pra WhatsApp depois?** Sim, rode `/configurar-canal-relatorio` pra trocar o canal ativo a qualquer momento.
 
-**E se eu travar num desses passos?** Cada comando (`/configurar-telegram`, `/configurar-whatsapp`, `/configurar-geracao-imagem`) tem uma seção própria de "se algo não bater com o guia" — as interfaces desses serviços mudam com o tempo, e o comando pesquisa a tela atual antes de desistir.
+**E se eu travar num desses passos?** Cada comando (`/configurar-telegram`, `/configurar-whatsapp`) tem uma seção própria de "se algo não bater com o guia" — as interfaces desses serviços mudam com o tempo, e o comando pesquisa a tela atual antes de desistir.

@@ -1,52 +1,22 @@
 ---
 name: vetria:configurar-geracao-imagem
-description: Guia para criar uma conta na OpenRouter e conectar a geração de imagem, usada pelo Gerente IA, Vetria Marketing e Vetria Stylist para gerar imagens sem sair do Claude Code.
-allowed-tools: Read, Edit, Bash
+description: Explica como funciona a geração de imagem (já habilitada por padrão, com teto mensal) usada pelo Gerente IA, Vetria Marketing e Vetria Stylist.
+allowed-tools: Read
 model: sonnet
 ---
 
-# Configurar Geração de Imagem
+# Geração de Imagem
 
-Guia interativo para habilitar a geração de imagem direto no Claude Code (Gerente IA, Vetria Marketing e Vetria Stylist). Sem isso, os agents continuam funcionando normalmente — só entregam o prompt pronto, pra usar em outra ferramenta.
+Achado real, 2026-09-03: isso deixou de ser um passo de configuração. Antes, cada loja precisava criar conta na OpenRouter e colar a própria chave — hoje a geração já vem pronta pra usar em toda loja, sem nenhuma etapa extra.
 
-## O que isso faz?
+## Como funciona
 
-Com a chave configurada, ao pedir uma prancha, look ou imagem, você pode escolher gerar a imagem ali mesmo, além de sempre receber o prompt como alternativa.
+Ao pedir uma prancha, look ou imagem, o Gerente IA, o Vetria Marketing e a Vetria Stylist geram a imagem de verdade direto, sempre entregando também o prompt pronto como alternativa (pra usar em outra ferramenta se preferir).
 
-**Custo:** a OpenRouter cobra por uso (pré-pago, você adiciona crédito). Geração de imagem custa centavos por imagem, varia por modelo.
+**Teto mensal:** cada loja tem direito a um número de imagens geradas por mês, incluído sem custo adicional. Ao atingir o teto, a geração direta pausa até o mês seguinte — o prompt pronto continua disponível normalmente, sem nenhuma interrupção.
 
-## Passo 0. Verificar se já está configurado
+## Se pedirem pra rodar este comando
 
-Leia `.env`. Verifique `OPENROUTER_API_KEY`. Se já tiver valor, teste (Passo 3). Se passar, informe que já está tudo pronto e encerre.
+Explique o funcionamento acima. Se quiser saber quantas imagens já foram geradas neste mês, informe que essa informação não está disponível aqui no chat ainda — oriente a usar `/falar-com-suporte` se precisar confirmar o número exato.
 
-## Passo 1. Criar conta e pegar a chave
-
-```
-1. Acesse https://openrouter.ai e crie sua conta.
-2. Adicione crédito: menu "Credits" > escolha um valor (pode começar pequeno, R$20-50 pra testar).
-3. Vá em "Keys" (https://openrouter.ai/keys) > "Create Key".
-4. Copie a chave gerada (começa com "sk-or-").
-
-Cole a chave aqui.
-```
-
-## Passo 2. Salvar no `.env`
-
-Leia `.env`. Atualize ou adicione `OPENROUTER_API_KEY`.
-
-## Passo 3. Testar
-
-Use exatamente o mecanismo da skill `gerar-imagem` (Passo 2 — chamada via Node, nunca carregando base64 no contexto) com um prompt simples de teste ("a simple red circle on white background") e destino `/tmp/vetria-teste-imagem.png`.
-
-- Se o script imprimir `OK /tmp/vetria-teste-imagem.png`: configuração funcionando.
-- `401` no erro: chave inválida, peça pra colar de novo.
-- `402` ou menção a crédito insuficiente: oriente a adicionar crédito em openrouter.ai/credits.
-- Outro erro: mostre a mensagem bruta (truncada), ofereça WebSearch em `site:openrouter.ai` se não for óbvio.
-
-## Passo 4. Confirmar
-
-```
-Geração de imagem configurada.
-
-A partir de agora, o Gerente IA, o Vetria Marketing e o Vetria Stylist vão oferecer gerar a imagem direto, além do prompt pronto pra outras ferramentas.
-```
+Não há chave, conta nem `.env` pra mexer aqui — não tente configurar nada.

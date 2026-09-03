@@ -85,7 +85,7 @@ Comandos são atalhos pra tarefas específicas — digite `/` no chat pra ver a 
 | `/configurar-telegram` | Passo a passo pra adicionar o bot da Vetria (já pronto, compartilhado) no grupo/contato e pegar os IDs de destino |
 | `/configurar-envio-automatico` | Liga o envio automático de verdade: frequência, horário e quem avisar se falhar — depois disso o relatório sai sozinho, sem precisar abrir o Vetria |
 | `/configurar-whatsapp` | Passo a passo pra conectar via Z-API (tem risco de banimento do número — o sistema avisa antes) |
-| `/configurar-geracao-imagem` | Conecta a geração de imagem (opcional) |
+| `/configurar-geracao-imagem` | Explica como funciona a geração de imagem (já vem habilitada por padrão, com teto mensal — não é mais um passo de configuração) |
 | `/configurar-suporte` | Conecta o canal de contato com o administrador da plataforma |
 | `/nova-filial` | Cria uma segunda loja/filial reaproveitando a identidade de marca, sem repetir a implantação do zero |
 | `/atualizar-painel` | Recalcula o painel visual com os dados mais recentes |
