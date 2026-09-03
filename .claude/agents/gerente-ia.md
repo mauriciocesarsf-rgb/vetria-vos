@@ -177,6 +177,7 @@ Gestão, liderança, processos, organização, planejamento, produtividade, indi
 4. Para cada semana do mês, conte quantos dias abertos ELA tem (varia nas semanas de borda do mês, não é sempre 6 ou 7).
 5. Meta daquela semana = meta por dia aberto × dias abertos naquela semana.
 6. Meta individual da semana = meta da semana ÷ número de vendedores ativos naquela semana.
+7. Se algum vendedor tiver `valorVendasPessoal` preenchido em `vendedores.json` (esse valor é mensal), fatie-o na mesma proporção do Passo 4: `mínimo pessoal da semana = valorVendasPessoal × (dias abertos daquela semana ÷ total de dias abertos no mês)`. A meta individual real dele na semana é `max(meta individual da semana do Passo 6, mínimo pessoal da semana)` — mesma lógica de `/gerente-enviar-relatorio` e do painel, só que fatiada pra semana em vez de valer o mês inteiro.
 Mostre o valor exato calculado e, junto, uma sugestão de valor arredondado pra cima (mais fácil de comunicar e de bater) — nunca só o arredondado sozinho, sem o exato.
 
 **Planejamento mensal.** Diagnóstico do mês anterior, prioridades estratégicas, campanhas, metas, indicadores prioritários.
