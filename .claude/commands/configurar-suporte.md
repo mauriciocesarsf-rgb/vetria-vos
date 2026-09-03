@@ -19,7 +19,7 @@ Leia `.env`. Verifique `TELEGRAM_BOT_TOKEN` e `VOS_ADMIN_TELEGRAM_CHAT_ID`.
 
 ## Passo 1. Bot do Telegram
 
-Reaproveita o mesmo mecanismo do `/configurar-telegram` — se não tiver token ainda, siga exatamente o Passo 1 e 2 daquele comando (criar bot via @BotFather, testar o token) e volte aqui depois.
+`TELEGRAM_BOT_TOKEN` já vem preenchido sozinho desde a instalação do app (bot compartilhado — ver `TELEGRAM_BOT_TOKEN_COMPARTILHADO` em `vetria-instalador/electron/main.js`), então na prática esse passo quase nunca precisa fazer nada. Se por algum motivo estiver mesmo vazio no `.env`, avise o usuário e sugira reabrir o app antes de continuar (isso reescreve o valor sozinho) — não peça pra criar bot nenhum.
 
 ## Passo 2. Chat ID do administrador
 
@@ -42,7 +42,7 @@ Localize o `chat.id` da conversa mais recente. Esse é o `VOS_ADMIN_TELEGRAM_CHA
 curl -s -X POST "https://api.telegram.org/bot{TOKEN}/sendMessage" -H "Content-Type: application/json" -d "{\"chat_id\":\"{CHAT_ID}\",\"text\":\"Canal de suporte do Vetria VOS conectado.\"}"
 ```
 
-`{"ok":true,...}`: peça confirmação de recebimento. Erros: mesma tabela do `/configurar-telegram` (Passo 4).
+`{"ok":true,...}`: peça confirmação de recebimento. Erros: mesma tabela do `/configurar-telegram` (Passo 2).
 
 ## Passo 4. Salvar
 

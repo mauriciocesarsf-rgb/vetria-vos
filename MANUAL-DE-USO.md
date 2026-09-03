@@ -79,7 +79,7 @@ Comandos são atalhos pra tarefas específicas — digite `/` no chat pra ver a 
 | Comando | O que faz |
 |---|---|
 | `/configurar-canal-relatorio` | Escolhe Telegram (recomendado) ou WhatsApp pros relatórios automáticos |
-| `/configurar-telegram` | Passo a passo pra criar o bot e pegar os IDs de destino |
+| `/configurar-telegram` | Passo a passo pra adicionar o bot da Vetria (já pronto, compartilhado) no grupo/contato e pegar os IDs de destino |
 | `/configurar-envio-automatico` | Liga o envio automático de verdade: frequência, horário e quem avisar se falhar — depois disso o relatório sai sozinho, sem precisar abrir o Vetria |
 | `/configurar-whatsapp` | Passo a passo pra conectar via Z-API (tem risco de banimento do número — o sistema avisa antes) |
 | `/configurar-geracao-imagem` | Conecta a geração de imagem (opcional) |

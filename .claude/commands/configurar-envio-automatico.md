@@ -71,7 +71,7 @@ Se o envio automático falhar por algum motivo (ex: token do Telegram expirado, 
 ```
 
 **Se opção 1:** use `TELEGRAM_CHAT_ID_GERENTE` do `.env`. Se não estiver configurado, avise que precisa rodar `/configurar-telegram` primeiro para o destino do gerente, ou escolher outra opção.
-**Se opção 3:** peça o Chat ID diretamente (se o usuário já sabe) ou ofereça guiar como no Passo 3 de `/configurar-telegram` (adicionar o bot / iniciar conversa e ler `getUpdates`).
+**Se opção 3:** peça o Chat ID diretamente (se o usuário já sabe) ou ofereça guiar como no Passo 1 de `/configurar-telegram` (adicionar o bot / iniciar conversa e ler `getUpdates`).
 **Se opção 4:** não grava nenhum destino de erro — deixe claro que, nesse caso, uma falha só aparece nos registros internos, ninguém é avisado.
 
 ## Passo 5. Salvar no `.env`

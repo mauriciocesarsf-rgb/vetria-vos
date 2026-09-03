@@ -8,7 +8,7 @@ Cada item abaixo tem um comando correspondente (`/configurar-...`) que guia o pa
 
 | Serviço | Pra quê | Obrigatório? | Onde | Custo | Tempo |
 |---|---|---|---|---|---|
-| Telegram | Relatórios automáticos e conversa com o Gerente IA | Recomendado | Telegram (BotFather) | Grátis | ~2 min |
+| Telegram | Relatórios automáticos e conversa com o Gerente IA | Recomendado | Telegram | Grátis | ~1 min |
 | WhatsApp (Z-API) | Alternativa ao Telegram, pelo número da loja | Opcional | app.z-api.io | Grátis p/ testar · a partir de ~R$60/mês | ~5 min |
 | Geração de imagem (OpenRouter) | Gerar pranchas e imagens direto na conversa | Opcional | openrouter.ai | Pré-pago, centavos por imagem | ~3 min |
 
@@ -16,15 +16,13 @@ Nenhum desses três precisa estar pronto pra começar a usar a Vetria — os esp
 
 ## 1. Telegram — relatórios e conversa (recomendado)
 
-**Por quê é manual:** criar um bot é um passo que só existe dentro do próprio Telegram — nenhum sistema externo consegue fazer isso por você.
+**Por quê é manual:** adicionar o bot num grupo ou abrir uma conversa com ele são ações que só existem dentro do próprio Telegram — nenhum sistema externo consegue fazer isso por você. Mas não tem mais criação de bot nem BotFather: o bot da Vetria já existe e já vem pronto na instalação.
 
 **O que você vai fazer, fora da Vetria:**
-1. Abrir o Telegram, buscar `@BotFather` e enviar `/newbot`.
-2. Escolher um nome e um username terminado em `bot`.
-3. Copiar o token que o BotFather devolve.
-4. Adicionar o bot ao grupo da loja (se for usar relatório de grupo) e/ou abrir uma conversa individual com ele.
+1. Abrir o Telegram, buscar o bot da Vetria pelo nome que o `/configurar-telegram` te mostrar.
+2. Adicionar ele ao grupo da loja (se for usar relatório de grupo) e/ou abrir uma conversa individual com ele.
 
-**De volta na Vetria:** rode `/configurar-telegram` e cole o token — o resto (testar, achar os IDs de destino, salvar) o próprio comando faz perguntando um dado de cada vez.
+**De volta na Vetria:** rode `/configurar-telegram` — o resto (achar os IDs de destino, testar, salvar) o próprio comando faz perguntando um dado de cada vez.
 
 **Custo:** zero, sempre. Sem limite de mensagens, sem risco de a conta ser bloqueada.
 
