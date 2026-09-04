@@ -19,6 +19,14 @@ Leia `minhas-empresas/.ativa` e `dna/indicadores/vendas.csv`. Extraia os nomes d
 Qual o horário de funcionamento da loja? (dias da semana e horário de abertura/fechamento — pode variar por dia, ex: "seg a sáb 9h-19h, dom 12h-18h")
 ```
 
+**Achado real, 2026-09-04:** além da descrição livre acima, pergunte também o horário padrão exato de abertura e fechamento (o que vale na maioria dos dias), em formato de hora simples:
+
+```
+E qual o horário padrão de abrir e fechar, só pra eu usar como referência (ex: "abre 9h, fecha 20h")? Uso isso pra mandar um lembrete pra equipe pouco antes de abrir e pouco antes de fechar.
+```
+
+Converta a resposta pra HH:mm (24h) antes de salvar (ex: "9h" → "09:00", "20h" → "20:00"). Se a pessoa não souber ou preferir pular, tudo bem — sem isso, os lembretes automáticos de abertura/fechamento simplesmente não são configurados, sem quebrar nada.
+
 ## Passo 2. Tipo de escala desejada
 
 ```
@@ -58,6 +66,7 @@ Pra respeitar a lei e o acordo coletivo do comércio na sua região, preciso sab
 
 Escreva (ou atualize) `dna/indicadores/config-escala.md` com o template de `templates/config-escala.md`, preenchendo:
 - Horário de funcionamento (Passo 1)
+- Horário padrão de abertura e fechamento, em HH:mm (Passo 1) — deixe em branco (`HH:mm`, sem preencher) se a pessoa pulou essa parte, nunca invente um horário
 - Tipo de escala desejada (Passo 2, incluindo a ressalva sobre rodízio se for o caso)
 - Dias que nunca podem ter folga (Passo 3)
 - Regras trabalhistas / convenção coletiva aplicável, com fonte e data (Passo 4)
