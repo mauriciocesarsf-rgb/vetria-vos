@@ -641,7 +641,21 @@
     (function () {
       var el = document.getElementById('horaCarregamento');
       if (el) el.textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      setTimeout(function () { location.reload(); }, 5 * 60 * 1000);
+      // Achado real, 2026-09-04: recarregava sozinho mesmo com a Área Adm
+      // aberta e alguém digitando no meio de um formulário (ex: Corridas) —
+      // o reload apagava tudo sem aviso, voltando pra tela principal. A
+      // Área Adm (injetada por injectToolbar em electron/main.js) marca
+      // window.__vetriaAdmAberto = true/false ao abrir/fechar; se estiver
+      // aberta na hora do recarregamento, só adia e checa de novo em breve,
+      // em vez de recarregar por cima de alguém editando.
+      function tentarRecarregar() {
+        if (window.__vetriaAdmAberto) {
+          setTimeout(tentarRecarregar, 30 * 1000);
+          return;
+        }
+        location.reload();
+      }
+      setTimeout(tentarRecarregar, 5 * 60 * 1000);
     })();
   </script>
   <script>
