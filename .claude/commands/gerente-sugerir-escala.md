@@ -127,6 +127,8 @@ req.end();
 
 **Sem imagem gerada** (Passo 3.5 caiu no fallback): use exatamente o envio em texto puro já documentado (`sendMessage`/`send-text`), igual ao padrão de `/gerente-enviar-relatorio`.
 
+Confira o retorno da chamada (mesmos diagnósticos de `/gerente-enviar-relatorio`, Passo 7). Em sucesso, informe "Sugestão de escala enviada." Em qualquer erro, mostre o retorno bruto para diagnóstico em vez de assumir que funcionou.
+
 A aplicação de fato em `escala-{mês alvo}.csv` só acontece numa sessão futura, quando alguém confirmar.
 
 ## Passo 5. Sem canal configurado
