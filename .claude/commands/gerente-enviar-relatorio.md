@@ -47,7 +47,7 @@ Leia `minhas-empresas/{ativa}/dna/indicadores/vendas.csv`.
 
 Se não existir ou só tiver o cabeçalho: informe que não há dados de vendas registrados, oriente a preencher `dna/indicadores/COMO-PREENCHER.md`. Encerre.
 
-Leia também `dna/indicadores/vendedores.json` (se existir) — só pra saber o `valorVendasPessoal` de cada vendedor, usado no Passo 4. Isso não entra em nenhuma soma de meta coletiva, é só usado pra decidir se a linha de aviso pessoal aparece ou não.
+Leia também `dna/indicadores/vendedores.json` (se existir) — pra saber o `emoji` e o `valorVendasPessoal` de cada vendedor, usados no Passo 4. Isso não entra em nenhuma soma de meta coletiva, é só usado pra decidir o ícone e se a linha de aviso pessoal aparece ou não.
 
 Filtre as linhas de `vendas.csv` dentro do período da corrida escolhida (no relatório combinado, repita esse filtro para o período de cada corrida incluída — normalmente é o mesmo período, mas trate cada uma independente). Para cada vendedor, some `valor`, `tickets`, `pecas_liquidas`, `clientes_atendidos` de todas as linhas dele no período. A partir dessas somas, calcule:
 - PA = `pecas_liquidas / tickets`
@@ -56,11 +56,34 @@ Filtre as linhas de `vendas.csv` dentro do período da corrida escolhida (no rel
 
 Ignore vendedores sem nenhum ticket no período (evita divisão por zero). Nunca invente números que não estejam nos arquivos — se não houver nenhuma linha de vendas no período de alguma corrida, informe isso em vez de montar uma seção vazia (no combinado, informe isso só na seção daquela corrida específica, e monte normalmente as demais).
 
+### Divisão em semanas (só pra corridas de `metrica = valor`)
+
+Além do total do período inteiro, calcule também o progresso da **semana atual** — dá ao vendedor uma etapa mais próxima e alcançável em vez de só a meta do período inteiro (útil sobretudo quando o período é o mês inteiro). Regra padrão de divisão — **é uma sugestão nossa, não uma regra fixa**: se o gerente pedir outra divisão numa conversa, siga o que ele pedir em vez desta regra.
+
+- Semanas são de segunda a domingo.
+- A primeira semana do período vai de `periodo_inicio` até o domingo seguinte (pode sobrar uma semana curta, ex: período começando numa terça-feira sobram só 6 dias até domingo).
+- Se esse primeiro pedaço tiver **menos de 4 dias**, junte com a semana seguinte (vira uma semana só, maior); com **4 dias ou mais**, ele já é uma semana própria.
+- Aplique a mesma regra no pedaço final do período (se `periodo_fim` cair no meio de uma semana e sobrar menos de 4 dias até lá, junte com a semana anterior).
+- Daí em diante, semanas cheias de segunda a domingo.
+
+Identifique em qual semana a data de hoje cai. Para cada vendedor, some `valor` só dentro das datas dessa semana (mesmo filtro de `vendas.csv`, restrito a essas datas). Calcule a meta da semana proporcionalmente: `meta individual do vendedor (ver definição abaixo) × (dias desta semana ÷ dias totais do período da corrida)`.
+
+### Dica do dia (só pra corridas de `metrica = valor`)
+
+Pra cada vendedor, monte uma dica curta e acionável, nesta ordem de prioridade:
+
+1. **Indicador fraco + data comemorativa da semana, combinados**: se o vendedor tiver PA, TM ou PM visivelmente abaixo da meta da corrida (ou da média da equipe, se não houver meta cadastrada pra esse indicador) **e** houver uma data comemorativa em `dna/marketing/calendario-{AAAA-MM}.md` (coluna "Tema / Data") dentro da semana atual, combine os dois: use a data como gancho e desenhe a sugestão pra atacar especificamente o indicador fraco. Exemplo real: P.A. baixo (vendedor não emplaca item adicional na venda) + "Dia da Amiga" na semana → "Hoje é Dia da Amiga! Que tal sugerir dois pares iguais, um pra ela e um pra melhor amiga? Elas vão amar usar iguais e ainda rir juntas." Isso aumenta P.A. (mais peças por atendimento) e usa o gancho do dia ao mesmo tempo. Adapte o mecanismo ao indicador certo: P.A. baixo → sugestão de item extra/par/combo; TM baixo → sugestão de subir pra uma peça de maior valor; PM baixo → sugestão ligada a atrair mais atendimentos no dia.
+2. **Só indicador fraco** (sem data comemorativa relevante na semana): dica direta sobre esse indicador, sem o gancho de data.
+3. **Só data comemorativa** (indicadores da pessoa estão bem): dica de venda ou de relacionamento ligada à data, sem forçar em cima de um indicador que já está bom. Não invente cliente específica (o sistema não tem cadastro de cliente, só de vendas) — fale em termos gerais, ex: "Dia do Profissional de Educação Física essa semana, que tal lembrar as clientes de presentear as personal trainers delas?"
+4. **Nenhum dos dois**: reforço positivo curto e genérico, sem soar forçado.
+
+Tom sempre leve, nunca de cobrança — é sugestão, não meta extra. Uma frase só, direto ao ponto.
+
 ## Passo 4. Montar a mensagem
 
 O formato depende da `metrica` da corrida escolhida.
 
-**Ícone de cada vendedor**: em vez de um marcador genérico, use um bonequinho de acordo com o gênero do primeiro nome — 👩 para nomes femininos, 👨 para nomes masculinos, 🧑 só se o nome for realmente ambíguo/unissex e não der pra inferir com confiança. Use esse ícone em todos os formatos abaixo, sempre imediatamente antes do nome do vendedor.
+**Ícone de cada vendedor**: use o `emoji` cadastrado em `vendedores.json` (campo `emoji`), quando preenchido. Sem `emoji` cadastrado, use um fallback por gênero do primeiro nome — 👩 para nomes femininos, 👨 para nomes masculinos, 🧑 só se o nome for realmente ambíguo/unissex e não der pra inferir com confiança. Use esse ícone em todos os formatos abaixo, sempre imediatamente antes do nome do vendedor.
 
 **Se `metrica = valor`** (acompanhamento de meta de faturamento). Siga este formato (baseado no modelo real da loja — não altere a estrutura):
 
@@ -73,10 +96,17 @@ O formato depende da `metrica` da corrida escolhida.
 
 Feito até o momento:
 
-{ícone de gênero} {vendedor}
-💰 Vendido: R$ {soma valor}
+{ícone} {vendedor}
+💰 Vendido no período: R$ {soma valor do período inteiro}
 📈 Faltam R$ {meta individual do vendedor - vendido, nunca negativo — ver nota} para atingir a meta.
 {se a meta individual do vendedor (linha abaixo) for maior que a "Meta por vendedor" do cabeçalho: 📌 Meta pessoal (R$ {valorVendasPessoal formatado}), maior que a cota dividida — segue por essa}
+
+📅 Esta semana ({DD/MM} a {DD/MM})
+💰 Vendido: R$ {soma valor da semana atual, ver Passo 3}
+🎯 Meta da semana: R$ {meta da semana, só o valor, sem explicar a conta}
+📈 Faltam R$ {meta da semana - vendido da semana, nunca negativo — ver nota} para a meta desta semana.
+
+💡 Dica de hoje: {dica, ver critério no Passo 3}
 
 (repita para cada vendedor)
 
@@ -87,9 +117,9 @@ Feito até o momento:
 Bora pra cima, equipe! 💪🚀
 ```
 
-**Meta individual do vendedor** (achado real, 2026-09-03): não é sempre igual ao `meta_por_vendedor` do cabeçalho — é o **maior valor** entre `meta_por_vendedor` da corrida e o `valorVendasPessoal` desse vendedor em `vendedores.json` (se estiver preenchido). Dividir a cota igual entre todo mundo pode gerar uma fatia menor que o mínimo pessoal já estabelecido de alguém — nesse caso, a pessoa segue pelo próprio mínimo, não pela fatia diluída. Use essa meta individual (não o valor do cabeçalho) pra calcular "Faltam" de cada vendedor. O cabeçalho "Meta por vendedor" continua mostrando o valor-base da divisão, pra dar a referência da conta coletiva.
+**Meta individual do vendedor** (achado real, 2026-09-03): não é sempre igual ao `meta_por_vendedor` do cabeçalho — é o **maior valor** entre `meta_por_vendedor` da corrida e o `valorVendasPessoal` desse vendedor em `vendedores.json` (se estiver preenchido). Dividir a cota igual entre todo mundo pode gerar uma fatia menor que o mínimo pessoal já estabelecido de alguém — nesse caso, a pessoa segue pelo próprio mínimo, não pela fatia diluída. Use essa meta individual (não o valor do cabeçalho) pra calcular "Faltam" de cada vendedor, tanto do período inteiro quanto da semana (proporcionalmente, ver Passo 3). O cabeçalho "Meta por vendedor" continua mostrando o valor-base da divisão, pra dar a referência da conta coletiva.
 
-Nota: se algum vendedor já bateu a própria meta individual (vendido ≥ meta individual dele), troque a linha "Faltam" por algo como "🏆 Meta batida! Superou em R$ {vendido - meta individual}." — nunca mostre "faltam" negativo.
+Nota: se algum vendedor já bateu a própria meta individual do período (vendido ≥ meta individual dele), troque a linha "Faltam" do período por algo como "🏆 Meta batida! Superou em R$ {vendido - meta individual}." — nunca mostre "faltam" negativo. Mesma lógica pra semana: se já bateu a meta da semana, troque a linha "Faltam" da semana por "🏆 Meta da semana batida! Superou em R$ {diferença}."
 
 **Se `metrica = pa`, `tm` ou `pm`** (ranking). Siga este formato:
 
@@ -98,11 +128,11 @@ Nota: se algum vendedor já bateu a própria meta individual (vendido ≥ meta i
 
 {se meta_por_vendedor estiver preenchida: 🎯 Meta: {valor}}
 
-{ordene do maior para o menor indicador, use medalha nos 3 primeiros — o ícone de gênero vem junto com o nome, não substitui a medalha}
-🥇 {ícone de gênero} {vendedor 1}: {indicador} {"✅" se meta_por_vendedor preenchida e ele bateu}
-🥈 {ícone de gênero} {vendedor 2}: {indicador}
-🥉 {ícone de gênero} {vendedor 3}: {indicador}
-{vendedor 4 em diante, sem medalha: "{número}. {ícone de gênero} {vendedor}: {indicador}"}
+{ordene do maior para o menor indicador, use medalha nos 3 primeiros — o ícone do vendedor (ver Passo 4, "Ícone de cada vendedor") vem junto com o nome, não substitui a medalha}
+🥇 {ícone} {vendedor 1}: {indicador} {"✅" se meta_por_vendedor preenchida e ele bateu}
+🥈 {ícone} {vendedor 2}: {indicador}
+🥉 {ícone} {vendedor 3}: {indicador}
+{vendedor 4 em diante, sem medalha: "{número}. {ícone} {vendedor}: {indicador}"}
 
 {se houver `premio` na corrida: 🏁 Premiação: {premio}}
 
