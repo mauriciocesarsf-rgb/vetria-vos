@@ -8,8 +8,9 @@ Preenchido por `/gerente-configurar-escala`. Usado por `/gerente-sugerir-escala`
 
 ## Horário padrão de abertura e fechamento
 
-Usado só pelos lembretes automáticos de início e fim de expediente (ver `/gerente-configurar-escala` Passo sobre isso) — sempre em HH:mm, 24 horas, um horário único que vale pra maioria dos dias (não precisa cobrir exceções de domingo/feriado, essas ficam só na descrição em texto livre acima).
+Usado pelos lembretes automáticos de início e fim de expediente e pelo resumo diário (ver `/gerente-configurar-escala` Passo sobre isso, ou a aba Escala da Área Adm) — sempre em HH:mm, 24 horas, um horário único que vale pra maioria dos dias (não precisa cobrir exceções de domingo/feriado, essas ficam só na descrição em texto livre acima). "Dias abertos" define em quais dias da semana esses três envios automáticos acontecem — dia da semana fora dessa lista não recebe nenhum deles.
 
+Dias abertos: Segunda, Terça, Quarta, Quinta, Sexta, Sábado, Domingo
 Abertura: HH:mm
 Fechamento: HH:mm
 
