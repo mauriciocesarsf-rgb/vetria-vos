@@ -36,6 +36,10 @@ A saída é uma grade completa do mês alvo: pra cada vendedor ativo, quais **da
 4. Ao final, se algum dia da semana ficou com muito mais gente alocada no mês inteiro que os outros (diferença de 2+ vendedores em relação ao dia menos carregado) sem necessidade de manter continuidade de ninguém, redistribua as ocorrências mais recentes desse dia pro dia menos carregado.
 5. **Domingos, quando houver referência do ano anterior (Passo 0):** ao decidir quantos vendedores ficam de folga num domingo específico deste mês, prefira manter uma contagem parecida à do domingo de mesma posição no ano anterior (mesmo nível de cobertura, não precisa ser a mesma pessoa — ajuste proporcionalmente se a equipe ativa mudou de tamanho). É um critério a mais dentro da escolha de equilíbrio do passo 3, nunca sobrepõe os dias bloqueados de `config-escala.md`.
 
+## Passo 2.5. Validar
+
+Antes de montar a mensagem, confira a grade contra as regras (ver "Gestão de escalas" em `.claude/agents/gerente-ia.md`): nenhum dia bloqueado em `config-escala.md` ficou sem cobertura, e todo dia de funcionamento tem pelo menos 1 vendedor ativo sem folga. Se algo falhar (bug na distribuição do Passo 2, não deveria acontecer pelo próprio desenho do algoritmo, mas confira mesmo assim), corrija antes de seguir — nunca apresente uma sugestão "COM CONFLITOS" como se fosse normal. Se sobrar só um alerta leve (ex: um domingo com cobertura abaixo do padrão do ano anterior), inclua isso como observação no Passo 3 em vez de esconder.
+
 ## Passo 3. Montar a mensagem
 
 Resuma por vendedor — se as datas caíram sempre no mesmo dia da semana, diga isso (mais fácil de guardar); se variou, liste as datas soltas:
