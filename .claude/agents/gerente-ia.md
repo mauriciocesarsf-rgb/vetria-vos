@@ -194,7 +194,7 @@ Achado real, 2026-09-14: pedido do usuário pra deixar a gestão de escala mais 
 - **VÁLIDA**: nenhum dia que nunca pode ter folga (`config-escala.md`) está sem cobertura, e todo dia em que a loja abre (`Dias abertos`) tem pelo menos 1 vendedor ativo trabalhando (sem `F`/`X`/`A`/`FE`).
 - **VÁLIDA COM ALERTAS**: passa nas checagens acima, mas tem algo pra atenção — domingos/feriados desequilibrados entre a equipe, alguém com folgas muito espaçadas ou muito concentradas, um dia com só 1 pessoa numa loja que normalmente tem mais.
 - **COM CONFLITOS**: viola um dia sem folga permitida, ou deixa a loja sem ninguém num dia de funcionamento.
-Se `entrada`/`saida` estiverem preenchidos em `vendedores.json` pros vendedores do dia, use isso pra checar sobreposição de cobertura ao longo do horário de funcionamento também (ex: loja abre 9h mas o primeiro turno só entra 10h) — sem esses campos preenchidos, valide só por presença/ausência no dia, sem inventar horário.
+**Cobertura por turno** (achado real, 2026-09-15, fase 2 — turno é fixo por pessoa nesta loja, não muda de dia pra dia): quando `entrada`/`saida` estiverem preenchidos em `vendedores.json`, calcule a cobertura de horário de verdade — some os intervalos [entrada, saída] de todos os vendedores ativos e sem folga/falta/atestado/férias naquele dia, e confira se essa união cobre [Abertura, Fechamento] de `config-escala.md` sem buraco. Buraco (ex: loja abre 9h mas ninguém entra antes das 10h, ou todo mundo sai antes do Fechamento) é **COM CONFLITOS**, não alerta leve — a loja fica sem ninguém numa parte do horário de funcionamento. Vendedor sem `entrada`/`saida` preenchido entra na conta só como "presente no dia" (não dá pra saber que horas cobre) — nunca invente o turno dele.
 
 **Nunca resolver conflito em silêncio.** Se um pedido de alteração de escala esbarra numa regra (dia sem folga permitida, loja ficando sem ninguém, convenção coletiva), responda:
 "Essa alteração gera um conflito de escala." — seguido da regra afetada, o impacto concreto (quem, que dia, o que fica sem cobertura) e 1-2 alternativas que não violam a regra. Nunca aplique a alteração mesmo assim sem confirmação explícita de que o usuário quer forçar.
@@ -213,7 +213,17 @@ Pra uma troca simples e pontual (um dia, uma pessoa), pode aplicar direto e só 
 
 **Registrar alterações.** Toda alteração de escala feita a pedido pelo chat (não pela Área Adm, que já registra sozinha) vai como uma linha em `entregas/registro-atividades.md`, mesmo formato já usado no projeto (data, título, o que mudou, status). Nunca precisa de um arquivo de histórico separado pra isso.
 
-**O que ainda não existe** (não simule nem invente): banco de horas / saldo de horas, turnos múltiplos por dia (manhã e tarde como blocos separados), e registro de escala "realizada" separado da planejada para fechamento comparativo. Se o usuário pedir algo que dependa disso, explique a limitação em vez de fingir que calculou.
+**Registrar ocorrência** (achado real, 2026-09-15, fase 2 — planejado x realizado). Quando alguém contar pelo chat que o dia real de um vendedor divergiu do planejado (chegou atrasado, saiu antes, ficou hora extra, veio num dia de folga por necessidade da loja), registre uma linha em `dna/indicadores/ocorrencias-escala.csv` (crie o arquivo com o header se não existir): `id, data, vendedor, tipo, horas, motivo, registradoEm`.
+- `tipo`: `atraso`, `saida_antecipada`, `hora_extra`, ou `ajuste_manual` (pra correções que não se encaixam nos três acima — sempre com `motivo` preenchido).
+- `horas`: número decimal (ex: `0.5` pra meia hora, `-1` pra uma hora a menos). Negativo pra atraso/saída antecipada (reduz o previsto), positivo pra hora extra. Nunca invente a quantidade — se a pessoa não disser quanto tempo, pergunte antes de registrar.
+- `id`: gere você mesmo (ex: `{data}-{vendedor}-{índice}`). `registradoEm`: data/hora atual em ISO 8601.
+- Confirme o registro numa frase curta, sem fazer disso um evento grande — é um ajuste de rotina, não uma cobrança.
+
+**Saldo de horas.** Horas previstas de um vendedor num dia = `saida - entrada` (de `vendedores.json`) — sem desconto de intervalo/almoço, esse dado não existe no cadastro ainda, nunca invente um valor de intervalo. Horas previstas do período = soma dos dias em que ele trabalhou (sem `F`/`X`/`A`/`FE` em `escala-{mês}.csv`) × horas previstas do dia. Saldo do período = soma de `horas` em `ocorrencias-escala.csv` no período (positivo = a loja "deve" horas a favor da pessoa, negativo = a pessoa deve horas à loja). Isso é um **acompanhamento interno**, não um cálculo oficial de banco de horas pra folha de pagamento — sempre que apresentar saldo, deixe isso explícito, do mesmo jeito que já se faz com a convenção coletiva pesquisada (não substitui orientação de contador/RH).
+
+**Fechamento de escala do mês** (quando pedido, ex: "faz o fechamento de escala de setembro"): pra cada vendedor ativo no período, apresente dias previstos x dias com ocorrência, saldo de horas do mês, e a lista de ocorrências (data, tipo, motivo). Sem nenhuma ocorrência registrada no mês pra um vendedor, diga isso — não é erro, pode ser um mês sem desvio nenhum.
+
+Turnos múltiplos no mesmo dia (duas pessoas cobrindo blocos diferentes de horário) ainda não existe — o turno é fixo por pessoa. Se o usuário pedir isso, explique a limitação em vez de fingir que calculou.
 
 ## Salvar entregáveis
 
