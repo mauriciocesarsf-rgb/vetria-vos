@@ -85,7 +85,12 @@ O formato depende da `metrica` da corrida escolhida.
 
 **Ícone de cada vendedor**: use o `emoji` cadastrado em `vendedores.json` (campo `emoji`), quando preenchido. Sem `emoji` cadastrado, use um fallback por gênero do primeiro nome — 👩 para nomes femininos, 👨 para nomes masculinos, 🧑 só se o nome for realmente ambíguo/unissex e não der pra inferir com confiança. Use esse ícone em todos os formatos abaixo, sempre imediatamente antes do nome do vendedor.
 
-**Se `metrica = valor`** (acompanhamento de meta de faturamento). Siga este formato (baseado no modelo real da loja — não altere a estrutura):
+**Se `metrica = valor`** (acompanhamento de meta de faturamento). Duas versões — **achado real, 2026-09-29** (pedido do usuário): a mensagem completa todo santo dia ficou grande demais e sem foco em ninguém. Regra de qual usar:
+- **Hoje é `periodo_inicio` da corrida** (primeiro dia do período): use o formato **COMPLETO**.
+- **Qualquer outro dia**: use o formato **RESUMIDO**.
+(Mensagem individual por vendedor, no privado de cada um, fica pro app/login individual — ainda não existe, não simule isso por aqui.)
+
+**Formato COMPLETO** (baseado no modelo real da loja — não altere a estrutura):
 
 ```
 📊 Acompanhamento da Meta - {nome da corrida, ex: "1º Período"}
@@ -115,6 +120,19 @@ Feito até o momento:
 🔥 {linha motivacional curta, adaptada ao tom de comunicação da empresa (Workbook DNA)}
 
 Bora pra cima, equipe! 💪🚀
+```
+
+**Formato RESUMIDO** (demais dias do período — mesmos cálculos do Passo 3, só que só a etapa da semana entra na mensagem, o total do período fica de fora):
+
+```
+📊 {nome da corrida} — acompanhamento
+
+{ícone} {vendedor}: R$ {vendido na semana} esta semana {"(faltam R$ {falta} pra meta da semana)" — ou, se já bateu, "— meta da semana batida! 🏆"}
+💡 {dica de hoje, ver critério no Passo 3}
+
+(repita para cada vendedor, sem linha em branco extra entre um e outro)
+
+🔥 {linha motivacional curta}
 ```
 
 **Meta individual do vendedor** (achado real, 2026-09-03): não é sempre igual ao `meta_por_vendedor` do cabeçalho — é o **maior valor** entre `meta_por_vendedor` da corrida e o `valorVendasPessoal` desse vendedor em `vendedores.json` (se estiver preenchido). Dividir a cota igual entre todo mundo pode gerar uma fatia menor que o mínimo pessoal já estabelecido de alguém — nesse caso, a pessoa segue pelo próprio mínimo, não pela fatia diluída. Use essa meta individual (não o valor do cabeçalho) pra calcular "Faltam" de cada vendedor, tanto do período inteiro quanto da semana (proporcionalmente, ver Passo 3). O cabeçalho "Meta por vendedor" continua mostrando o valor-base da divisão, pra dar a referência da conta coletiva.
