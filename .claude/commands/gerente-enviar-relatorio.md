@@ -66,7 +66,7 @@ Além do total do período inteiro, calcule também o progresso da **semana atua
 - Aplique a mesma regra no pedaço final do período (se `periodo_fim` cair no meio de uma semana e sobrar menos de 4 dias até lá, junte com a semana anterior).
 - Daí em diante, semanas cheias de segunda a domingo.
 
-Identifique em qual semana a data de hoje cai. Para cada vendedor, some `valor` só dentro das datas dessa semana (mesmo filtro de `vendas.csv`, restrito a essas datas). Calcule a meta da semana proporcionalmente: `meta individual do vendedor (ver definição abaixo) × (dias desta semana ÷ dias totais do período da corrida)`.
+Identifique em qual semana a data de hoje cai. Para cada vendedor, some `valor` só dentro das datas dessa semana (mesmo filtro de `vendas.csv`, restrito a essas datas). Calcule a meta da semana usando a fórmula única do Passo 0.7 de `.claude/agents/gerente-ia.md` ("Meta esperada: fórmula única"), com o intervalo = essa semana e `meta_loja` = a meta da corrida escolhida (ou proporcional a ela, se a corrida cobrir um período diferente do mês inteiro) — nunca por proporção direta de dias corridos do período, mesmo se a loja não tiver nenhum dia fechado no período (dá o mesmo resultado nesse caso, mas evita duas fórmulas fazendo a mesma coisa de jeitos diferentes).
 
 ### Dica do dia (só pra corridas de `metrica = valor`)
 

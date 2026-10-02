@@ -68,6 +68,19 @@ Meta total da loja no mês. É a referência que o Gerente IA usa para calcular 
 | `bonificacao_cota_pct` | Percentual de bonificação pago à equipe se bater a cota, se houver (opcional) | `4.0` |
 | `bonificacao_super_pct` | Percentual de bonificação pago à equipe se bater a super, se houver (opcional) | `4.3` |
 
+## `pesos-{AAAA-MM}.csv` — opcional, um arquivo por mês
+
+Divide a meta do mês entre os dias, quando alguns dias devem pesar mais que outros (semana de ação, data comemorativa). Sem esse arquivo, ou com ele só como rascunho, cada dia aberto vale igual. Normalmente é preenchido pela aba "Meta por dia" da Área Adm, não à mão. Uma linha por dia do mês.
+
+| Coluna | O que é | Exemplo |
+|---|---|---|
+| `dia` | Número do dia no mês | `26` |
+| `data` | Data completa, AAAA-MM-DD | `2026-10-26` |
+| `peso_pct` | Fatia do mês que esse dia carrega, em %. A soma de todos os dias fecha 100. Dia fechado fica em `0` | `5` |
+| `origem` | Como o peso nasceu: `linear` (dias iguais), `historico`, `historico+calendario` ou `manual` | `manual` |
+| `observacao` | Por que esse dia pesa o que pesa (texto livre, opcional) | `ação de Black` |
+| `aprovado` | `sim` só depois que o gestor aprovou. `nao` é rascunho e é ignorado nos cálculos | `sim` |
+
 ## `premios-especiais.csv` — prêmios que não são disputa entre vendedores
 
 Para premiações ligadas a um cargo específico ou à loja como um todo — não a uma comparação entre vendedores. Exemplos reais: gerente ganhar um prêmio se a loja bater a cota; estoquista ganhar um prêmio por manter a taxa de cancelamento baixa.
