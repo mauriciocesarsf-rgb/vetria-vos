@@ -115,23 +115,88 @@ const mesesUsados = Object.keys(diasPorMes)
   .filter((k) => k < mes && diasPorMes[k].length >= MIN_DIAS_MES)
   .sort()
   .slice(-MAX_MESES)
-const nivel = mesesUsados.length ? 1 : 0
+// Nível 0: sem histórico. Nível 1: padrão por dia da semana. Nível 2 (3 meses
+// ou mais): soma o padrão por período do mês.
+const MIN_MESES_NIVEL_2 = 3
+const nivel = mesesUsados.length >= MIN_MESES_NIVEL_2 ? 2 : mesesUsados.length ? 1 : 0
+
+// Meses mais recentes pesam mais: o mais antigo conta 1, o seguinte 2, e assim por diante.
+const pesoDoMes = {}
+mesesUsados.forEach((k, i) => { pesoDoMes[k] = i + 1 })
 
 const soma = [0, 0, 0, 0, 0, 0, 0]
+const pesoSoma = [0, 0, 0, 0, 0, 0, 0]
 const obs = [0, 0, 0, 0, 0, 0, 0]
 let somaGeral = 0
+let pesoGeral = 0
 let obsGeral = 0
 for (const k of mesesUsados) {
   for (const { data, total } of diasPorMes[k]) {
     const [a, m, d] = data.split('-').map(Number)
     const w = diaSemanaDe(a, m, d)
-    soma[w] += total; obs[w]++; somaGeral += total; obsGeral++
+    const pk = pesoDoMes[k]
+    soma[w] += total * pk; pesoSoma[w] += pk; obs[w]++
+    somaGeral += total * pk; pesoGeral += pk; obsGeral++
   }
 }
-const mediaGeral = obsGeral ? somaGeral / obsGeral : 0
+const mediaGeral = pesoGeral ? somaGeral / pesoGeral : 0
 const confiavel = (w) => obs[w] >= MIN_OBS_DIA_SEMANA
-const mediaDoDia = (w) => (confiavel(w) ? soma[w] / obs[w] : mediaGeral)
+const mediaDoDia = (w) => (confiavel(w) ? soma[w] / pesoSoma[w] : mediaGeral)
 const fatorDoDia = (w) => (mediaGeral ? mediaDoDia(w) / mediaGeral - 1 : 0)
+
+// Períodos do mês usados na análise do histórico: por padrão dias 1-7, 8-14,
+// 15-21, 22-28 e 29 até o fim. A divisão pode ser trocada na configuração de
+// metas (linha "Períodos de análise do histórico: 1-10, 11-20, 21-31").
+function periodosDeAnalise() {
+  const padrao = [[1, 7], [8, 14], [15, 21], [22, 28], [29, 31]]
+  let t = ''
+  try { t = fs.readFileSync(path.join(ind, 'config-metas.md'), 'utf8') } catch { return padrao }
+  const m = /^Períodos de análise do histórico:[ \t]*(.+)$/m.exec(t)
+  if (!m) return padrao
+  const lista = m[1].split(',').map((s) => /(\d{1,2})\s*-\s*(\d{1,2})/.exec(s)).filter(Boolean)
+    .map((x) => [Number(x[1]), Number(x[2])]).filter(([a, b]) => a >= 1 && b <= 31 && a <= b)
+  return lista.length ? lista : padrao
+}
+const periodosAnalise = periodosDeAnalise()
+const periodoDoDia = (d) => periodosAnalise.findIndex(([a, b]) => d >= a && d <= b)
+const MIN_MESES_PERIODO = 3
+const indicePeriodo = periodosAnalise.map(() => 1)
+const participacaoHistorica = periodosAnalise.map(() => null)
+if (nivel === 2) {
+  // Em cada mês, cada dia é comparado com a média do seu dia da semana (isso
+  // tira o efeito do dia da semana em que o mês começa); o índice do período
+  // é a média desses valores no período, em relação à média do mês inteiro.
+  const idxPorMes = periodosAnalise.map(() => [])
+  const partPorMes = periodosAnalise.map(() => [])
+  for (const k of mesesUsados) {
+    const residuos = periodosAnalise.map(() => [])
+    const todos = []
+    const totalPeriodo = periodosAnalise.map(() => 0)
+    let totalMes = 0
+    for (const { data, total } of diasPorMes[k]) {
+      const [a, m, d] = data.split('-').map(Number)
+      const p = periodoDoDia(d)
+      totalMes += total
+      if (p >= 0) totalPeriodo[p] += total
+      const base = mediaDoDia(diaSemanaDe(a, m, d))
+      if (!(base > 0)) continue
+      const r = total / base
+      todos.push(r)
+      if (p >= 0) residuos[p].push(r)
+    }
+    const mediaMes = todos.length ? todos.reduce((s, x) => s + x, 0) / todos.length : 0
+    periodosAnalise.forEach((_, p) => {
+      if (residuos[p].length && mediaMes > 0) idxPorMes[p].push({ v: residuos[p].reduce((s, x) => s + x, 0) / residuos[p].length / mediaMes, peso: pesoDoMes[k] })
+      if (totalMes > 0) partPorMes[p].push({ v: totalPeriodo[p] / totalMes, peso: pesoDoMes[k] })
+    })
+  }
+  const mediaPond = (lista) => lista.reduce((s, x) => s + x.v * x.peso, 0) / lista.reduce((s, x) => s + x.peso, 0)
+  periodosAnalise.forEach((_, p) => {
+    if (idxPorMes[p].length >= MIN_MESES_PERIODO) indicePeriodo[p] = mediaPond(idxPorMes[p])
+    if (partPorMes[p].length) participacaoHistorica[p] = mediaPond(partPorMes[p])
+  })
+}
+const fatorPeriodo = (d) => { const p = periodoDoDia(d); return nivel === 2 && p >= 0 ? indicePeriodo[p] : 1 }
 
 // Ajustes por data ou ação (opcionais): lista em JSON montada por quem chama.
 // Cada item: { inicio, fim?, motivo, origem: 'gestor' | 'data', fator? }.
@@ -231,7 +296,7 @@ const bruto = []
 let totalBruto = 0
 for (let d = 1; d <= diasNoMes; d++) {
   const w = diaSemanaDe(anoAlvo, mesAlvo, d)
-  const base = estaAberto(w) ? (nivel ? mediaDoDia(w) : 1) : 0
+  const base = estaAberto(w) ? (nivel ? mediaDoDia(w) * fatorPeriodo(d) : 1) : 0
   const peso = base * (ajustePorDia[d] ? ajustePorDia[d].fator : 1)
   bruto.push(peso)
   totalBruto += peso
@@ -251,6 +316,10 @@ for (let d = 1; d <= diasNoMes; d++) {
   let observacao = ''
   if (!estaAberto(w)) observacao = 'loja fechada nesse dia da semana'
   else if (nivel) observacao = confiavel(w) ? DIA_SEMANA[w] + ': ' + sinal(fatorDoDia(w)) + ' vs média (' + obs[w] + ' dias observados)' : DIA_SEMANA[w] + ': poucos dados, peso neutro'
+  if (nivel === 2 && estaAberto(w)) {
+    const pp = periodoDoDia(d)
+    if (pp >= 0 && Math.abs(indicePeriodo[pp] - 1) >= 0.01) observacao += '; dias ' + periodosAnalise[pp][0] + ' a ' + periodosAnalise[pp][1] + ': ' + sinal(indicePeriodo[pp] - 1) + ' pelo histórico do período'
+  }
   const aj = ajustePorDia[d]
   if (aj) {
     const detalhe = aj.categoria === 'gestor' ? 'informado por você, ×' + fmtFator(aj.fator)
@@ -280,6 +349,23 @@ for (let w = 1; w <= 7; w++) {
   porDiaSemana.push({ dia: DIA_SEMANA[i], fator_pct: nivel && confiavel(i) ? Math.round(fatorDoDia(i) * 100) : null, observados: obs[i] })
 }
 
+const periodosDoMes = []
+if (nivel === 2) {
+  periodosAnalise.forEach(([a, b], p) => {
+    if (a > diasNoMes) return
+    const fim = Math.min(b, diasNoMes)
+    let rec = 0
+    for (let d = a; d <= fim; d++) rec += pesos[d - 1]
+    periodosDoMes.push({
+      dias: a + '-' + fim,
+      historico_pct: participacaoHistorica[p] === null ? null : Math.round(participacaoHistorica[p] * 10000) / 100,
+      recomendado_pct: Math.round(rec * 100) / 100,
+      ajuste_pct: Math.round((indicePeriodo[p] - 1) * 100),
+    })
+  })
+}
+const fmtPct = (x) => String(Math.round(x * 10) / 10).replace('.', ',') + '%'
+
 const hoje = new Date().toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
 const exp = []
 exp.push('# Como a Vetria chegou nesta sugestão: ' + rotuloMes(mes))
@@ -295,9 +381,21 @@ if (nivel === 0) {
   for (const p of porDiaSemana) {
     exp.push('- ' + p.dia + ': ' + (p.fator_pct === null ? 'poucos dados (' + p.observados + ' dias), peso neutro' : (p.fator_pct >= 0 ? '+' : '') + p.fator_pct + '% (' + p.observados + ' dias observados)'))
   }
+  if (nivel === 2) {
+    exp.push('')
+    exp.push('Por período do mês, o histórico e o que recomendo para ' + rotuloMes(mes) + ':')
+    for (const p of periodosDoMes) {
+      exp.push('- dias ' + p.dias.replace('-', ' a ') + ': historicamente ' + (p.historico_pct === null ? 'sem dado' : fmtPct(p.historico_pct) + ' do mês') + '; recomendado ' + fmtPct(p.recomendado_pct) + (p.ajuste_pct !== 0 ? ' (esse período costuma ficar ' + (p.ajuste_pct > 0 ? p.ajuste_pct + '% acima' : Math.abs(p.ajuste_pct) + '% abaixo') + ' da média do mês, já descontado o dia da semana)' : ''))
+    }
+    exp.push('')
+    exp.push('Os meses mais recentes pesam mais: o mais antigo conta 1 e o mais novo conta ' + mesesUsados.length + '.')
+  }
   if (mesesUsados.length < 3) {
     exp.push('')
-    exp.push('Com só ' + mesesUsados.length + (mesesUsados.length === 1 ? ' mês' : ' meses') + ' de histórico, esse padrão é uma indicação fraca. Confira e ajuste o que não bater com o que você conhece da loja.')
+    exp.push('Com só ' + mesesUsados.length + (mesesUsados.length === 1 ? ' mês' : ' meses') + ' de histórico, esse padrão é uma indicação fraca e ainda não dá para medir como cada período do mês se comporta (isso começa com 3 meses). Confira e ajuste o que não bater com o que você conhece da loja.')
+  } else if (mesesUsados.length < 6) {
+    exp.push('')
+    exp.push('Com ' + mesesUsados.length + ' meses de histórico, o padrão por período do mês é uma indicação moderada: melhora conforme entram mais meses. Confira e ajuste o que não bater com o que você conhece da loja.')
   }
 }
 if (ajustesPedidos.length) {
@@ -328,6 +426,7 @@ sair({
   meses_usados: mesesUsados,
   dias_abertos_configurados: abertos.configurado,
   por_dia_semana: porDiaSemana,
+  periodos_do_mes: periodosDoMes,
   ajustes: relatorioAjustes,
   arquivo_pesos: path.relative(raiz, arquivoPesos).split(path.sep).join('/'),
   arquivo_explicacao: path.relative(raiz, arquivoExplicacao).split(path.sep).join('/'),

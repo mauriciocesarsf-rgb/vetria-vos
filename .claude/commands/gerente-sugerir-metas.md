@@ -62,6 +62,7 @@ O resultado vem em formato de dados, com um campo `status`:
 Leia o arquivo indicado em `arquivo_explicacao` e resuma em até 8 frases curtas (a frase final com o aviso de rascunho conta à parte), em português simples, sem repetir tudo o que a explicação já diz na tela:
 - No que a sugestão se baseou: quantos meses de histórico (ou que ainda não há histórico suficiente e os dias ficaram iguais).
 - Os dias da semana que mais e menos pesam, quando houver padrão medido, com a porcentagem.
+- Quando a explicação trouxer a comparação por período do mês (a partir de 3 meses de histórico): o período que historicamente mais pesa e o que menos pesa, o que isso significa para o mês escolhido (histórico contra recomendado) e que os meses mais recentes pesam mais.
 - O aviso de que histórico curto é uma indicação fraca, quando a explicação trouxer.
 - Se a explicação trouxer o trecho "Datas e ações consideradas", diga quais datas entraram e de que tipo: informadas pela pessoa, confirmadas pelo histórico, ou palpite pequeno sem histórico (deixe claro que palpite não é confirmado). Sobre o que ficou de fora, diga em uma frase só que as demais datas do calendário de marketing (pauta de conteúdo) não entraram, sem listar uma por uma.
 - Se a explicação trouxer o trecho "Você me contou", diga em uma frase se os números confirmam ou divergem do que a pessoa disse sobre os dias fortes e fracos.
