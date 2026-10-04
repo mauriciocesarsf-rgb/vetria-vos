@@ -77,7 +77,7 @@ Divide a meta do mês entre os dias, quando alguns dias devem pesar mais que out
 | `dia` | Número do dia no mês | `26` |
 | `data` | Data completa, AAAA-MM-DD | `2026-10-26` |
 | `peso_pct` | Fatia do mês que esse dia carrega, em %. A soma de todos os dias fecha 100. Dia fechado fica em `0` | `5` |
-| `origem` | Como o peso nasceu: `linear` (dias iguais), `historico` (padrão dos dias da semana), `historico+calendario` ou `calendario` (com ajuste de data ou ação) ou `manual` (editado à mão) | `manual` |
+| `origem` | Como o peso nasceu: `linear` (dias iguais), `historico` (padrão dos dias da semana), `historico+calendario` ou `calendario` (com ajuste de data ou ação), `manual` (editado à mão) ou `empresa` (valor em R$ informado pela empresa, convertido em percentual pelo app) | `manual` |
 | `observacao` | Por que esse dia pesa o que pesa (texto livre, opcional) | `ação de Black` |
 | `aprovado` | `sim` só depois que o gestor aprovou. `nao` é rascunho e é ignorado nos cálculos | `sim` |
 
