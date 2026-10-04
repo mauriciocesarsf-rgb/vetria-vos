@@ -54,10 +54,28 @@ A equipe tem bonificação ou comissão ligada à meta?
 2. Não
 ```
 
-- **Não:** registre `Bonificação ligada à meta: nao` e apague qualquer explicação que existisse antes (volta o texto de exemplo do modelo). Nesse caso não precisa do aviso abaixo.
-- **Sim:** registre `Bonificação ligada à meta: sim` e pergunte "Como ela funciona? Pode explicar com as suas palavras" (ex: percentual fixo sobre o total, faixas por percentual da meta, valor extra para a meta super). Salve a explicação exatamente como foi dada, sem reescrever regra nem converter em fórmula.
+- **Não:** registre `Bonificação ligada à meta: nao`, volte as três linhas de comissão e a explicação para o texto de exemplo do modelo, e siga para o Passo 6.
+- **Sim:** registre `Bonificação ligada à meta: sim` e faça as perguntas abaixo, uma por vez:
 
-Avise em uma frase (só quando a resposta for Sim) que a Vetria ainda não calcula bonificação: por enquanto isso só fica guardado, para quando esse recurso existir.
+```
+Qual o percentual de comissão do vendedor enquanto ele ainda não bateu a meta? (ex: 3,5%)
+```
+```
+E quando ele bate a primeira meta? (ex: 4%)
+```
+```
+E quando bate a meta super, se houver? (ex: 4,2%. Se não existe meta super, responda "não tem")
+```
+```
+A faixa é definida pela meta de cada vendedor, e o percentual novo vale sobre todas as vendas dele naquele período (ou no mês, se não houver períodos)?
+
+1. Sim, é assim
+2. Não, na minha loja é diferente
+```
+
+Grave cada percentual exatamente como a pessoa disse nas linhas `Comissão antes da meta`, `Comissão ao bater a meta` e `Comissão ao bater a super` (se não tem meta super, escreva "não tem" na terceira). Se a resposta da última pergunta for **1**, deixe as linhas `Faixa definida pela meta: individual` e `Percentual vale sobre: todas as vendas do período` como estão. Se for **2**, peça "Me conte como funciona, com as suas palavras", grave a explicação exatamente como foi dada no espaço de descrição do modelo, troque a linha `Faixa definida pela meta` por `Faixa definida pela meta: outra (ver descrição)`, e avise em uma frase que a calculadora de comissão ainda não entende essa regra e por isso não vai calcular até a Vetria atender esse modelo.
+
+Depois de gravar, diga que a comissão de cada vendedor pode ser consultada pelo comando `/gerente-comissao`.
 
 ## Passo 6. Salvar
 
@@ -66,7 +84,7 @@ Escreva (ou atualize) `dna/indicadores/config-metas.md` com o modelo de `templat
 - Histórico de vendas fora do sistema (Passo 2)
 - Dias fortes e dias fracos (Passo 3)
 - Datas e ações que mexem nas vendas (Passo 4)
-- Bonificação ligada à meta, com a linha `Bonificação ligada à meta: sim` ou `nao` e a descrição, se houver (Passo 5)
+- Comissão ligada à meta: a linha `Bonificação ligada à meta: sim` ou `nao`, as três linhas de percentual, as duas linhas da regra e a descrição, se houver (Passo 5)
 - Última atualização: data de hoje, no formato DD/MM/AAAA, reescrita sempre que qualquer parte mudar
 
 Copie as respostas como a pessoa deu, sem reescrever nem resumir. Em uma atualização, mantenha como está o que ela não mexeu. Campo que a pessoa pulou fica com o texto de exemplo do modelo, nunca preenchido por você.

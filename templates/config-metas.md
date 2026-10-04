@@ -20,11 +20,17 @@ Preenchido por `/gerente-configurar-metas`. Guarda como esta loja pensa e define
 
 ## Bonificação ou comissão ligada à meta
 
-Espaço reservado. A Vetria ainda não calcula bonificação: este campo só guarda a regra da loja para quando isso existir. Cada loja define a sua, nada aqui é padrão.
+A regra de comissão da loja, usada por `/gerente-comissao`. Cada loja define a sua, nada aqui é padrão da Vetria. A calculadora entende uma regra só: três percentuais por vendedor, em cada período de meta (ou no mês inteiro, se não houver períodos), com a faixa definida pela meta individual do vendedor e o percentual valendo sobre todas as vendas dele no período.
 
 Bonificação ligada à meta: sim/nao
 
-(se sim, descreva com as suas palavras como funciona, ex: "4% sobre o total vendido se bater a cota, 4,3% se bater a super", "faixas: 3% até 100% da meta, 5% acima")
+Comissão antes da meta: _
+Comissão ao bater a meta: _
+Comissão ao bater a super: _
+Faixa definida pela meta: individual
+Percentual vale sobre: todas as vendas do período
+
+(se a regra da loja for diferente desse modelo, ou tiver detalhes que os campos acima não cobrem, descreva aqui com as suas palavras. Nesse caso a calculadora não calcula e avisa)
 
 ## Última atualização
 
