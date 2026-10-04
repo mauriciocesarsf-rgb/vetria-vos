@@ -74,3 +74,12 @@ Nunca use as palavras arquivo, programa, dados, csv ou formato técnico com a pe
 ## Passo 4. Registrar
 
 Anexe uma linha nova ao final de `entregas/registro-atividades.md`, seguindo o formato da seção "REGISTRO DE ATIVIDADES" do CLAUDE.md, com a data de hoje, o especialista "Gerente IA", o título "Sugestão de pesos da meta de {mês por extenso}/{ano}", o link para `dna/indicadores/pesos-{AAAA-MM}-explicacao.md` e status **pendente validação**. Use `Read` e `Edit`, nunca `Write` nesse arquivo.
+
+## Passo 5. Modo automático
+
+Só vale quando o pedido disser que o comando está rodando de forma automática e agendada (sem ninguém para responder). Nesse modo:
+
+- O mês já vem informado: não pergunte nada. Pule o Passo 4 (registro de atividades): a área de trabalho do robô é temporária e o registro se perderia.
+- A sugestão gerada ali também some, e não chega à tela da Área Adm (a sincronização só vai da loja para o robô). Por isso a mensagem é o único resultado: no lugar da frase final do Passo 3 ("Abra a aba Meta por dia na Área Adm..."), termine com: "É um rascunho: nada vale até você aprovar. Para revisar e aprovar, abra o app da Vetria, vá na Área Adm, aba Meta por dia, escolha {mês por extenso} e clique em Pedir sugestão da Vetria. Ele monta a mesma sugestão na tela, e aí você ajusta e aprova." (uma vez só, sem repetir a orientação).
+- Envie essa mensagem em texto puro, sem imagem, pro gestor: leia `GERENTE_CANAL_RELATORIO` do `.env` e use exatamente o envio "sem imagem" de `/gerente-enviar-relatorio` (Passo 6), trocando o destino. Telegram: `TELEGRAM_CHAT_ID_GERENTE`, e se estiver vazio, `TELEGRAM_CHAT_ID_GRUPO`. WhatsApp: `GERENTE_WHATSAPP_DESTINO_GERENTE`, e se estiver vazio, `GERENTE_WHATSAPP_DESTINO_GRUPO`. Nunca escreva token ou chave no chat.
+- Se o resultado do Passo 2 for `erro` ou `ja_aprovado`, não envie nada e termine explicando o motivo.
