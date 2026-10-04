@@ -68,6 +68,10 @@ Além do total do período inteiro, calcule também o progresso da **semana atua
 
 Identifique em qual semana a data de hoje cai. Para cada vendedor, some `valor` só dentro das datas dessa semana (mesmo filtro de `vendas.csv`, restrito a essas datas). Calcule a meta da semana usando a fórmula única do Passo 0.7 de `.claude/agents/gerente-ia.md` ("Meta esperada: fórmula única"), com o intervalo = essa semana e `meta_loja` = a meta da corrida escolhida (ou proporcional a ela, se a corrida cobrir um período diferente do mês inteiro) — nunca por proporção direta de dias corridos do período, mesmo se a loja não tiver nenhum dia fechado no período (dá o mesmo resultado nesse caso, mas evita duas fórmulas fazendo a mesma coisa de jeitos diferentes).
 
+### Meta de hoje e ritmo necessário (só pra corridas de `metrica = valor`)
+
+Rode `node .claude/skills/gerente-metas/acompanhamento.js` (sem data, que assume hoje). Se o resultado vier com `status` `ok` e `dia.loja_aberta` verdadeiro, guarde `dia.meta` (a meta de hoje da loja) e `ritmo.necessario_hoje_considerando_os_pesos` e `ritmo.dias_de_funcionamento_restantes`, que entram no formato RESUMIDO (Passo 4). Se vier qualquer outro resultado, ou a loja não abrir hoje, ou a meta do mês já estiver batida, siga sem essa linha. Não recalcule esses números por conta própria.
+
 ### Dica do dia (só pra corridas de `metrica = valor`)
 
 Pra cada vendedor, monte uma dica curta e acionável, nesta ordem de prioridade:
@@ -126,6 +130,8 @@ Bora pra cima, equipe! 💪🚀
 
 ```
 📊 {nome da corrida} — acompanhamento
+
+{se houver o resultado do Passo 3 "Meta de hoje e ritmo necessário": 🎯 Meta de hoje da loja: R$ {dia.meta}. Considerando os {ritmo.dias_de_funcionamento_restantes} dias de funcionamento que restam no mês e o peso de cada um, o ritmo necessário hoje é de cerca de R$ {ritmo.necessario_hoje_considerando_os_pesos}.}
 
 {ícone} {vendedor}: R$ {vendido na semana} esta semana {"(faltam R$ {falta} pra meta da semana)" — ou, se já bateu, "— meta da semana batida! 🏆"}
 💡 {dica de hoje, ver critério no Passo 3}
