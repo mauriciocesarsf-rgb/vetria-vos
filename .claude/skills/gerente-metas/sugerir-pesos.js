@@ -25,6 +25,7 @@ if (!mes) falhar('Informe o mês no formato AAAA-MM.')
 const refazer = args.includes('--refazer')
 const valorDe = (flag) => { const i = args.indexOf(flag); return i >= 0 ? args[i + 1] : null }
 const raiz = valorDe('--raiz') || process.cwd()
+const arquivoAjustes = valorDe('--ajustes')
 
 let slug = valorDe('--slug')
 if (!slug) {
@@ -132,11 +133,106 @@ const confiavel = (w) => obs[w] >= MIN_OBS_DIA_SEMANA
 const mediaDoDia = (w) => (confiavel(w) ? soma[w] / obs[w] : mediaGeral)
 const fatorDoDia = (w) => (mediaGeral ? mediaDoDia(w) / mediaGeral - 1 : 0)
 
+// Ajustes por data ou ação (opcionais): lista em JSON montada por quem chama.
+// Cada item: { inicio, fim?, motivo, origem: 'gestor' | 'data', fator? }.
+// 'gestor' traz o fator que o gestor informou; 'data' é uma data do calendário
+// sem efeito conhecido: vira ajuste medido se o mesmo dia do ano passado
+// mostrou alta, palpite pequeno se não há histórico, e nada se o histórico
+// existe e não mostrou alta.
+const FATOR_PALPITE = 1.1
+const ALTA_MINIMA_CONFIRMADA = 1.1
+const ALTA_MAXIMA_CONFIRMADA = 3
+const MAX_AJUSTES = 8
+const ehData = (s) => /^\d{4}-\d{2}-\d{2}$/.test(String(s || ''))
+const doisDig = (n) => String(n).padStart(2, '0')
+
+function efeitoAnoAnterior(d) {
+  const iso = (anoAlvo - 1) + '-' + doisDig(mesAlvo) + '-' + doisDig(d)
+  const chave = iso.slice(0, 7)
+  if (!diasPorMes[chave] || diasPorMes[chave].length < MIN_DIAS_MES) return null
+  const dia = diasPorMes[chave].find((x) => x.data === iso)
+  if (!dia) return null
+  const w = diaSemanaDe(anoAlvo - 1, mesAlvo, d)
+  const mesmos = diasPorMes[chave].filter((x) => {
+    const [a, m, dd] = x.data.split('-').map(Number)
+    return x.data !== iso && diaSemanaDe(a, m, dd) === w
+  })
+  if (mesmos.length < 2) return null
+  const media = mesmos.reduce((s, x) => s + x.total, 0) / mesmos.length
+  return media > 0 ? dia.total / media : null
+}
+
+let ajustesPedidos = []
+if (arquivoAjustes) {
+  try { ajustesPedidos = JSON.parse(fs.readFileSync(arquivoAjustes, 'utf8')) } catch { falhar('Não consegui ler a lista de datas e ações.') }
+  if (!Array.isArray(ajustesPedidos)) falhar('A lista de datas e ações precisa ser uma lista.')
+  ajustesPedidos = ajustesPedidos.slice(0, MAX_AJUSTES)
+}
+
+const ajustePorDia = {}
+const relatorioAjustes = []
+const fmtDias = (ds) => (ds.length === 1 ? 'dia ' : 'dias ') + ds.join(', ')
+const fmtFator = (f) => String(Math.round(f * 100) / 100).replace('.', ',')
+
+for (const a of ajustesPedidos) {
+  const motivo = String((a && a.motivo) || '').trim().slice(0, 120)
+  const ini = a && a.inicio
+  const fim = (a && a.fim) || ini
+  if (!motivo) { relatorioAjustes.push('Um pedido sem descrição foi ignorado.'); continue }
+  if (!ehData(ini) || !ehData(fim) || ini > fim) { relatorioAjustes.push(motivo + ': não apliquei (datas inválidas).'); continue }
+  const dias = []
+  for (let d = 1; d <= diasNoMes; d++) {
+    const iso = mes + '-' + doisDig(d)
+    if (iso >= ini && iso <= fim && estaAberto(diaSemanaDe(anoAlvo, mesAlvo, d))) dias.push(d)
+  }
+  if (!dias.length) { relatorioAjustes.push(motivo + ': não apliquei (fora do mês ou dias em que a loja fecha).'); continue }
+
+  const grupos = { gestor: [], historico: [], palpite: [], semAjuste: [], jaTinha: [] }
+  const altas = []
+  let fatorGestor = null
+  if (a.origem === 'gestor') {
+    fatorGestor = Number(a.fator)
+    if (!(fatorGestor >= 0.2 && fatorGestor <= 5)) { relatorioAjustes.push(motivo + ': não apliquei (o fator informado não é razoável).'); continue }
+  } else if (a.origem !== 'data') {
+    relatorioAjustes.push(motivo + ': não apliquei (tipo de pedido desconhecido).')
+    continue
+  }
+  for (const d of dias) {
+    if (ajustePorDia[d]) { grupos.jaTinha.push(d); continue }
+    if (fatorGestor !== null) {
+      ajustePorDia[d] = { fator: fatorGestor, motivo, categoria: 'gestor' }
+      grupos.gestor.push(d)
+      continue
+    }
+    const efeito = efeitoAnoAnterior(d)
+    if (efeito === null) {
+      ajustePorDia[d] = { fator: FATOR_PALPITE, motivo, categoria: 'palpite' }
+      grupos.palpite.push(d)
+    } else if (efeito >= ALTA_MINIMA_CONFIRMADA) {
+      const f = Math.min(efeito, ALTA_MAXIMA_CONFIRMADA)
+      ajustePorDia[d] = { fator: f, motivo, categoria: 'historico', efeito }
+      grupos.historico.push(d)
+      altas.push(efeito)
+    } else {
+      grupos.semAjuste.push(d)
+    }
+  }
+  if (grupos.gestor.length) relatorioAjustes.push(motivo + ' (' + fmtDias(grupos.gestor) + '): você informou que esse período pesa ×' + fmtFator(fatorGestor) + ' e eu apliquei (informado por você).')
+  if (grupos.historico.length) {
+    const media = altas.reduce((s, x) => s + x, 0) / altas.length
+    relatorioAjustes.push(motivo + ' (' + fmtDias(grupos.historico) + '): no ano passado vendeu cerca de ' + Math.round((media - 1) * 100) + '% acima do normal para o dia da semana, e apliquei isso (confirmado pelo histórico).')
+  }
+  if (grupos.palpite.length) relatorioAjustes.push(motivo + ' (' + fmtDias(grupos.palpite) + '): não há histórico do ano passado para confirmar, então dei um empurrão pequeno de +' + Math.round((FATOR_PALPITE - 1) * 100) + '% (palpite, não confirmado).')
+  if (grupos.semAjuste.length) relatorioAjustes.push(motivo + ' (' + fmtDias(grupos.semAjuste) + '): o histórico do ano passado não mostrou alta nesse dia, então não ajustei.')
+  if (grupos.jaTinha.length) relatorioAjustes.push(motivo + ' (' + fmtDias(grupos.jaTinha) + '): esses dias já tinham outro ajuste, então mantive o primeiro.')
+}
+
 const bruto = []
 let totalBruto = 0
 for (let d = 1; d <= diasNoMes; d++) {
   const w = diaSemanaDe(anoAlvo, mesAlvo, d)
-  const peso = estaAberto(w) ? (nivel ? mediaDoDia(w) : 1) : 0
+  const base = estaAberto(w) ? (nivel ? mediaDoDia(w) : 1) : 0
+  const peso = base * (ajustePorDia[d] ? ajustePorDia[d].fator : 1)
   bruto.push(peso)
   totalBruto += peso
 }
@@ -155,7 +251,15 @@ for (let d = 1; d <= diasNoMes; d++) {
   let observacao = ''
   if (!estaAberto(w)) observacao = 'loja fechada nesse dia da semana'
   else if (nivel) observacao = confiavel(w) ? DIA_SEMANA[w] + ': ' + sinal(fatorDoDia(w)) + ' vs média (' + obs[w] + ' dias observados)' : DIA_SEMANA[w] + ': poucos dados, peso neutro'
-  linhasCsv.push([d, mes + '-' + String(d).padStart(2, '0'), pesos[d - 1], nivel ? 'historico' : 'linear', observacao, 'nao'].map(campoCsv).join(','))
+  const aj = ajustePorDia[d]
+  if (aj) {
+    const detalhe = aj.categoria === 'gestor' ? 'informado por você, ×' + fmtFator(aj.fator)
+      : aj.categoria === 'historico' ? '+' + Math.round((aj.efeito - 1) * 100) + '% no ano passado'
+        : 'palpite de +' + Math.round((aj.fator - 1) * 100) + '%, sem histórico'
+    observacao = (observacao ? observacao + '; ' : '') + aj.motivo + ' (' + detalhe + ')'
+  }
+  const origem = aj ? (nivel ? 'historico+calendario' : 'calendario') : (nivel ? 'historico' : 'linear')
+  linhasCsv.push([d, mes + '-' + String(d).padStart(2, '0'), pesos[d - 1], origem, observacao, 'nao'].map(campoCsv).join(','))
 }
 fs.writeFileSync(arquivoPesos, linhasCsv.join('\n') + '\n', 'utf8')
 
@@ -195,13 +299,21 @@ if (nivel === 0) {
     exp.push('Com só ' + mesesUsados.length + (mesesUsados.length === 1 ? ' mês' : ' meses') + ' de histórico, esse padrão é uma indicação fraca. Confira e ajuste o que não bater com o que você conhece da loja.')
   }
 }
+if (ajustesPedidos.length) {
+  exp.push('')
+  exp.push('**Datas e ações consideradas:**')
+  for (const r of relatorioAjustes) exp.push('- ' + r)
+  if (!relatorioAjustes.length) exp.push('- Nenhuma data ou ação pedia ajuste.')
+}
 if (dica) {
   exp.push('')
   exp.push('**Você me contou:** "' + dica.replace(/[.\s]+$/, '') + '".' + (nivel === 0 ? ' Sem histórico não consigo medir esse efeito; se quiser dar mais peso a esses dias, ajuste na tela.' : ' Compare com os números acima.'))
 }
 exp.push('')
 if (!abertos.configurado) exp.push('Os dias de funcionamento não estão marcados na aba Escala, então considerei todos os dias da semana abertos.')
-exp.push('Feriados em que a loja fecha, datas comemorativas e ações (como uma Black) ainda não foram consideradas. Ajuste esses dias na aba Meta por dia.')
+exp.push(ajustesPedidos.length
+  ? 'Feriados em que a loja fecha não são conhecidos pela Vetria: ajuste esses dias na aba Meta por dia. Os ajustes de datas acima também podem ser editados ou removidos lá.'
+  : 'Feriados em que a loja fecha, datas comemorativas e ações (como uma Black) não foram consideradas nesta sugestão. Ajuste esses dias na aba Meta por dia.')
 fs.writeFileSync(arquivoExplicacao, exp.join('\n') + '\n', 'utf8')
 
 sair({
@@ -211,6 +323,7 @@ sair({
   meses_usados: mesesUsados,
   dias_abertos_configurados: abertos.configurado,
   por_dia_semana: porDiaSemana,
+  ajustes: relatorioAjustes,
   arquivo_pesos: path.relative(raiz, arquivoPesos).split(path.sep).join('/'),
   arquivo_explicacao: path.relative(raiz, arquivoExplicacao).split(path.sep).join('/'),
 })
