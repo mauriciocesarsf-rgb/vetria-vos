@@ -263,14 +263,15 @@ for (let d = 1; d <= diasNoMes; d++) {
 }
 fs.writeFileSync(arquivoPesos, linhasCsv.join('\n') + '\n', 'utf8')
 
-function dicaDoGestor() {
+function secaoDoGestor(titulo) {
   let texto
   try { texto = fs.readFileSync(path.join(ind, 'config-metas.md'), 'utf8') } catch { return null }
-  const m = /## Dias fortes e dias fracos\s*\n+([\s\S]*?)(?=\n## |$)/.exec(texto)
+  const m = new RegExp('## ' + titulo + '\\s*\\n+([\\s\\S]*?)(?=\\n## |$)').exec(texto)
   const t = m ? m[1].trim() : ''
-  return t && t[0] !== '(' ? t : null
+  return t && t[0] !== '(' && t.toLowerCase() !== 'nenhuma' ? t : null
 }
-const dica = dicaDoGestor()
+const dica = secaoDoGestor('Dias fortes e dias fracos')
+const particularidades = secaoDoGestor('Particularidades da operação')
 
 const porDiaSemana = []
 for (let w = 1; w <= 7; w++) {
@@ -308,6 +309,10 @@ if (ajustesPedidos.length) {
 if (dica) {
   exp.push('')
   exp.push('**Você me contou:** "' + dica.replace(/[.\s]+$/, '') + '".' + (nivel === 0 ? ' Sem histórico não consigo medir esse efeito; se quiser dar mais peso a esses dias, ajuste na tela.' : ' Compare com os números acima.'))
+}
+if (particularidades) {
+  exp.push('')
+  exp.push('**Particularidade da operação que você informou:** "' + particularidades.replace(/[.\s]+$/, '') + '". Isso não entra no cálculo sozinho: leve em conta ao revisar os pesos.')
 }
 exp.push('')
 if (!abertos.configurado) exp.push('Os dias de funcionamento não estão marcados na aba Escala, então considerei todos os dias da semana abertos.')

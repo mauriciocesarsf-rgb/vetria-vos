@@ -45,6 +45,14 @@ Pelo que vocês já sabem da loja, quais dias da semana ou do mês costumam ser 
 Quais datas ou ações costumam mudar o resultado da loja, e quanto? (ex: "Dia das Mães é o maior mês do ano", "a Black costuma dobrar a última semana")
 ```
 
+Em seguida, mais uma pergunta, ainda neste passo:
+
+```
+Tem alguma particularidade da operação que mude como as metas devem ser pensadas? (ex: "o shopping fecha mais cedo aos domingos", "loja nova, vendas ainda crescendo", "reforma prevista em novembro". Se não tiver, responda "nenhuma")
+```
+
+Grave como a pessoa disse na seção "Particularidades da operação" (se for "nenhuma", escreva "nenhuma").
+
 ## Passo 5. Bonificação ligada à meta
 
 ```
@@ -54,7 +62,7 @@ A equipe tem bonificação ou comissão ligada à meta?
 2. Não
 ```
 
-- **Não:** registre `Bonificação ligada à meta: nao`, volte as três linhas de comissão e a explicação para o texto de exemplo do modelo, e siga para o Passo 6.
+- **Não:** registre `Bonificação ligada à meta: nao`, volte as linhas de comissão (percentuais, meta super, períodos, recuperação) e a explicação para o texto de exemplo do modelo, e siga para o Passo 6.
 - **Sim:** registre `Bonificação ligada à meta: sim` e faça as perguntas abaixo, uma por vez:
 
 ```
@@ -66,8 +74,39 @@ E quando ele bate a primeira meta? (ex: 4%)
 ```
 E quando bate a meta super, se houver? (ex: 4,2%. Se não existe meta super, responda "não tem")
 ```
+
+Se a loja tem meta super, faça mais esta (se respondeu "não tem", grave `Meta super: não tem` e pule):
+
 ```
-A faixa é definida pela meta de cada vendedor, e o percentual novo vale sobre todas as vendas dele naquele período (ou no mês, se não houver períodos)?
+Como a meta super é definida?
+
+1. É a meta mais um percentual (ex: meta + 15%)
+2. É um valor que eu cadastro todo mês na aba Metas
+```
+
+Na opção 1, pergunte "Qual percentual acima da meta?" (ex: 15%) e grave `Meta super: +15%` com o número que a pessoa disse. Na opção 2, grave `Meta super: valor manual`.
+
+```
+Como a comissão é apurada ao longo do mês?
+
+1. Por semanas
+2. Pelos períodos cadastrados na aba Corridas (ex: 1º Período, 2º Período)
+3. O mês inteiro de uma vez
+```
+
+Grave `Períodos de apuração: semanas`, `corridas` ou `mês`, conforme a resposta.
+
+```
+A loja tem regra de recuperação? Ela funciona assim: se o vendedor bate a meta do mês, os períodos que ficaram abaixo da meta passam a valer o percentual da meta.
+
+1. Sim
+2. Não
+```
+
+Grave `Regra de recuperação: sim` ou `nao`. Nunca presuma que a loja usa recuperação.
+
+```
+A faixa é definida pela meta de cada vendedor, e o percentual novo vale sobre todas as vendas dele naquele período?
 
 1. Sim, é assim
 2. Não, na minha loja é diferente
@@ -83,8 +122,8 @@ Escreva (ou atualize) `dna/indicadores/config-metas.md` com o modelo de `templat
 - Como a meta é definida hoje (Passo 1)
 - Histórico de vendas fora do sistema (Passo 2)
 - Dias fortes e dias fracos (Passo 3)
-- Datas e ações que mexem nas vendas (Passo 4)
-- Comissão ligada à meta: a linha `Bonificação ligada à meta: sim` ou `nao`, as três linhas de percentual, as duas linhas da regra e a descrição, se houver (Passo 5)
+- Datas e ações que mexem nas vendas e particularidades da operação (Passo 4)
+- Comissão ligada à meta: a linha `Bonificação ligada à meta: sim` ou `nao`, as três linhas de percentual, as linhas `Meta super`, `Períodos de apuração` e `Regra de recuperação`, as duas linhas da regra e a descrição, se houver (Passo 5)
 - Última atualização: data de hoje, no formato DD/MM/AAAA, reescrita sempre que qualquer parte mudar
 
 Copie as respostas como a pessoa deu, sem reescrever nem resumir. Em uma atualização, mantenha como está o que ela não mexeu. Campo que a pessoa pulou fica com o texto de exemplo do modelo, nunca preenchido por você.
