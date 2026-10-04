@@ -81,6 +81,11 @@ Divide a meta do mês entre os dias, quando alguns dias devem pesar mais que out
 | `observacao` | Por que esse dia pesa o que pesa (texto livre, opcional) | `ação de Black` |
 | `aprovado` | `sim` só depois que o gestor aprovou. `nao` é rascunho e é ignorado nos cálculos | `sim` |
 
+Arquivos que acompanham o `pesos-{AAAA-MM}.csv` (gerados pela Vetria, não preencha à mão):
+- `pesos-{AAAA-MM}-explicacao.md`: o texto que explica como a sugestão foi montada.
+- `pesos-{AAAA-MM}-sugerido.csv`: cópia da sugestão original, que não muda quando o gestor edita e aprova. É a base para comparar o sugerido, o aprovado e o realizado (`/gerente-previsto-realizado`).
+- `historico-metas.csv`: uma linha por mês fechado, com a meta, o realizado, o atingimento e o erro médio da sugestão e da versão aprovada. Cresce com o tempo e serve só para recomendar melhorias, nunca para alterar regras automaticamente.
+
 ## `premios-especiais.csv` — prêmios que não são disputa entre vendedores
 
 Para premiações ligadas a um cargo específico ou à loja como um todo — não a uma comparação entre vendedores. Exemplos reais: gerente ganhar um prêmio se a loja bater a cota; estoquista ganhar um prêmio por manter a taxa de cancelamento baixa.

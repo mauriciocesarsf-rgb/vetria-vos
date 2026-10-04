@@ -331,6 +331,9 @@ for (let d = 1; d <= diasNoMes; d++) {
   linhasCsv.push([d, mes + '-' + String(d).padStart(2, '0'), pesos[d - 1], origem, observacao, 'nao'].map(campoCsv).join(','))
 }
 fs.writeFileSync(arquivoPesos, linhasCsv.join('\n') + '\n', 'utf8')
+// Cópia da sugestão original: o arquivo de pesos é editado e aprovado pelo gestor,
+// e esta cópia é o que permite comparar depois o sugerido, o aprovado e o realizado.
+fs.writeFileSync(path.join(ind, 'pesos-' + mes + '-sugerido.csv'), linhasCsv.join('\n') + '\n', 'utf8')
 
 function secaoDoGestor(titulo) {
   let texto
